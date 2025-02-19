@@ -5,8 +5,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, TsignUpSchema } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { addUserDirect } from "@/app/action/user/dbOperation";
+//import {  useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
+
+  const router = useRouter();
   const {
     register,
     formState: { errors },//, isSubmitting
@@ -31,7 +36,15 @@ const RegisterForm = () => {
     formData.append("password", data.password);
     formData.append("confirmPassword", data.confirmPassword);
 
-   // const result = await addUser(formData);
+    const result = await addUserDirect(formData);
+
+   // if(!response?.error){
+  
+ if(result){
+  router.push('/user');
+ 
+ } 
+ 
 
     // const response = await fetch("/api/auth/signup", {
     //   method: "POST",
@@ -84,14 +97,15 @@ const RegisterForm = () => {
     //   }
     // }
 
-    //console.log(result);
+    console.log(result);
   }
 
   return (
-    <div className=" lg:w-2/3 m-auto my-[10%]">
+    <div className="container mx-auto bg-green-50 p-1 flex justify-center">
+    <div className="w-full md:w-[400px] m-auto my-[10%] ">
       <h3 className="text-2xl mb-4">New User Register</h3>
       <form onSubmit={handleSubmit(onSubmitUserRegister)}>
-        <div className="flex w-full flex-col gap-8  my-15 md:w-2/3 lg:w-1/2">
+        <div className="flex w-full flex-col gap-8  my-15 ">
           <div className="flex flex-col gap-1">
             <label className="label-style">User Name</label>
             <input
@@ -149,7 +163,7 @@ const RegisterForm = () => {
           <Button type="submit">Register</Button>
         </div>
       </form>
-    </div>
+    </div></div>
   );
 };
 

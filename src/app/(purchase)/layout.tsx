@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 
 import Header from "@/components/Header";
-import Comcomp from "@/components/comcomp";
+import Comcomp from "@/components/Comcomp";
 
 
 export const metadata: Metadata = {
@@ -21,7 +21,7 @@ export default function RootLayout({
       
     <Comcomp>
      
-      <Header />
+    
     {children}
      
       </Comcomp> 

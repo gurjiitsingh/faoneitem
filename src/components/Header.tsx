@@ -12,36 +12,34 @@ import { FaBars } from "react-icons/fa6";
 //   global.window = global;
 // }
 const Header = () => {
- 
   const { bargerMenuToggle } = UseSiteContext();
   // const [width, setWidth] = useState(0);
   // const [height, setHeight] = useState(0);
   // const [showNav, setShowNav] = useState(true);
-  
+
   //  useEffect(() => {
   //   const handleResize = () => setWidth(window.innerWidth);
   //   window.addEventListener("resize", handleResize);
   //   return () => window.removeEventListener("resize", handleResize);
- 
+
   //  }, []);
 
   //  useEffect(()=>{
   //   if(width >= 1024 ){
   //     setShowNav(true);
   //   }else{
-  //    // setShowNav(false); 
+  //    // setShowNav(false);
   //   }
 
   //  },[width])
-   
 
   return (
-    <header className="fixed top-5 left-3 bg-white z-30 flex items-center justify-between gap-3 py-1 mt-3 px-4 border-b mx-auto w-full md:w-[96%] shadow-sm rounded-full">
-   
-    <div className="flex gap-2">
-      <img className="h-5 md:h-6" src="/download.svg" alt="Logo" />
-      <Navbar />
-      {/* {showNav ? <Navbar /> : <></>} */}
+    <header className="bg-white  py-1  px-4 border-b mx-auto w-full md:w-full shadow-sm ">
+      <div className="container mx-auto flex items-center justify-between gap-3">
+      <div className="flex gap-2">
+        <img className="h-5 md:h-6" src="/download.svg" alt="Logo" />
+        <Navbar />
+        {/* {showNav ? <Navbar /> : <></>} */}
       </div>
       <div className="flex gap-2">
         <SessionProvider>
@@ -59,8 +57,8 @@ const Header = () => {
           <FaBars className="md:hidden" size={32} />
         </button>
       </div>
+      </div>
     </header>
-    
   );
 };
 
