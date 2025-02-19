@@ -101,7 +101,7 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="container mx-auto bg-green-50 p-1 flex justify-center">
+    <div className="container mx-auto bg-green-50 p-1 flex justify-center my-4 rounded-lg p-3">
     <div className="w-full md:w-[400px] m-auto my-[10%] ">
       <h3 className="text-2xl mb-4">New User Register</h3>
       <form onSubmit={handleSubmit(onSubmitUserRegister)}>
