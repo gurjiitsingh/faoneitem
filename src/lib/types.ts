@@ -16,6 +16,7 @@ const productSchema = z.object({
   company: z.string().min(1, { message: "Please select category" }),
   featured: z.string().optional(),
   image: typeof window === "undefined" ? z.any() : z.any(),
+  baseProductId:z.string().optional(),
 
   // image:z.object({
   //   size: z.number(),
@@ -44,6 +45,7 @@ export const newPorductSchema = z.object({
 
  // image: z.any().refine((file: File) => file?.length !== 0, "File is required"),
  image:z.any().optional(),
+ baseProductId:z.string().optional(),
   // .refine((file) => file.size < MAX_FILE_SIZE, "Max size is 5MB.")
   // .refine(
   //   (file) => checkFileType(file),
@@ -183,8 +185,8 @@ export const categorySchema = z.object({
     .max(30, { message: "Category name is to long" }),
   productDesc: z
     .string()
-    .min(1, { message: "productDescrition of product is needed" })
-    .max(100, { message: "productDescription is too long" }),
+    .min(1, { message: "Categoy Descrition of product is needed" })
+    .max(100, { message: "Categoy Description is too long" }),
     slug: z
     .string().optional(),
     // .min(4, { message: "productDescrition of product is needed" })

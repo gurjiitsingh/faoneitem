@@ -57,7 +57,7 @@ const productSchema = z.object({
   company: z.string().min(1, { message: "Please select category" }),
   featured: z.string().optional(),
   image: typeof window === "undefined" ? z.any() : z.any(),
-
+  baseProductId:z.string().optional(),
   // image:z.object({
   //   size: z.number(),
   // type: z.string(),
@@ -79,6 +79,7 @@ export const newPorductSchema = z.object({
   productDesc: z
     .string()
     .min(2, { message: "Product description is required" }),
+    baseProductId:z.string().optional(),
   //  brand: z.string().min(1, { message: "Please select category" }),
   //  dimensions:z.string().optional(),
   //weight:z.string().optional(),
@@ -121,7 +122,7 @@ export const editPorductSchema = z.object({
    // dimensions:z.string().optional(),
  // weight:z.string().optional(),
   isFeatured: z.boolean().optional(),
-  
+  baseProductId:z.string().optional(),
   image: z.any().optional(),
   oldImgageUrl:z.string().optional(),
   // .refine((file) => file.size < MAX_FILE_SIZE, "Max size is 5MB.")

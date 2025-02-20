@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newPorductSchema, TnewProductSchema } from "@/lib/types";
+import { newPorductSchema, TnewProductSchema } from "@/lib/types/productType";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
-import { addNewProduct } from "@/app/action/products/dbOperation";
+import { addNewProduct } from "@/app/action/productsaddon/dbOperation";
 //import Images from "@/app/admin/products/form/componets/Images";
 import { fetchCategories } from '@/app/action/category/dbOperations';
 import { categoryTypeArr } from "@/lib/types/categoryType";
@@ -22,7 +22,10 @@ import { categoryTypeArr } from "@/lib/types/categoryType";
 //   productDesc: string | null;
 //   image: string | null;
 // };
-const Page = () => {
+const Page = ({params}:{params:{id:string}}) => {
+  const baseProductId = params.id;
+console.log("addonprodut form  baseproductId============", baseProductId)
+
   const [categories, setCategory] = useState<categoryTypeArr>([]);
  
 
@@ -57,7 +60,7 @@ const Page = () => {
   async function onsubmit(data: TnewProductSchema) {
     //typeof(data.featured)
     const formData = new FormData();
-console.log("images---------",data)
+//console.log("images---------",data)
     formData.append("name", data.name);
     formData.append("price", data.price);
    // formData.append("isFeatured", data.isFeatured);
@@ -67,7 +70,7 @@ console.log("images---------",data)
     formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
     formData.append("image", data.image[0]);
-
+    formData.append("baseProductId",baseProductId)
     const result = await addNewProduct(formData);
 
     if (!result?.errors) {
@@ -143,9 +146,13 @@ console.log("images---------",data)
                 <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
+                    
+
+                  
                     <label className="label-style" htmlFor="product-title">
                       Product Name<span className="text-red-500">*</span>{" "}
                     </label>
+                     <input {...register("baseProductId",{ value: baseProductId })} type="hidden" />
                     <input
                       {...register("name")}
                       className="input-style"

@@ -6,6 +6,7 @@ import { categorySchema, TcategorySchema } from "@/lib/types";
 //import { addNewCategory } from "@/app/action/category/dbOperations";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { addNewCategory } from '@/app/action/category/dbOperations';
 //import { useRouter } from 'next/navigation';
 const Form = () => {
 
@@ -30,14 +31,14 @@ const Form = () => {
       //reset,
       setValue,
       //getValues,
-      setError,
+    //  setError,
     } = useForm<TcategorySchema>({
       resolver: zodResolver(categorySchema),
     });
    // const { isSubmitting } = formState;
     async function onSubmit(data: TcategorySchema) {
       
-     
+     console.log("-------------", data);
       //setIsDisabled(true)
       const formData = new FormData();
   
@@ -45,35 +46,9 @@ const Form = () => {
       formData.append("productDesc", data.productDesc);
       formData.append("slug", data.slug!);
       formData.append("image", data.image[0]);
-      //  console.log(formData.get('checkbox'));
-  
-     // const result = await addNewCategory(formData);
-      //const result = JSON.parse(res)
-  
-      // if (result.errors) {
-      //   // not network error but data validation error
-      //   const errors: Terror = result.errors;
-  
-      //   if (errors.name) {
-      //     setError("name", {
-      //       type: "server",
-      //       message: errors.name,
-      //     });
-      //   } else if (errors.productDesc) {
-      //     setError("productDesc", {
-      //       type: "server",
-      //       message: errors.productDesc,
-      //     });
-      //   } else if (errors.slug) {
-      //     setError("slug", {
-      //       type: "server",
-      //       message: errors.slug,
-      //     });
-      //   } else {
-      //     //  alert("Something went wrong");
-      //   }
-      // }
-      //setIsDisabled(false)
+   const result = await addNewCategory(formData);
+
+   console.log("cat add ------------", result)
       
       setValue('name', "");
       setValue('productDesc', "");

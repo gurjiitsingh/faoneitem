@@ -87,7 +87,6 @@ export async function searchUserById(id: string): Promise<TuserSchem> {
     const q = query(collection(db, "user"), where("userId", "==", id));
     const querySnapshot = await getDocs(q);
 
-   
     querySnapshot.forEach((doc) => {
       data = doc.data() as TuserSchem;
     });

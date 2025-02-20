@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 
 import TableRows from "./TableRows";
-import { fetchProducts } from "@/app/action/products/dbOperation";
+import { fetchProducts } from "@/app/action/productsbase/dbOperation";
 import { cartDataT } from "@/lib/types/cartDataType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
@@ -30,7 +30,7 @@ const ListView = ({ title }: productTableProps) => {
     async function fetchProduct() {
       try {
         const result = await fetchProducts();
-        console.log("---------", result)
+      //  console.log("---------", result)
         setProductData(result);
       } catch (error) {
         console.log(error);

@@ -2,7 +2,7 @@
 import { fetchProducts } from "@/app/action/products/dbOperation";
 import React, { useEffect, useState } from "react";
 import PageProductDetailComponent from "./menu/components/PageProductDetailComponent";
-import Hero from "@/components/Hero";
+//import Hero from "@/components/Hero";
 import { cartDataT } from "@/lib/types/cartDataType";
 import Footer from "@/components/Footer";
 
@@ -28,7 +28,7 @@ export default function Page() {
 
       {/* <Sidebar /> */}
       <div className="container mx-auto py-5 p-1">
-        <div className="flex flex-col md:flex-row flex-wrap gap-3">
+        <div className="w-full flex flex-col md:flex-row flex-wrap gap-3">
           {products.map((product, i) => {
             return <PageProductDetailComponent key={i} product={product} />;
           })}

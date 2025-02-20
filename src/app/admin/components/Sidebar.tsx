@@ -34,7 +34,7 @@ const menuList = [
   },
   {
     name:"Products",
-    link:"/admin/products",
+    link:"/admin/productsbase",
     icon:<MdOutlineProductionQuantityLimits />
   },
  

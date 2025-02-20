@@ -85,12 +85,10 @@ export async function addNewProduct(formData: FormData) {
     imageUrl = await upload(image);
     console.log(imageUrl);
   } catch (error) {
-   // throw new Error("error");
+  //  throw new Error("error");
     console.log(error);
     return { errors: "image cannot uploaded" };
   }
-
-  //imageUrl =  "https://res.cloudinary.com/dyhs5oy4s/image/upload/v1740024698/nextjs-course-mutations/opoym0wtoa9ijdfiqzjp.jpg";
 
   // const name = formData.get("name");
   // const price = formData.get("price");
@@ -254,7 +252,6 @@ export async function fetchProducts(): Promise<cartDataT[]> {
   //  return data;
 
   const result = await getDocs(collection(db, "product"));
-
   let data = [] as cartDataT[];
   result.forEach((doc) => {
     const pData = { id: doc.id, ...doc.data() } as cartDataT;

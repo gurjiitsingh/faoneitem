@@ -21,6 +21,7 @@ import {
   getDocs,
   query,
   setDoc,
+  where,
 } from "@firebase/firestore"; //doc, getDoc,
 //import { orderProductsTArr } from "@/lib/type/orderType";
 //import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
@@ -43,7 +44,7 @@ export async function addNewProduct(formData: FormData) {
   console.log(formData.get("name"));
   console.log(formData.get("price"));
   //console.log(formData.get("brand"));
-  // console.log(formData.get("weight"));
+  console.log(formData.get("baseProductId"));
   // console.log(formData.get("dimensions"));
   console.log(formData.get("productCat"));
   console.log(formData.get("productDesc"));
@@ -60,6 +61,7 @@ export async function addNewProduct(formData: FormData) {
     // brand: formData.get("brand"),
     // weight: formData.get("weight"),
     // dimensions: formData.get("dimensions"),
+    baseProductId : formData.get("baseProductId"),
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
     image: formData.get("image"),
@@ -67,7 +69,7 @@ export async function addNewProduct(formData: FormData) {
   };
 
   const result = newPorductSchema.safeParse(receivedData);
-
+console.log("zod result", result)
   let zodErrors = {};
   if (!result.success) {
     result.error.issues.forEach((issue) => {
@@ -102,20 +104,23 @@ export async function addNewProduct(formData: FormData) {
     price: formData.get("price"),
     category: formData.get("productCat"),
     Desc: formData.get("productDesc"),
+    baseProductId : formData.get("baseProductId"),
     image: imageUrl,
     isFeatured: featured_img,
   };
+  console.log("data to be saved ---", data)
 
   try {
-    const docRef = await addDoc(collection(db, "product"), data);
+    const docRef = await addDoc(collection(db, "productaddon"), data);
     console.log("Document written with ID: ", docRef.id);
     // Clear the form
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-
   return { message: "Product saved" };
-}
+
+
+}//end of add new product 
 
 
 
@@ -236,7 +241,7 @@ export async function editProduct(formData: FormData) {
   //console.log("update data ------------", productUpdtedData)
   // update database
   try {
-    const docRef = doc(db,"product", id);
+    const docRef = doc(db,"productaddon", id);
    await setDoc(docRef, productUpdtedData);
 
   } catch (error) {
@@ -246,14 +251,14 @@ export async function editProduct(formData: FormData) {
 }
 
 export async function fetchProducts(): Promise<cartDataT[]> {
-  // const result = await getDocs(collection(db, "product"))
+  // const result = await getDocs(collection(db, "productaddon"))
   // let data = [];
   // result.forEach((doc) => {
   //   data.push({id:doc.id, ...doc.data()});
   // });
   //  return data;
 
-  const result = await getDocs(collection(db, "product"));
+  const result = await getDocs(collection(db, "productaddon"));
 
   let data = [] as cartDataT[];
   result.forEach((doc) => {
@@ -261,41 +266,36 @@ export async function fetchProducts(): Promise<cartDataT[]> {
     data.push(pData);
   });
   return data;
-  // let data = [] as cartDataT[];
-  //   const q = query(collection(db, "product"));
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     const ab = doc.data() as cartDataT;
-  //     data.push(ab);
-  //   });
-  //   return data;
+ 
 }
 
 export async function fetchProductById(id: string): Promise<ProductType> {
-  const docRef = doc(db, "product", id);
+  const docRef = doc(db, "productaddon", id);
   const docSnap = await getDoc(docRef);
   let productData = {} as ProductType;
   if (docSnap.exists()) {
-    //  console.log("Document data:", docSnap.data());
+     console.log("Document data:", docSnap.data());
   } else {
     //   docSnap.data() //will be undefined in this case
-    //  console.log("No such document!");
+     console.log("No such document!");
   }
   productData = docSnap.data() as ProductType;
   return productData;
-  // const docRef = doc(db, "product", id);
-  // const docSnap = await getDoc(docRef);
-  //  return docSnap.data();
-
-  //  let data = [] as ProductType[];
-  //   const q = query(collection(db, "product", id));
-  //   const querySnapshot = await getDocs(q);
-  //   querySnapshot.forEach((doc) => {
-  //     data = doc.data() as ProductTypeArr;
-  //   });
-  //   return data;
+  
 }
 
+export async function fetchProductByBaseProductId(id: string): Promise<ProductType[]> {
+let data = [] as ProductType[];
+     const q = query(collection(db, "productaddon"), where("baseProductId", "==", id));
+      const querySnapshot = await getDocs(q);
+  
+      querySnapshot.forEach((doc) => {
+        const datas = doc.data() as ProductType;
+        data.push(datas)
+      });
+      return data;
+    }
+  
 
 
 

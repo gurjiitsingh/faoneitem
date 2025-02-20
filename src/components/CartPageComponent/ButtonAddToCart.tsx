@@ -18,6 +18,6 @@ export  function ButtonAddToCartButton({product}:{product:cartDataT}) {
   }
 
   return (
-    <button onClick={()=>addItemToCart(product)} className='border px-3 py-1 rounded-xl'><IoMdAdd /></button>
+    <button onClick={()=>addItemToCart(product)} className='border px-3 py-1 rounded-xl bg-green-500'><IoMdAdd  /></button>
   )
 }

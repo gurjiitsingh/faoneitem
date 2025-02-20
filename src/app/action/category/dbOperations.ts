@@ -41,10 +41,10 @@ export const fetchCategories = async ():Promise<categoryTypeArr> => {
 export async function addNewCategory(formData: FormData) {
   const recievedData = {
     name: formData.get("name"),
-    desc: formData.get("productDesc"),
+    productDesc: formData.get("productDesc"),
     slug: formData.get("slug"),
   };
-  console.log(recievedData)
+  console.log("recieved data----------------", recievedData)
   const image = formData.get("image");
   
   const result = categorySchema.safeParse(recievedData);
@@ -88,30 +88,9 @@ export async function addNewCategory(formData: FormData) {
         console.error("Error adding document: ", e);
     }
 
-  // try {
-  //   const result = await db
-  //     .insert(category)
-  //     .values({
-  //       name: formData.get("name"),
-  //       desc: formData.get("productDesc"),
-  //       slug: formData.get("slug"),
-  //       imgUrl: imageUrl,
-  //     })
-  //     .returning({ id: category.id });
+    
 
-  //   if (result?.[0].id) {
-  //     revalidatePath("/admin/brand");
-
-  //     return {
-  //       message: { sucess: "Category Created" },
-  //     };
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   return JSON.stringify({
-  //     message: { error },
-  //   });
-  // }
+ 
 }
 
 
