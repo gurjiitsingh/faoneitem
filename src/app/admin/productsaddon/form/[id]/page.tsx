@@ -8,10 +8,9 @@ import { newPorductSchema, TnewProductSchema } from "@/lib/types/productType";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
 import { addNewProduct } from "@/app/action/productsaddon/dbOperation";
 //import Images from "@/app/admin/products/form/componets/Images";
-import { fetchCategories } from '@/app/action/category/dbOperations';
+import { fetchCategories } from "@/app/action/category/dbOperations";
 import { categoryTypeArr } from "@/lib/types/categoryType";
 //import Input from "./componets/input";
-
 
 // type Terror = {
 //   name: string | null;
@@ -22,21 +21,18 @@ import { categoryTypeArr } from "@/lib/types/categoryType";
 //   productDesc: string | null;
 //   image: string | null;
 // };
-const Page = ({params}:{params:{id:string}}) => {
+const Page = ({ params }: { params: { id: string } }) => {
   const baseProductId = params.id;
-console.log("addonprodut form  baseproductId============", baseProductId)
+  console.log("addonprodut form  baseproductId============", baseProductId);
 
   const [categories, setCategory] = useState<categoryTypeArr>([]);
- 
 
   useEffect(() => {
     async function prefetch() {
-
-           
       const catData = await fetchCategories();
-   //   const brandData = await fetchbrands();
+      //   const brandData = await fetchbrands();
       setCategory(catData);
-     // setBrand(brandData);
+      // setBrand(brandData);
     }
     prefetch();
   }, []);
@@ -48,29 +44,28 @@ console.log("addonprodut form  baseproductId============", baseProductId)
     // control,
     // watch,
     handleSubmit,
-   // setError,
-    formState: {  },//dirtyFields
+    // setError,
+    formState: {}, //dirtyFields
   } = useForm<TnewProductSchema>({
     resolver: zodResolver(newPorductSchema),
   });
 
- 
   //const images = watch("images");
 
   async function onsubmit(data: TnewProductSchema) {
     //typeof(data.featured)
     const formData = new FormData();
-//console.log("images---------",data)
+    //console.log("images---------",data)
     formData.append("name", data.name);
     formData.append("price", data.price);
-   // formData.append("isFeatured", data.isFeatured);
+    // formData.append("isFeatured", data.isFeatured);
     //formData.append("brand", data.brand);
     // formData.append("weight", data.weight);
     // formData.append("dimensions", data.dimensions);
     formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
-    formData.append("image", data.image[0]);
-    formData.append("baseProductId",baseProductId)
+    //formData.append("image", data.image[0]);
+    formData.append("baseProductId", baseProductId);
     const result = await addNewProduct(formData);
 
     if (!result?.errors) {
@@ -130,7 +125,7 @@ console.log("addonprodut form  baseproductId============", baseProductId)
     //   }
     // }
 
-    console.log("response in create product form ",result);
+    console.log("response in create product form ", result);
   }
 
   return (
@@ -146,13 +141,13 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                 <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
-                    
-
-                  
                     <label className="label-style" htmlFor="product-title">
-                      Product Name<span className="text-red-500">*</span>{" "}
+                      Name<span className="text-red-500">*</span>{" "}
                     </label>
-                     <input {...register("baseProductId",{ value: baseProductId })} type="hidden" />
+                    <input
+                      {...register("baseProductId", { value: baseProductId })}
+                      type="hidden"
+                    />
                     <input
                       {...register("name")}
                       className="input-style"
@@ -164,8 +159,11 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                       )}
                     </span>
                   </div>
-
-                  <div className="flex flex-col gap-1 w-full">
+                  <input
+                    {...register("productCat", { value: "all" })}
+                    type="hidden"
+                  />
+                  {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
@@ -188,8 +186,7 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                         <p>{errors.productCat?.message}</p>
                       )}
                     </span>
-                  </div>
-
+                  </div> */}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
@@ -210,17 +207,13 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                       )}
                     </span>
                   </div>
-
-                 
-
-                
                 </div>
               </div>
             </div>
             {/* End of left box */}
 
             <div className="flex-1 flex flex-col gap-5 h-full">
-              <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
+              {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
                   <label className="label-style">Featured Image</label>
@@ -234,15 +227,13 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                     {errors.image && <span>Select product image</span>}
                   </p>
                 </div>
-                {/* multiple images upload */}
-               
-              </div>
+              </div> */}
 
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
 
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Product description</label>
+                  <label className="label-style">Description</label>
 
                   <textarea
                     {...register("productDesc", {
@@ -253,9 +244,7 @@ console.log("addonprodut form  baseproductId============", baseProductId)
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.productDesc && (
-                      <span>Product description is required</span>
-                    )}
+                    {errors.productDesc && <span>Description is required</span>}
                   </p>
                 </div>
 

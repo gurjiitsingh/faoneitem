@@ -21,8 +21,10 @@
 .mp{
   @apply px-32 py-32;
 }
+/* #F2F0EC; */
+/* bg-gradient-to-bl from-[#ffe4e6]  to-[#ccfbf1]  */
 :root {
-  --background: #F2F0EC;
+  --background: #e3f1e9;
   --foreground: #171717;
 }
 

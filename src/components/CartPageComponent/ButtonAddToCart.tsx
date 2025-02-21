@@ -6,13 +6,12 @@ import { IoMdAdd } from 'react-icons/io';
 import { cartDataT } from '@/lib/types/cartDataType';
 
 export  function ButtonAddToCartButton({product}:{product:cartDataT}) {
-
+ 
  
   const ctx = useCartContext();
 
   function addItemToCart(product:cartDataT){
-    //console.log("ljkklklk", product)
-  
+   
    // ctx.addProduct(product);
    ctx.addProductToCart(product);
   }

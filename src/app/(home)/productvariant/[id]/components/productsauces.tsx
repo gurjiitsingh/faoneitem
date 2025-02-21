@@ -8,27 +8,27 @@ import React from "react";
 // : { product: cartDataT,addExtra:()=>void }
 export default function Productvariant({
   product,
-  addExtra,
+  addSauce,
 }: {
   product: ProductType;
-  addExtra: (e: {e:{name:string,extraPrice:string}}) => void;
+  addSauce: (e: {e:{name:string,extraPrice:string}}) => void;
 }) {
-  // console.log("----------product data----", product);
+ //  console.log("----------product data----", product.id);
 
   return (
    
       <div className="w-full  bg-white flex flex-row border-b ">
         <div className="w-full flex flex-col p-3 justify-between">
-          <div className="w-full flex justify-between gap-2">
-          <div className="flex gap-4 justify-start">
+          <div className="w-full flex justify-between gap-2 ">
+            <div className="flex gap-4 justify-start">
             <div>
               <input
-                type="radio"
+                type="checkbox"
                 name="extra"
-                value={product.id}
+             
                 // checked={}
-                onChange={() => {
-                  addExtra({name:product.name,price:product.price});
+                onChange={(e) => {
+                  addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
                 }}
               />
             </div>

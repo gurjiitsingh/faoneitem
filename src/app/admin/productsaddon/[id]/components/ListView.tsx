@@ -67,15 +67,16 @@ const ListView = ({id, title }: productTableProps) => {
             <TableHeader>
               <TableRow>
                 <TableHead className="hidden md:table-cell">
-                  Product Name
+                   Name
                 </TableHead>
                 <TableHead className="hidden md:table-cell"> 
-                  Product Price
+                  Ext Price
                 </TableHead>
-                <TableHead className="hidden md:table-cell">Image</TableHead>
+                {/* <TableHead className="hidden md:table-cell">Image</TableHead> */}
 
-                <TableHead>Category</TableHead>
-                <TableHead>Status</TableHead>
+                {/* <TableHead>Category</TableHead> */}
+                {/* <TableHead>Status</TableHead> */}
+                 <TableHead>Desc</TableHead>
                 <TableHead className="hidden md:table-cell">Action</TableHead>
               </TableRow>
             </TableHeader>

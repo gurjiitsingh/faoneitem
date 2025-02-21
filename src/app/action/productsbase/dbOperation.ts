@@ -98,8 +98,8 @@ export async function addNewProduct(formData: FormData) {
   const data = {
     name: formData.get("name"),
     price: formData.get("price"),
-    category: formData.get("productCat"),
-    Desc: formData.get("productDesc"),
+    productCat: formData.get("productCat"),
+    productDesc: formData.get("productDesc"),
     image: imageUrl,
     isFeatured: featured_img,
   };

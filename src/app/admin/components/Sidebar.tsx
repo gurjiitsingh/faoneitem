@@ -37,12 +37,17 @@ const menuList = [
     link:"/admin/productsbase",
     icon:<MdOutlineProductionQuantityLimits />
   },
- 
   {
-    name:"Categories",
-    link:"/admin/categories",
+    name:"Sauces",
+    link:"/admin/productsauces",
     icon:<TbCategoryPlus />
   },
+ 
+  // {
+  //   name:"Categories",
+  //   link:"/admin/categories",
+  //   icon:<TbCategoryPlus />
+  // },
   // {
   //   name:"Brands",
   //   link:"/admin/brands",

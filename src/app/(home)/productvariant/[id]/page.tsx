@@ -1,72 +1,135 @@
 "use client";
 
-type productTableProps = {
-  limit?: number;
-  title?: string;
-  id?: string;
-};
-
 import React, { useEffect, useState } from "react";
-
 import { fetchProductByBaseProductId } from "@/app/action/productsaddon/dbOperation";
 import { ProductType } from "@/lib/types/productType";
 import { useParams } from "next/navigation";
 import Productvariant from "./components/productvariant";
-//import Link from "next/link";
 import { fetchProductById } from "@/app/action/productsbase/dbOperation";
 import { ButtonDecCartProduct } from "@/components/CartPageComponent/ButtonDecCartProduct";
 import { ButtonAddToCartButton } from "@/components/CartPageComponent/ButtonAddToCart";
+import { fetchProductSauces } from "@/app/action/productsauces/dbOperation";
+import Link from "next/link";
+import Productsauces from "./components/productsauces";
+
+import { useCartContext } from "@/store/CartContext";
+
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = () => {
   const params = useParams();
   const baseProductId = params.id as string;
-  //console.log("this is product variant ------", params);
+  //console.log("baseProduct id --------",baseProductId)
   const [productAddOn, setProductAddon] = useState<ProductType[]>([]);
   const [productBase, setProductBase] = useState<ProductType>();
+  const [cartItem, setCartItem] = useState<ProductType>();
+  const [productSauces, setProductSaces] = useState<ProductType[]>([]);
+  const [sauceList, setSauceList] = useState<ProductType[]>([]);
+  const [size, setSize] = useState<ProductType>({});
+  const [change, setChange] = useState<boolean>(false);
+  const [check, setCheck] = useState<boolean>(false);
+
+  const { removeCartProduct, addProductToCart } = useCartContext();
 
   useEffect(() => {
     async function fetchProduct() {
       try {
-        // const result = await fetchProducts();
-        // console.log("---------", result)
         const result = await fetchProductByBaseProductId(baseProductId);
         //console.log("addonproduct by baseproductid---------", result);
         setProductAddon(result);
         const baseProduct = await fetchProductById(baseProductId);
-        console.log("basepordut -----------", baseProduct);
+      //  console.log("base produt -----------", baseProduct);
         setProductBase(baseProduct);
+        setCartItem(baseProduct);
+
+        const sauces = await fetchProductSauces();
+        setProductSaces(sauces);
       } catch (error) {
         console.log(error);
       }
     }
     fetchProduct();
   }, []);
-let cartProduct = {};
-  function addExtra(extra){
-    console.log("-----------",extra)
-    console.log("-----------",productBase)
-    cartProduct = productBase;
-    const priceBase = productBase?.price as string;
-    const finalPrice = +priceBase +(+extra.price)
-   
-    cartProduct = {
-      Desc:extra.name,
-      category:productBase?.category,
-      image:productBase?.image,
-      isFeatured:productBase?.isFeatured,
-      name:productBase?.name,
-      price:finalPrice
-    }
-    console.log(";;;;;;;", cartProduct)
 
+  useEffect(() => {
+ //   console.log("saucelist and size changed ------");
+    itemOrderModification();
+  }, [change]);
+
+  let cartProduct = {};
+
+  function addExtra(extra) {
+    setSize(extra);
+    setChange((state) => !state);
+    // itemOrderModification(extra);
   }
- 
+
+  function addSauce(extra) {
+    if (extra.state) {
+      addProductToCart(extra);
+    } else {
+      removeCartProduct(extra);
+    }
+
+    // addToSauceListLocal(extra)
+  }
+
+  function addToSauceListLocal(extra) {
+    const isItemInCart = sauceList.find((cartItem) => cartItem.id === extra.id); // check if the item is already in the cart
+    let souceNotFound;
+    if (isItemInCart === undefined) souceNotFound = false;
+    else souceNotFound = true;
+
+    if (souceNotFound) {
+      setSauceList(sauceList.filter((cartItem) => cartItem.id !== extra.id));
+    } else {
+      setSauceList([
+        ...sauceList,
+        {
+          ...extra,
+        },
+      ]);
+    }
+    setChange((state) => !state);
+  }
+
+  function itemOrderModification() {
+    //console.log("Order detail ------- ", size, sauceList);
+
+    const saucePrice = sauceList.reduce(function (acc, obj) {
+      return acc + +obj.price;
+    }, 0);
+   // const sizeI = +size;
+
+    const priceBase = productBase?.price as string;
+    const finalPrice = (+priceBase + saucePrice).toString();
+    const id = baseProductId + "" + size.name;
+
+  //  console.log("product to save-----", productBase);
+    cartProduct = {
+      id: id,
+      baseProductId,
+      productDesc: size.name,
+      productCat: productBase?.productCat,
+      image: productBase?.image,
+      isFeatured: productBase?.isFeatured,
+      name: productBase?.name,
+      price: finalPrice,
+    };
+//console.log("final cart product ----------", cartProduct)
+    setCartItem(cartProduct);
+  }
+
+  // function addOrderToCart(){
+  //   AddToCart();
+
+  // }
+
   return (
     <>
       <div className="overflow-hidden">
-        <div className="container mx-auto py-5 p-1">
-          <div className="w-full md:w-[49%] lg:w-[32%] bg-white flex flex-row border  rounded-tl-2xl rounded-tr-2xl">
+        <div className="container flex flex-col mx-auto py-5 px-2 ">
+          <div className="w-full  bg-white flex flex-row border  rounded-tl-2xl rounded-tr-2xl">
             <div className="rounded-tl-2xl ">
               <img
                 src={productBase?.image}
@@ -93,23 +156,43 @@ let cartProduct = {};
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row flex-wrap ">
-            {productAddOn.map((product) => {
-              return <Productvariant key={product.id} product={product} addExtra={addExtra} />;
+          <div className="flex flex-col  flex-wrap ">
+            {productAddOn.map((product, i) => {
+              return (
+                <Productvariant key={i} product={product} addExtra={addExtra} />
+              );
             })}
           </div>
-<div className="w-full bg-white flex flex-row border  rounded-bl-2xl rounded-br-2xl">
-          <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
-            <div>
-              <ButtonDecCartProduct product={productBase} />
-            </div>
-            {/* <div className="flex items-center h-full  justify-center w-4"><ItemTotal productId={product.id!} /></div> */}
+          <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
+            Add Sauces
+          </div>
+          <div className="flex flex-col  flex-wrap ">
+            {productSauces.map((product, i) => {
+              return (
+                <Productsauces key={i} product={product} addSauce={addSauce} />
+              );
+            })}
+          </div>
+          <div className="w-full   bg-white flex flex-row border  rounded-bl-2xl rounded-br-2xl">
+            <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
+              <div>
+                <ButtonDecCartProduct product={cartItem} />
+              </div>
+              {/* <div className="flex items-center h-full  justify-center w-4"><ItemTotal productId={product.id!} /></div> */}
 
-            <div>
-              <ButtonAddToCartButton product={productBase} />
+              <div>
+                <ButtonAddToCartButton product={cartItem} />
+                {/* <button className='border px-3 py-1 rounded-xl bg-green-500' onClick={addOrderToCart}></button> */}
+              </div>
             </div>
           </div>
-        </div>
+          <div className="w-full   ">
+            <Link href={"/"}>
+              <div className="mt-2 py-2 px-3 bg-red-600 rounded-2xl text-center text-white">
+                Shop more
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </>

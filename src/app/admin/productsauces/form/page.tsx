@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { newPorductSchema, TnewProductSchema } from "@/lib/types";
+import { newPorductSchema, TnewProductSchema } from "@/lib/types/productType";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
-import { addNewProduct } from "@/app/action/productsbase/dbOperation";
+import { addNewProduct } from "@/app/action/productsauces/dbOperation";
 //import Images from "@/app/admin/products/form/componets/Images";
 import { fetchCategories } from "@/app/action/category/dbOperations";
 import { categoryTypeArr } from "@/lib/types/categoryType";
@@ -21,7 +21,10 @@ import { categoryTypeArr } from "@/lib/types/categoryType";
 //   productDesc: string | null;
 //   image: string | null;
 // };
-const Page = () => {
+const Page = ({ params }: { params: { id: string } }) => {
+  const baseProductId = params.id;
+  console.log("addonprodut form  baseproductId============", baseProductId);
+
   const [categories, setCategory] = useState<categoryTypeArr>([]);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ const Page = () => {
   async function onsubmit(data: TnewProductSchema) {
     //typeof(data.featured)
     const formData = new FormData();
-    console.log("images---------", data);
+    //console.log("images---------",data)
     formData.append("name", data.name);
     formData.append("price", data.price);
     // formData.append("isFeatured", data.isFeatured);
@@ -61,8 +64,8 @@ const Page = () => {
     // formData.append("dimensions", data.dimensions);
     formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
-    formData.append("image", data.image[0]);
-
+    //formData.append("image", data.image[0]);
+    formData.append("baseProductId", baseProductId);
     const result = await addNewProduct(formData);
 
     if (!result?.errors) {
@@ -129,7 +132,7 @@ const Page = () => {
     <>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Create Product</h1>
+          <h1>Create Sauce</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
@@ -139,8 +142,12 @@ const Page = () => {
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
-                      Product Name<span className="text-red-500">*</span>{" "}
+                      Name<span className="text-red-500">*</span>{" "}
                     </label>
+                    <input
+                      {...register("baseProductId", { value: baseProductId })}
+                      type="hidden"
+                    />
                     <input
                       {...register("name")}
                       className="input-style"
@@ -152,7 +159,6 @@ const Page = () => {
                       )}
                     </span>
                   </div>
-
                   <input
                     {...register("productCat", { value: "all" })}
                     type="hidden"
@@ -207,7 +213,7 @@ const Page = () => {
             {/* End of left box */}
 
             <div className="flex-1 flex flex-col gap-5 h-full">
-              <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
+              {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
                   <label className="label-style">Featured Image</label>
@@ -221,14 +227,13 @@ const Page = () => {
                     {errors.image && <span>Select product image</span>}
                   </p>
                 </div>
-                {/* multiple images upload */}
-              </div>
+              </div> */}
 
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
 
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Product description</label>
+                  <label className="label-style">Description</label>
 
                   <textarea
                     {...register("productDesc", {
@@ -239,9 +244,7 @@ const Page = () => {
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.productDesc && (
-                      <span>Product description is required</span>
-                    )}
+                    {errors.productDesc && <span>Description is required</span>}
                   </p>
                 </div>
 
@@ -255,7 +258,12 @@ const Page = () => {
                   </p>
                 </div> */}
 
-                <div className="flex    items-center gap-4">
+                <input
+                  {...register("isFeatured", { value: false })}
+                  type="hidden"
+                />
+
+                {/* <div className="flex    items-center gap-4">
                   <label className="label-style">Featured Product</label>
                   <input {...register("isFeatured")} type="checkbox" />
                   <span className="text-[0.8rem] font-medium text-destructive">
@@ -263,9 +271,9 @@ const Page = () => {
                       <p>{errors.isFeatured?.message}</p>
                     )}
                   </span>
-                </div>
+                </div> */}
 
-                <Button type="submit">Add Product </Button>
+                <Button type="submit">Add Sauce </Button>
               </div>
             </div>
           </div>

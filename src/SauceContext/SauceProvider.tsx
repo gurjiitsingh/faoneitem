@@ -1,10 +1,11 @@
 "use client";
 
 import React, {  useEffect, useState } from "react";
-import CartContext from "./CartContext";
+import CartContext from "./SauceContext";
 import { cartDataT } from "@/lib/types/cartDataType";
-import { ProductType } from "@/lib/types/productType";
+//import { productT } from "@/lib/types/productT";
 import { addressT } from "@/lib/types/addressType";
+import { productT } from "@/lib/types/productType";
 
 interface Props {
   children: React.ReactNode;
@@ -20,21 +21,21 @@ export const CartProvider: React.FC<Props> = ({
   const [cartData, setCartData] = useState<cartDataT[]>([]);
   const [address, setAddress] = useState({});
   const [counter, setCounter] = useState(0);
-  const [productTotalCost, setProductTotalCost] = useState(0);
+  const [sauceTotalCost, setsauceTotalCost] = useState(0);
   const [isUpdated, setIsUpdated] = useState(false);
 
   useEffect(() => {
 
-    if (window.localStorage.getItem("cart_product_data_id") == null) {
+    if (window.localStorage.getItem("cart_sauce_data_id") == null) {
       const cartItemDateId = Date.now().toString();
-      window.localStorage.setItem("cart_product_data_id", cartItemDateId);
+      window.localStorage.setItem("cart_sauce_data_id", cartItemDateId);
     }
    
     if (isUpdated) {
-      window.localStorage.setItem("cart_product_data", JSON.stringify(cartData));
+      window.localStorage.setItem("cart_sauce_data", JSON.stringify(cartData));
     } else {
       const cart_data_localstorage: any =
-      window.localStorage.getItem("cart_product_data");
+      window.localStorage.getItem("cart_sauce_data");
 
       const data = JSON.parse(cart_data_localstorage);
       setCartData([]);
@@ -54,7 +55,7 @@ export const CartProvider: React.FC<Props> = ({
   useEffect(() => {
   
     const cart_data_localstorage: any =
-    window.localStorage.getItem("cart_product_data");
+    window.localStorage.getItem("cart_sauce_data");
 
     const data = JSON.parse(cart_data_localstorage);
     setCartData([]);
@@ -82,14 +83,14 @@ export const CartProvider: React.FC<Props> = ({
       });
     }
 
-    setProductTotalCost(total);
+    setsauceTotalCost(total);
     setIsUpdated(true);
   }
 
-  function addProductToCart(newProduct: cartDataT) {
-console.log("product to add -------", newProduct)
+  function addsauceToCart(newsauce: cartDataT) {
+console.log("sauce to add -------", newsauce)
     const isItemInCart = cartData.find(
-      (cartItem) => cartItem.id === newProduct.id
+      (cartItem) => cartItem.id === newsauce.id
     ); // check if the item is already in the cart
 
     if (isItemInCart) {
@@ -98,7 +99,7 @@ console.log("product to add -------", newProduct)
           (
             cartItem // if the item is already in the cart, increase the quantity of the item
           ) =>
-            cartItem.id === newProduct.id
+            cartItem.id === newsauce.id
               ? { ...cartItem, quantity: cartItem.quantity + 1 }
               : cartItem // otherwise, return the cart item
         )
@@ -108,9 +109,9 @@ console.log("product to add -------", newProduct)
       setCartData([
         ...cartData,
         {
-          ...newProduct,
+          ...newsauce,
           quantity: 1,
-        //  purchaseSession: localStorage.getItem("cart_product_data_id"),
+        //  purchaseSession: localStorage.getItem("cart_sauce_data_id"),
           status: "draft",
         },
       ]); // if the item is not in the cart, add the item to the cart
@@ -119,11 +120,11 @@ console.log("product to add -------", newProduct)
     // setIsUpdated(true);
   }
 
-  function decCartProduct(decProduct: cartDataT) {
-    //this funciton dec product almost to 1
+  function decCartsauce(decsauce: cartDataT) {
+    //this funciton dec sauce almost to 1
     setCartData(
       cartData.map((item: cartDataT) => {
-        return item.id === decProduct.id
+        return item.id === decsauce.id
           ? item.quantity > 1
             ? { ...item, quantity: item.quantity - 1 }
             : item
@@ -132,12 +133,12 @@ console.log("product to add -------", newProduct)
     );
     setIsUpdated(true);
   }
-  function decCartProductAll(decProduct: cartDataT) {
-    //this funciton dec product almost to 0
-    //removeCartProduct
+  function decCartsauceAll(decsauce: cartDataT) {
+    //this funciton dec sauce almost to 0
+    //removeCartsauce
     setCartData(
       cartData.map((item: cartDataT) => {
-        return item.id === decProduct.id
+        return item.id === decsauce.id
           ? item.quantity > 0
             ? { ...item, quantity: item.quantity - 1 }
             : item
@@ -147,7 +148,7 @@ console.log("product to add -------", newProduct)
     setIsUpdated(true);
   }
 
-  function removeCartProduct(item: cartDataT) {
+  function removeCartsauce(item: cartDataT) {
     const isItemInCart = cartData.find((cartItem) => cartItem.id === item.id) as cartDataT ;
   //  console.log("item qu-- ", isItemInCart.quantity);
     if (isItemInCart.quantity <= 1) {
@@ -164,7 +165,7 @@ console.log("product to add -------", newProduct)
 
     // setCartData(
     //   cartData.filter((item: cartDataT) => {
-    //     return item.productId !== remProduct.productId;
+    //     return item.sauceId !== remsauce.sauceId;
     //   })
     // );
 
@@ -176,19 +177,19 @@ console.log("product to add -------", newProduct)
 
     setIsUpdated(true);
   }
-  function addProduct(newProduct:ProductType) {
-    // console.log("new add product", newProduct)
-    // const product = {
+  function addsauce(newsauce:productT) {
+    // console.log("new add sauce", newsauce)
+    // const sauce = {
     //   id:"kljljl",
     //   name:"test"
     // }
     //     setCartData((prev)=>{
-    //       console.log(prev, product)
-    //       return [...prev, product]
+    //       console.log(prev, sauce)
+    //       return [...prev, sauce]
     //     })
 
     const isItemInCart = cartData.find(
-      (cartItem) => cartItem.id === newProduct.id
+      (cartItem) => cartItem.id === newsauce.id
     ); // check if the item is already in the cart
 
     if (isItemInCart) {
@@ -197,7 +198,7 @@ console.log("product to add -------", newProduct)
           (
             cartItem // if the item is already in the cart, increase the quantity of the item
           ) =>
-            cartItem.id === newProduct.id
+            cartItem.id === newsauce.id
               ? { ...cartItem, quantity: cartItem.quantity + 1 }
               : cartItem // otherwise, return the cart item
         )
@@ -207,9 +208,9 @@ console.log("product to add -------", newProduct)
       setCartData([
         ...cartData,
         {
-          ...newProduct,
+          ...newsauce,
           quantity: 1,
-          purchaseSession: localStorage.getItem("cart_product_data_id"),
+          purchaseSession: localStorage.getItem("cart_sauce_data_id"),
           status: "draft",
         },
       ]); // if the item is not in the cart, add the item to the cart
@@ -237,15 +238,15 @@ console.log("product to add -------", newProduct)
       value={{
         cartData,
         address,
-        addProduct,
+        addsauce,
         addAddress,
       //  getAddress,
         counter,
-        productTotalCost,
-        addProductToCart,
-        decCartProduct,
-        decCartProductAll,
-        removeCartProduct,
+        sauceTotalCost,
+        addsauceToCart,
+        decCartsauce,
+        decCartsauceAll,
+        removeCartsauce,
         emptyCart,
       }}
     >

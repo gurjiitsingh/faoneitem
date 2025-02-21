@@ -13,18 +13,19 @@ import { MdDeleteForever } from "react-icons/md";
 // import { CiEdit } from "react-icons/ci";
 // import Image from "next/image";
 
-import { cartDataT } from "@/lib/types/cartDataType";
+
 import Image from "next/image";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
 import { deleteProduct } from "@/app/action/products/dbOperation";
+import { ProductType } from "@/lib/types/productType";
 //import { deleteProduct } from "@/app/action/products/dbOperation";
 //import { useRouter  } from "next/navigation";
-function TableRows({ product }:{product:cartDataT}){
+function TableRows({ product }:{product:ProductType}){
 
 //const router = useRouter();
 
- async function handleDelete(product:cartDataT) {
+ async function handleDelete(product:ProductType) {
    console.log(product.id);
   const result = await deleteProduct(product.id, product.image)
 if(result.errors){
@@ -39,9 +40,7 @@ if(result.errors){
 
   return (
     <TableRow key={product.id} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
-      <TableCell>{product.name}</TableCell>
-      <TableCell>{product.price}</TableCell>
-      <TableCell>
+       <TableCell>
         <div className=" px-3 py-1 text-center ">
           {product?.image&&
           <Image
@@ -53,9 +52,11 @@ if(result.errors){
           />}
         </div>
       </TableCell>
-
-      <TableCell>{product.productCat}</TableCell>
-      <TableCell></TableCell>
+      <TableCell>{product.name}</TableCell>
+      <TableCell>{product.price}</TableCell>
+       {/* <TableCell>{product.productCat}</TableCell> */}
+      {/* <TableCell></TableCell> */}
+      <TableCell>{product.productDesc}</TableCell>
       <TableCell>       
         {product?.isFeatured === true && (
           <span className="ml-2 bg-gradient-to-tr from-blue-500 to-indigo-400 text-white text-[10px] rounded-full px-3 py-1">
@@ -77,8 +78,8 @@ if(result.errors){
             }
           }
           >
-            <Button size="sm" className="bg-red-500 px-1 py-0">
-            Add variant
+            <Button size="sm" className="bg-red-600 text-white px-1 py-0">
+            Variants
             </Button>
           </Link>
 

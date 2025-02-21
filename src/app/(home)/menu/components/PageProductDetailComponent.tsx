@@ -1,6 +1,5 @@
 "use client";
 
-
 import { cartDataT } from "@/lib/types/cartDataType";
 //import { TnewProductSchema } from "@/lib/types";
 //import {  ProductType } from "@/lib/types/productType";
@@ -14,7 +13,7 @@ export default function PageProductDetailComponent({
 }) {
   console.log("----------product data----", product);
   return (
-    <div className="w-full md:w-[49%] lg:w-[32%] bg-white flex flex-row border  rounded-2xl">
+    <div className="w-full  lg:w-[50%] bg-white flex flex-row border  rounded-2xl">
       <Link
         href={{
           pathname: `productvariant/${product.id}`,
@@ -41,6 +40,7 @@ export default function PageProductDetailComponent({
             </Link>
           </div>
         </div>
+        <div className="text-sm">{product.productDesc}</div>
         {/* <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
           <div>
           <ButtonDecCartProduct product={product} />
