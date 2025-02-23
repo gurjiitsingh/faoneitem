@@ -8,7 +8,7 @@ const MiniCartContent = () => {
   const { cartData } = useContext(CartContext);
 
   useEffect(() => {
-  //  console.log("incart content", cartData);
+//   console.log("incart content ---------------", cartData);
   }, [cartData]);
   return (
     <div className="flex flex-col gap-4 bg-white px-3 flex-1 ">

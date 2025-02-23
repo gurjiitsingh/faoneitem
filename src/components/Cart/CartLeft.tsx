@@ -1,4 +1,4 @@
-import Link from "next/link";
+//import Link from "next/link";
 import React, { useContext } from "react";
 import CartContext from "@/store/CartContext";
 import { cartDataT } from "@/lib/types/cartDataType";
@@ -16,7 +16,7 @@ export default function CartLeft() {
   });
   return (
     <div className="flex flex-col gap-4 w-full ">
-      <div className="flex flex-col bg-white p-3 h-full w-full gap-7">
+      <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">
         <div className="flex flex-col gap-2 items-center">
           <h2 className="text-xl font-semibold border-b py-3 w-full uppercase">
             Shopping cart total

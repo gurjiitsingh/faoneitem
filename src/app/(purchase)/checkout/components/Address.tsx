@@ -2,78 +2,61 @@
 import React, { useContext, useEffect } from "react";
 import { useForm } from "react-hook-form"; //, Controller
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressResT, addressSchimaCheckout,  TaddressSchemaCheckout } from "@/lib/types";
+import { addressResT, addressSchimaCheckout,  TaddressSchemaCheckout } from "@/lib/types/addressType";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 //import { useSearchParams } from "next/navigation";
-import {
-  searchAddressEmail,
-  searchAddressByUserId,
-} from "@/app/action/address/dbOperations";
-import { useRouter } from "next/navigation";
+import { searchAddressEmail,  searchAddressByUserId } from "@/app/action/address/dbOperations";
+import { useRouter, useSearchParams } from "next/navigation";
 // import { resolve } from "path";
  import { useSession } from "next-auth/react";
 import CartContext from "@/store/CartContext";
 import { searchUserById } from "@/app/action/user/dbOperation";
 import { createNewOrder } from "@/app/action/orders/dbOperations";
 import { purchaseDataT } from "@/lib/types/cartDataType";
+import { createNewOrderFile } from "@/app/action/newOrderFile/newfile";
 
 const Address = () => {
+
+  const searchParams = useSearchParams()
+ // console.log("email send --------", searchParams.get("email"))
   const { cartData } = useContext(CartContext);
   const { data: session } = useSession();
   const [addressFound, setAddressFound] = useState(false);
+  const [ addressChanged, setAddressChanged ] = useState(false);
   const router = useRouter();
+  const emailQueryString = searchParams.get("email") as string;
 
 
   useEffect(()=>{
-async function getAddressByID(){
-  if(session?.user?.id !== undefined){
+if(emailQueryString !== undefined){
+  getAddressByEmail(emailQueryString);
  
-    const custAddressRes = (await searchAddressByUserId(session?.user.id)) || {};
-    console.log("custAddressRes1 --- fetched ",custAddressRes);
-    console.log("custAddressRes --- fetched ",custAddressRes.email);
-    let setemail;
-     if (custAddressRes.email !== undefined) {
-    
-      setAddressFound(true)
-     
-       setAddress(custAddressRes,setemail=true)
-     }else{
-      const userResById = await searchUserById(session?.user?.id);
-      if(userResById !== undefined) {
-        setValue("email", userResById.email);
-        // setValue("firstName", userResById.firstName);
-        // setValue("lastName", userResById.lastName);
-        // setValue("userId", userResById.userId);
-        // setValue("email", userResById.email);
-        // setValue("mobNo", userResById.mobNo);
-        // setValue("addressLine1", userResById.addressLine1);
-        // setValue("addressLine2", userResById.addressLine2);
-        // setValue("city", userResById.city);
-        // setValue("state", userResById.state);
-        // setValue("zipCode", userResById.zipCode);
-      }
-     }
-   
-  }
 }
+if(session?.user?.id !== undefined){
 getAddressByID();
-  },[session])
+}
+setValue("email", emailQueryString)
+  },[session,emailQueryString])
+
+  useEffect(()=>{
+    setValue("email", emailQueryString)
+  },[addressChanged])
 
 
   async function handleEmailChange(e: React.ChangeEvent<HTMLInputElement >) {
-    const inputEmail:string = e.target.value;
-    let addressRes = null;
-    if (!addressFound) {
-      if (inputEmail.length > 7) {
-        addressRes = await searchAddressEmail(inputEmail);
-        //  console.log(addressRes);
-        if (addressRes !== null) {
-          const setemail = false;
-          setAddress(addressRes, setemail)
-        }
-      }
-    }
+    // const inputEmail:string = e.target.value;
+    // let addressRes = null;
+    // if (!addressFound) {
+    //   if (inputEmail.length > 7) {
+    //     addressRes = await searchAddressEmail(inputEmail);
+    //     //  console.log(addressRes);
+    //     if (addressRes !== null) {
+    //       const setemail = false;
+    //       setAddress(addressRes, setemail)
+    //     }
+    //   }
+    // }
 
     // console.log("address res", addressRes);
   }
@@ -130,10 +113,23 @@ getAddressByID();
      cartData,
      address:customAddress,
     } as purchaseDataT;
+
     if (cartData.length !== 0) {
       await createNewOrder(purchaseData);
     }
-    router.push("/pay");
+
+      //createNewOrderFile(cartData, customAddress);
+
+     if(data.payment === "paypal"){
+      router.push("/pay");
+     }
+     if(data.payment === "cod"){
+      router.push("/complete");
+     }
+
+   
+    //
+   
   }
 
   setValue("userId", session?.user?.id);
@@ -148,25 +144,6 @@ getAddressByID();
   // setValue("zipCode", "144621");
   //setValue("orderDetail", cartData);
 
-
-
-
-
-function setAddress(addressRes:addressResT, setemail:boolean){
-  //console.log("inside set address ---", setemail,addressRes)
-    setAddressFound(true);
-    if(setemail)setValue("email", addressRes.email);
-    setValue("firstName", addressRes.firstName);
-    setValue("lastName", addressRes.lastName);
-    // setValue("userId", addressRes.userId);
-    // setValue("email", addressRes.email);
-    setValue("mobNo", addressRes.mobNo);
-    setValue("addressLine1", addressRes.addressLine1);
-    setValue("addressLine2", addressRes.addressLine2);
-    setValue("city", addressRes.city);
-    setValue("state", addressRes.state);
-    setValue("zipCode", addressRes.zipCode);
-  }
 
   return (
     <div className="w-full lg:w-[70%] ">
@@ -211,7 +188,7 @@ function setAddress(addressRes:addressResT, setemail:boolean){
               </span>
             </div>
 
-            <div className="flex flex-col gap-1">
+          {!session &&  <div className="flex flex-col gap-1">
               <label className="label-style">
                 Password.<span className="text-red-500">Optional</span>{" "}
               </label>
@@ -221,7 +198,7 @@ function setAddress(addressRes:addressResT, setemail:boolean){
                   <span>{errors.password?.message}</span>
                 )}
               </span>
-            </div>
+            </div>}
 
             <div className="w-full flex flex-row gap-2">
               <div className="flex flex-col gap-1">
@@ -283,7 +260,7 @@ function setAddress(addressRes:addressResT, setemail:boolean){
               </span>
             </div>
 
-            <div className="flex flex-col gap-1">
+            {/* <div className="flex flex-col gap-1">
               <label className="label-style">
                 State<span className="text-red-500">*</span>{" "}
               </label>
@@ -291,7 +268,7 @@ function setAddress(addressRes:addressResT, setemail:boolean){
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.state?.message && <span>{errors.state?.message}</span>}
               </span>
-            </div>
+            </div> */}
 
             <div className="flex flex-col gap-1">
               <label className="label-style">
@@ -305,15 +282,104 @@ function setAddress(addressRes:addressResT, setemail:boolean){
               </span>
             </div>
 
+
+            <div className="flex  justify-start gap-8 border rounded-full w-full py-2 px-2 items-center">
+            <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
+                    <input
+                        {...register("payment")}
+                        type="radio"
+                        value="paypal"
+                      //  checked
+                    /> </div><div>
+                    Paypal
+                    </div>
+              </div>
+              <div className="flex  justify-start gap-8 border rounded-full w-full py-2 px-2 items-center">
+          <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
+                    <input
+                        {...register("payment")}
+                        type="radio"
+                        value="cod"
+                       
+                    /> </div><div>
+                    Cash on delivery
+                    </div>
+              </div>
+               
+
+
             <Button className="w-[200px] py-1 text-center bg-yellow-500 rounded-2xl text-[.8rem]" type="submit">
-              Pay Now
+              Place order
             </Button>
           </div>
         </form>
       </div>
     </div>
   );
-};
+
+  async function  getAddressByEmail(inputEmail:string){
+  //  setAddressChanged(!addressChanged)
+  //  console.log(" email ------------",inputEmail);
+    const addressRes = await searchAddressEmail(inputEmail);
+    if (addressRes.email !== null) {
+     // console.log("address by email found------------",addressRes);
+      const setemail = true;
+      setAddress(addressRes, setemail)
+    }
+    setValue("email", inputEmail)
+  }
+
+  async function getAddressByID(){
+     const custAddressRes = (await searchAddressByUserId(session?.user.id)) || {};
+    // console.log("custAddressRes1 --- fetched ",custAddressRes);
+    // console.log("custAddressRes --- fetched ",custAddressRes.email); 
+    setFormAddress(custAddressRes)
+}
+
+async function  setFormAddress(custAddressRes:TaddressSchemaCheckout) {
+  
+  let setemail;
+  if (custAddressRes.email !== undefined) {
+ 
+   setAddressFound(true)
+  
+    setAddress(custAddressRes,setemail=true)
+  }else{
+   const userResById = await searchUserById(session?.user?.id);
+   if(userResById !== undefined) {
+     setValue("email", userResById.email);
+     // setValue("firstName", userResById.firstName);
+     // setValue("lastName", userResById.lastName);
+     // setValue("userId", userResById.userId);
+     // setValue("email", userResById.email);
+     // setValue("mobNo", userResById.mobNo);
+     // setValue("addressLine1", userResById.addressLine1);
+     // setValue("addressLine2", userResById.addressLine2);
+     // setValue("city", userResById.city);
+     // setValue("state", userResById.state);
+     // setValue("zipCode", userResById.zipCode);
+   }
+  }
+
+}
+function setAddress(addressRes:addressResT, setemail:boolean){
+  //console.log("inside set address ---", setemail,addressRes)
+    setAddressFound(true);
+    // if(setemail)
+      setValue("email", addressRes.email);
+    setValue("firstName", addressRes.firstName);
+    setValue("lastName", addressRes.lastName);
+    // setValue("userId", addressRes.userId);
+    // setValue("email", addressRes.email);
+    setValue("mobNo", addressRes.mobNo);
+    setValue("addressLine1", addressRes.addressLine1);
+    setValue("addressLine2", addressRes.addressLine2);
+    setValue("city", addressRes.city);
+    setValue("state", addressRes.state);
+    setValue("zipCode", addressRes.zipCode);
+  }
+
+};// end of rfc
 
 export default Address;
 

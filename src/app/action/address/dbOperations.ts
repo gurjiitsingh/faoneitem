@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/firebaseConfig";
-import { addressResT, addressSchima, addressSchimaCheckout } from "@/lib/types"; //, TaddressSchema
+import { addressResT, addressSchima, addressSchimaCheckout } from "@/lib/types/addressType"; //, TaddressSchema
 import {
   addDoc,
   collection,
@@ -134,7 +134,7 @@ export async function searchAddressEmail(email: string): Promise<addressResT> {
     // i++;
     // recordId = doc.id;
     // doc.data() is never undefined for query doc snapshots
-    console.log(" address find --", doc.data());
+   // console.log(" address find --", doc.data());
     data = doc.data() as addressResT;
   });
   return {

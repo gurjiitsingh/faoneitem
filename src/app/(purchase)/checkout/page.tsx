@@ -13,7 +13,7 @@ const checkout = () => {
 
 
   return (<SessionProvider>
-    <div className="bg-slate-100  flex flex-col mt-32">
+    <div className="bg-slate-100  flex flex-col mt-18">
       <div className="container mx-auto flex flex-col md:flex-row gap-6 p-2 ">
         {/* <div className="flex flex-col w-full lg:w-[65%]"> */}
         <Address />

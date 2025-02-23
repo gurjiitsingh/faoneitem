@@ -8,6 +8,8 @@ const SiteContext = createContext({
     sideBarToggle:()=>{},
     openBargerMenu:false,
     bargerMenuToggle:()=>{},
+    openEmailForm:false,
+    emailFormToggle:()=>{},
 })
 
 export const UseSiteContext = () =>{

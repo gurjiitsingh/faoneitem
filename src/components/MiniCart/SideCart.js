@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickAway } from "react-use";
 import { AiOutlineRollback } from "react-icons/ai";
@@ -11,15 +10,25 @@ import { FiSettings, FiShoppingCart } from "react-icons/fi";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import MiniCartContent from "./MiniCartcontent";
 import { MiniCartSubtotal } from "./MiniSubtotal";
-import Link from "next/link";
+import ProccedWithEmail from "./components/ProccedWithEmail";
+import { SessionProvider } from "next-auth/react";
+//import Link from "next/link";
 export const SideCart = () => {
+  //const [ showEmailForm, setShowEmailForm ] = UseSiteContext();
   const { open, sideBarToggle } = UseSiteContext();
+  const { openEmailForm, emailFormToggle } = UseSiteContext();
   const ref = useRef(null);
   useClickAway(ref, () => sideBarToggle());
   // const sideBarToggle = () => setOpen(prev => !prev)
+  function deliveryHandle(){
+   /// setShowEmailForm((state)=>!state)
+   emailFormToggle()
+  }
+  
 
   return (
-    <>
+    <><SessionProvider>
+    {!openEmailForm &&
       <AnimatePresence mode="wait" initial={false}>
         {open && (
           <>
@@ -44,24 +53,43 @@ export const SideCart = () => {
                   <AiOutlineRollback />
                 </button>
               </div>
-              <div className="flex items-center justify-center">
+              <div className=" flex items-center justify-center gap-4">
+                {/* <Link
+                  href={{
+                    pathname: "/checkout",
+                    //  query:{ userId: session?.user?.id}
+                  }}
+                >
+                  <div className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
+                    Pickup
+                  </div>
+                </Link>
                 <Link
                   href={{
                     pathname: "/checkout",
                     //  query:{ userId: session?.user?.id}
                   }}
                 >
-                  <div className="w-[200px] py-1 text-center bg-yellow-500 rounded-2xl text-[.8rem]">
-                    Procces to buy
+                  <div className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
+                    Delivery
                   </div>
-                </Link>
+                </Link> */}
+
+<button onClick={()=>{deliveryHandle()}} className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
+                    Delivery
+                  </button>
               </div>
               <MiniCartSubtotal />
               <MiniCartContent />
             </motion.div>
           </>
         )}
-      </AnimatePresence>
+      </AnimatePresence>}
+     {openEmailForm && 
+ <ProccedWithEmail />
+
+      }
+      </SessionProvider>
     </>
   );
 };

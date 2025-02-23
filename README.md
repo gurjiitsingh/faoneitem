@@ -2,7 +2,17 @@
 in order, save same item sperately if item it have different extra or sauces --- done  -- add extra id 
 
 
+Bezahlen  pay
 
+Wárenkorb  Shopping cart
+Zwischensumme   Subtotal 
+
+Liéferung   Delivery
+
+Ábholung   Pickup
+
+Bitte gib Deine Straße und Hausnummer ein.
+Please enter your street and house number
 
 ## 1. restrict login user to change email at checkout address
 
