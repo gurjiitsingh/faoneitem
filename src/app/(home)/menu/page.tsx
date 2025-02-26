@@ -2,16 +2,17 @@
 import { fetchProducts } from "@/app/action/products/dbOperation";
 import React, { useEffect, useState } from "react";
 import PageProductDetailComponent from "./components/PageProductDetailComponent";
-import Hero from "@/components/Hero";
-import { cartDataT } from "@/lib/types/cartDataType";
+//import Hero from "@/components/Hero";
+//import { ProductType } from "@/lib/types/ProductTypeype";
 import Footer from "@/components/Footer";
+import { ProductType } from "@/lib/types/productType";
 
 //import { TnewProductSchema } from '@/lib/types';
 // import {  TnewProductSchema } from '@/lib/type/productType';
 
 export default function Page() {
   // const products = await fetchProducts();
-  const [products, setProduct] = useState<cartDataT[]>([]);
+  const [products, setProduct] = useState<ProductType[]>([]);
 
   useEffect(() => {
     async function fetchproductData() {

@@ -2,7 +2,7 @@
 import React, {  useEffect } from "react";
 import { useForm } from "react-hook-form"; //, Controller
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchimaCheckout, TaddressCheckout, TaddressSchemaCheckout } from "@/lib/types";
+import { addressSchimaCheckout,  TaddressSchemaCheckout } from "@/lib/types/addressType";
 import { Button } from "@/components/ui/button";
 //import { useSearchParams } from "next/navigation";
 import {
@@ -11,19 +11,19 @@ import {
 } from "@/app/action/address/dbOperations";
 
 import { useSession } from "next-auth/react";
-type idT = {userId:string}
-type addressResT ={
-  email:string;
-  firstName:string;
-  lastName:string;
- // userId:string;
-  mobNo:string;
-  addressLine1:string;
-  addressLine2:string;
-  city:string;
-  state:string;
-  zipCode:string;
-} 
+// type idT = {userId:string}
+// type addressResT ={
+//   email:string;
+//   firstName:string;
+//   lastName:string;
+//  // userId:string;
+//   mobNo:string;
+//   addressLine1:string;
+//   addressLine2:string;
+//   city:string;
+//   state:string;
+//   zipCode:string;
+// } 
 
 const EditForm = () => {
   const { data: session } = useSession();//, status
@@ -85,7 +85,7 @@ const EditForm = () => {
     formData.append("addressLine1", data.addressLine1!);
     formData.append("addressLine2", data.addressLine2!);
     formData.append("city", data.city);
-    formData.append("state", data.state);
+    formData.append("state", data.state!);
     formData.append("zipCode", data.zipCode);
 
     await editCustomerAddress(formData);

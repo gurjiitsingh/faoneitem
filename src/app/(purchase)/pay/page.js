@@ -25,7 +25,7 @@ const Checkout = () => {
   const [{ options, isPending }, dispatch] = usePayPalScriptReducer();
   //const [currency, setCurrency] = useState(options.currency);
   const router = useRouter();
-  const {  productTotalCost } = useCartContext();
+  const {  productTotalCost, endTotalG } = useCartContext();
 
   // const onCurrencyChange = ({ target: { value } }) => {
   //   setCurrency(value);
@@ -49,7 +49,7 @@ const Checkout = () => {
       purchase_units: [
         {
           amount: {
-            value: productTotalCost,
+            value: endTotalG,
           },
         },
       ], 

@@ -7,7 +7,8 @@ import { addUserDirect } from "../user/dbOperation";
 import { addCustomerAddressDirect } from "../address/dbOperations";
 import {  TOrderMaster, orderMasterDataT, orderMasterDataTArr, TOrderMasterArr } from "@/lib/types";
 import { orderProductsTArr } from "@/lib/types/orderType";
-import { cartDataT, purchaseDataT } from "@/lib/types/cartDataType";
+import {   purchaseDataT } from "@/lib/types/cartDataType";
+import { ProductType } from "@/lib/types/productType";
 
  
 
@@ -20,6 +21,7 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   const email = purchaseData.address.email;
   const lastName = purchaseData.address.lastName;
   const firstName = purchaseData.address.firstName;
+  const total = purchaseData.total;
   //const userId = purchaseData.address.userId;
  // const password = purchaseData.address.password;
  const password = "123456";
@@ -53,18 +55,19 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   // enter data in order master
 
   const customerName = firstName + " " + lastName;
-  const now = new Date();
-  const now_india = now.toLocaleString("en-IN", {
-    dateStyle: "medium",
-    timeStyle: "medium",
-    timeZone: "Asia/Kolkata",
-  });
+  //const now = new Date();
+  // const now_india = now.toLocaleString("en-IN", {
+  //   dateStyle: "medium",
+  //   timeStyle: "medium",
+  //   timeZone: "Asia/Kolkata",
+  // });
 
   const orderMasterData = {
     // also add auto increment to order,
     customerName,
     userId: UserAddedId,
     addressId: addressAddedId,
+    total:total,
     //time: now_india,
   } as orderMasterDataT; 
 
@@ -75,7 +78,7 @@ const orderMasterId = await addOrderToMaster(orderMasterData) as string;
   // add product to productOrder
 
   // unique id ->   purchaseSession: '1737704030168',
-  const purchaseProducts = purchaseData.cartData as cartDataT[];
+  const purchaseProducts = purchaseData.cartData as ProductType[];
 
   purchaseProducts.forEach((element) => {
     addProductDraft(element, UserAddedId, orderMasterId);
@@ -87,7 +90,7 @@ const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 } //end of cart to orderProduct
 
 
-export async function addProductDraft(element:cartDataT, UserAddedId:string, orderMasterId:string) {
+export async function addProductDraft(element:ProductType, UserAddedId:string, orderMasterId:string) {
    
   const product = {
     id: element.id,

@@ -1,17 +1,17 @@
 "use client";
 
-//import { cartDataT } from "@/lib/types/cartDataType";
+//import { ProductType } from "@/lib/types/ProductTypeype";
 //import { TnewProductSchema } from "@/lib/types";
 import { ProductType } from "@/lib/types/productType";
 //import Link from "next/link";
 import React from "react";
-// : { product: cartDataT,addExtra:()=>void }
+// : { product: ProductType,addExtra:()=>void }
 export default function Productvariant({
   product,
   addExtra,
 }: {
   product: ProductType;
-  addExtra: (e: {e:{name:string,extraPrice:string}}) => void;
+  addExtra: ({name,price}:{name:string,price:string}) => string;
 }) {
   // console.log("----------product data----", product);
 

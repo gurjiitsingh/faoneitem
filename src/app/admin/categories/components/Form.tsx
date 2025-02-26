@@ -2,7 +2,7 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { categorySchema, TcategorySchema } from "@/lib/types";
+import { categorySchema, TcategorySchema } from "@/lib/types/categoryType";
 //import { addNewCategory } from "@/app/action/category/dbOperations";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -14,15 +14,15 @@ const Form = () => {
    // const [isDisabled, setIsDisabled ] = useState(false)
    //const router = useRouter()
   
-    type Terror = {
-      name: string | null;
-      price: string | null;
-      featured: string | null;
-      company: string | null;
-      productCat: string | null;
-      productDesc: string | null;
-      image: string | null;
-    };
+    // type Terror = {
+    //   name: string | null;
+    //   price: string | null;
+    //   featured: string | null;
+    //   company: string | null;
+    //   productCat: string | null;
+    //   productDesc: string | null;
+    //   image: string | null;
+    // };
   
     const {
       register,

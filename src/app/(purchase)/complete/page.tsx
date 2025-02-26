@@ -7,22 +7,11 @@ import { useContext, useEffect, useState } from "react";
 const OrderComplete = () => {
   // const { data: session } = useSession();
 const [functionCalled, setFunctionCalled ] = useState(false);
-
-
- const { cartData } = useContext(CartContext);
+const { cartData, endTotalG, emptyCart } = useContext(CartContext);
 useEffect(()=>{
-  //  setCartData([]);
- 
-
-    // console.log("------ address ------", address, cartData)
-    // console.log("------ function call ------", functionCalled)
-  //window.localStorage.setItem("cart_product_data", JSON.stringify([]));
- //   emptyCart();
+  createOrder();
 },[])
 
-useEffect(()=>{
- createOrder();
-},[])
 async function createOrder() {
   let address;
   if (typeof window !== 'undefined') {
@@ -31,14 +20,21 @@ async function createOrder() {
   if(!functionCalled){
     setFunctionCalled(true);
     console.log("function called-------")
-await createNewOrderFile(cartData, address);
+const result = await createNewOrderFile(cartData, address, endTotalG);
+
+if(result === "success"){
+  if (typeof window !== 'undefined') {
+  window.localStorage.removeItem("cart_product_data");
+  emptyCart();
+  }
+}
   }
 }
   
   return (
-    <div className="bg-slate-100 mp flex flex-col ">
+    <div className="container bg-slate-100 mp flex flex-col w-[50%] mx-auto">
       <div className="flex flex-col md:flex-row gap-6 ">
-        <div className="flex flex-col w-[65%]">
+        <div className="flex ">
        Order Completed
         </div>
        

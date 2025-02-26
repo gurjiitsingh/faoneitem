@@ -1,13 +1,13 @@
 'use client'
 
-import { useRef, useState } from 'react';
-import { GiHamburgerMenu } from 'react-icons/gi';
+import { useRef} from 'react';
+//import { GiHamburgerMenu } from 'react-icons/gi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useClickAway } from 'react-use';
-import { AiOutlineRollback } from 'react-icons/ai';
+//import { AiOutlineRollback } from 'react-icons/ai';
 import { BiHomeSmile, BiUser } from 'react-icons/bi';
 import { HiOutlineChatBubbleBottomCenterText } from 'react-icons/hi2';
-import { FiSettings, FiShoppingCart } from 'react-icons/fi';
+//import { FiSettings, FiShoppingCart } from 'react-icons/fi';
 import { UseSiteContext } from '@/SiteContext/SiteContext';
 import { IoClose } from "react-icons/io5";
 export const BargerMenu = () => {
@@ -73,9 +73,9 @@ export const BargerMenu = () => {
 }
 
 const items = [
-  { title: 'Home', Icon: BiHomeSmile, href: '#' },
-  { title: 'About', Icon: BiUser },
-  { title: 'Contact', Icon: HiOutlineChatBubbleBottomCenterText, href: '#' },
+  { title: 'Home', Icon: BiHomeSmile, href: '/' },
+  { title: 'Über Uns', Icon: BiUser,href:'/about' },
+  { title: 'Kontakt', Icon: HiOutlineChatBubbleBottomCenterText, href: '/contact' },
  
 ]
 

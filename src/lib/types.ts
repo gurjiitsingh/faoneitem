@@ -161,65 +161,8 @@ export type TOrderMaster = {
   userId:string;
  }[];
 
-export const signUpSchema = z
-  .object({
-    username: z.string().min(2, { message: "User name is required" }),
-    email: z.string().email().min(2, { message: "Email is required" }),
-    password: z
-      .string()
-      .min(4, { message: "Password must be atleast 4 character long" }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password must match",
-    path: ["confirmPassword"],
-  });
 
-export type TsignUpSchema = z.infer<typeof signUpSchema>;
 
-export const categorySchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, { message: "Category name is required" })
-    .max(30, { message: "Category name is to long" }),
-  productDesc: z
-    .string()
-    .min(1, { message: "Categoy Descrition of product is needed" })
-    .max(100, { message: "Categoy Description is too long" }),
-    slug: z
-    .string().optional(),
-    // .min(4, { message: "productDescrition of product is needed" })
-    // .max(100, { message: "productDescription is too long" }),
-   // image: z.any().refine((file: File) => file?.length !== 0, "File is required"),
-   image:z.any().optional(),
-});
-
-export type TcategorySchema = z.infer<typeof categorySchema>;
-
-export const editCategorySchema = z.object({
-  id: z
-    .string()
-    .trim()
-    .min(1, { message: "Category name is required" }),
-  name: z
-    .string()
-    .trim()
-    .min(1, { message: "Category name is required" })
-    .max(30, { message: "Category name is to long" }),
-  productDesc: z
-    .string()
-    .min(4, { message: "productDescrition of product is needed" })
-    .max(100, { message: "productDescription is too long" }),
-    slug: z
-    .string()
-    .min(4, { message: "productDescrition of product is needed" })
-    .max(100, { message: "productDescription is too long" }),
-   // image: z.any().refine((file: File) => file?.length !== 0, "File is required"),
-    image:z.any().optional(),
-});
-
-export type TeditCategorySchema = z.infer<typeof editCategorySchema>;
 
 export const brandSchema = z.object({
   name: z
@@ -300,6 +243,7 @@ export type TuserSchem = z.infer<typeof userSchima>;
         userId: string;
         addressId: string;
         time: string;
+        total:number;
     }
 
     export type orderMasterDataTArr = {

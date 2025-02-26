@@ -5,11 +5,17 @@ import  { createContext, useContext } from "react";
 
 const SiteContext = createContext({
     open: false,
+    deliveryType:"pickup", 
     sideBarToggle:()=>{},
     openBargerMenu:false,
     bargerMenuToggle:()=>{},
     openEmailForm:false,
     emailFormToggle:()=>{},
+    chageDeliveryType:(e)=>{},
+    couponDisc:{},
+    setCouponDisc:(e)=>{},
+    deliveryDis:{},
+    setdeliveryDis:(e)=>{}
 })
 
 export const UseSiteContext = () =>{

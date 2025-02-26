@@ -3,7 +3,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, TsignUpSchema } from "@/lib/types";
+import { signUpSchema, TsignUpSchema } from "@/lib/types/userType";
 import { Button } from "@/components/ui/button";
 import { addUserDirect } from "@/app/action/user/dbOperation";
 //import {  useRouter } from "next/router";

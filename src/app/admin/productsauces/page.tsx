@@ -14,7 +14,7 @@ export default function Page({params}:{params:{id:string}}){
       <Link href={`/admin/productsauces/form`}><button className="bg-[#313131] text-sm text-white px-4 py-2 rounded-lg">Create</button></Link>
       </div>
 
-      <ListView id={id} />
+      <ListView  />
 
     </div>
   )

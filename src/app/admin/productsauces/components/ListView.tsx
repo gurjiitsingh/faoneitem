@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 
 import TableRows from "./TableRows";
-import {  fetchProducts } from "@/app/action/productsauces/dbOperation";
+import {  fetchProductSauces } from "@/app/action/productsauces/dbOperation";
 import { ProductType } from "@/lib/types/productType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
@@ -29,7 +29,7 @@ const ListView = () => {
   useEffect(() => {
     async function fetchProduct() {
       try {
-          const result = await fetchProducts();
+          const result = await fetchProductSauces();
        
         setProductData(result);
       } catch (error) {

@@ -1,6 +1,7 @@
 "use client";
 
-import { cartDataT } from "@/lib/types/cartDataType";
+
+import { ProductType } from "@/lib/types/productType";
 //import { TnewProductSchema } from "@/lib/types";
 //import {  ProductType } from "@/lib/types/productType";
 import Link from "next/link";
@@ -9,11 +10,11 @@ import React from "react";
 export default function PageProductDetailComponent({
   product,
 }: {
-  product: cartDataT;
+  product: ProductType;
 }) {
-  console.log("----------product data----", product);
+  //console.log("----------product data----", product);
   return (
-    <div className="w-full  lg:w-[50%] bg-white flex flex-row border  rounded-2xl">
+    <div className="w-full   bg-white flex flex-row border  rounded-2xl">
       <Link
         href={{
           pathname: `productvariant/${product.id}`,

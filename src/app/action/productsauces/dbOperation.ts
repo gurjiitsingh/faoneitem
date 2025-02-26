@@ -15,7 +15,7 @@ import {
   where,
 } from "@firebase/firestore"; //doc, getDoc,
 import { ProductType, newPorductSchema, editPorductSchema, } from "@/lib/types/productType";
-import { cartDataT } from "@/lib/types/cartDataType";
+
 
 export async function addNewProduct(formData: FormData) {
   let featured_img: boolean = false;
@@ -222,7 +222,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProductSauces(): Promise<cartDataT[]> {
+export async function fetchProductSauces(): Promise<ProductType[]> {
   // const result = await getDocs(collection(db, "productsauces"))
   // let data = [];
   // result.forEach((doc) => {
@@ -232,9 +232,9 @@ export async function fetchProductSauces(): Promise<cartDataT[]> {
 
   const result = await getDocs(collection(db, "productsauces"));
 
-  let data = [] as cartDataT[];
+  let data = [] as ProductType[];
   result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as cartDataT;
+    const pData = { id: doc.id, ...doc.data() } as ProductType;
     data.push(pData);
   });
   return data;

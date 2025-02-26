@@ -23,7 +23,7 @@ import { categoryTypeArr } from "@/lib/types/categoryType";
 // };
 const Page = ({ params }: { params: { id: string } }) => {
   const baseProductId = params.id;
-  console.log("addonprodut form  baseproductId============", baseProductId);
+ // console.log("addonprodut form  baseproductId============", baseProductId);
 
   const [categories, setCategory] = useState<categoryTypeArr>([]);
 

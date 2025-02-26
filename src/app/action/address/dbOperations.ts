@@ -168,7 +168,7 @@ export async function searchAddressByAddressId(
 }
 
 export const searchAddressByUserId = async (
-  id: string
+  id: string | undefined
 ): Promise<addressResT> => {
   
   let data = {} as addressResT;

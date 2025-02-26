@@ -66,7 +66,7 @@ export async function addUserDirect(formData: FormData) {
 
 
 
-export async function searchUserById(id: string): Promise<TuserSchem> {
+export async function searchUserById(id: string | undefined): Promise<TuserSchem> {
   //console.log("searchUserById -----------------", id);
   // if (id !== undefined) {
   //   const docRef = doc(db, "user", id);

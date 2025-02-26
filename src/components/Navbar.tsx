@@ -3,9 +3,10 @@ import React from "react";
 
 const menuList = [
   { name: "Home", link: "/" },
-  { name: "Abonnement", link: "/abonnement" },
-  { name: "Unsere Gerichte", link: "/menu" },
-  { name: "Funktionsweise", link: "/funktionsweise" },
+  { name: "Über Uns", link: "/about" },
+  { name: "Kontakt", link: "/contact" },
+ 
+ 
 ];
 
 function Navbar() {

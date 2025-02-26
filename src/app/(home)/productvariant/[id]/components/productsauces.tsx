@@ -1,17 +1,17 @@
 "use client";
 
-//import { cartDataT } from "@/lib/types/cartDataType";
+
 //import { TnewProductSchema } from "@/lib/types";
 import { ProductType } from "@/lib/types/productType";
 //import Link from "next/link";
 import React from "react";
-// : { product: cartDataT,addExtra:()=>void }
+
 export default function Productvariant({
   product,
-  addSauce,
+  //addSauce,
 }: {
   product: ProductType;
-  addSauce: (e: {e:{name:string,extraPrice:string}}) => void;
+ // addSauce: ({state,name,price,id,productDesc}:{state:boolean,name:string,price:string,id:string,productDesc:string}) => void;
 }) {
  //  console.log("----------product data----", product.id);
 
@@ -27,9 +27,9 @@ export default function Productvariant({
                 name="extra"
              
                 // checked={}
-                onChange={(e) => {
-                  addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
-                }}
+                // onChange={(e) => {
+                //   addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
+                // }}
               />
             </div>
             <div className="font-thin">{product.name}</div>

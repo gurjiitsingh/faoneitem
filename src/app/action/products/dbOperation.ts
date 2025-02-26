@@ -2,8 +2,8 @@
 import {
   newPorductSchema,
   editPorductSchema,
-  TnewProductSchema,
-  ShowPorductT,
+  // TnewProductSchema,
+  // ShowPorductT,
 } from "@/lib/types";
 
 //import { z } from "zod";
@@ -19,21 +19,20 @@ import {
   doc,
   getDoc,
   getDocs,
-  query,
+ // query,
   setDoc,
 } from "@firebase/firestore"; //doc, getDoc,
 //import { orderProductsTArr } from "@/lib/type/orderType";
 //import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
-import { orderProductsTArr } from "@/lib/types/orderType";
+
 import {
-  productT,
-  productTArr,
+ 
   ProductType,
-  ProductTypeArr,
-  TnewProductSchemaArr,
+
+
 } from "@/lib/types/productType";
-import { cartDataT } from "@/lib/types/cartDataType";
-import { Result } from "postcss";
+
+
 //productT,productTs, productTsArr, TproductSchemaArr
 
 //from "@/lib/firestore/products/write";
@@ -245,7 +244,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProducts(): Promise<cartDataT[]> {
+export async function fetchProducts(): Promise<ProductType[]> {
   // const result = await getDocs(collection(db, "product"))
   // let data = [];
   // result.forEach((doc) => {
@@ -255,17 +254,17 @@ export async function fetchProducts(): Promise<cartDataT[]> {
 
   const result = await getDocs(collection(db, "product"));
 
-  let data = [] as cartDataT[];
+  let data = [] as ProductType[];
   result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as cartDataT;
+    const pData = { id: doc.id, ...doc.data() } as ProductType;
     data.push(pData);
   });
   return data;
-  // let data = [] as cartDataT[];
+  // let data = [] as ProductType[];
   //   const q = query(collection(db, "product"));
   //   const querySnapshot = await getDocs(q);
   //   querySnapshot.forEach((doc) => {
-  //     const ab = doc.data() as cartDataT;
+  //     const ab = doc.data() as ProductType;
   //     data.push(ab);
   //   });
   //   return data;

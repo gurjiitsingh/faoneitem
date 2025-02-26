@@ -1,32 +1,29 @@
 "use client"
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form"; //, Controller
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     emailZ,TemailZ
  
 } from "@/lib/types/addressType";
+import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 //import { useSearchParams } from "next/navigation";
-import {
-  searchAddressEmail,
- 
-} from "@/app/action/address/dbOperations";
+//import {  searchAddressEmail } from "@/app/action/address/dbOperations";
 import { useRouter } from "next/navigation";
 // import { resolve } from "path";
 
-import CartContext from "@/store/CartContext";
+//import CartContext from "@/store/CartContext";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 
 
 const ProccedWithEmail = () => {
-  const { cartData } = useContext(CartContext);
-  const { openEmailForm, emailFormToggle } = UseSiteContext();
-  const { open, sideBarToggle } = UseSiteContext();
+  //const { cartData } = useContext(CartContext);
+  const {  emailFormToggle, deliveryType } = UseSiteContext();
+  const {  sideBarToggle } = UseSiteContext();
   const {data: session } = useSession();
-  const [addressFound, setAddressFound] = useState(false);
+ // const [addressFound, setAddressFound] = useState(false);
   const router = useRouter();
 
 console.log("session ----------", session)
@@ -70,13 +67,13 @@ const userEmail = session?.user?.email as string;
    // formData.append("mobNo", data.mobNo);
    
 
-    const customAddress = {
-        email: data.email,
-    //  mobNo: data.mobNo,
-      };
+    // const customAddress = {
+    //     email: data.email,
+    // //  mobNo: data.mobNo,
+    //   };
       emailFormToggle() 
-      sideBarToggle()
-      router.push(`/checkout?email=${data.email}`)
+     // sideBarToggle()
+      router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
       
      
   }
@@ -85,14 +82,21 @@ const userEmail = session?.user?.email as string;
 
  
   return (
-<div className="z-50 absolute mx-auto mt-[5%] bg-gray-500 rounded-2xl p-12">    
-<div className="w-full h-full flex flex-col items-center justify-center">
+  
+<div className="z-50 absolute mx-auto h-full flex items-center justify-center backdrop-blur-lg  p-12 w-full"> 
+  
+<div className="w-full md:w-[50%] lg:w-[30%]   rounded-2xl mx-auto flex flex-col items-center justify-center bg-green-50 border">
 
-    <div className="w-full lg:w-[70%] ">
-      <div className="flex flex-col">
-        <div className="flex flex-col ">
-          <h2 className="text-5 text-white font-semibold ">
-            Enter Email
+   
+      <div className="flex flex-col  w-full px-2 p-2">
+        <div className="flex justify-end w-full">
+        <div >
+        <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{emailFormToggle()}}><IoClose /></button>
+        </div>
+        </div>
+        <div className="flex flex-col">
+          <h2 className="text-5 text-slate-500 font-semibold ">
+            Email for checkout
          
           </h2>
          
@@ -100,7 +104,7 @@ const userEmail = session?.user?.email as string;
         <form onSubmit={handleSubmit(onSubmit)}>
          
           {/* <input {...register("orderDetail")} hidden /> */}
-          <div className="flex w-full flex-col gap-2  my-1 ">
+          <div className="flex w-full flex-col gap-2  my-1  ">
             <div className="flex flex-col gap-1">
               <label className="label-style">
                 Email<span className="text-red-500">
@@ -138,10 +142,10 @@ const userEmail = session?.user?.email as string;
             </Button>
           </div>
         </form>
-      </div>
+     
     </div>
-    </div>
-      </div>
+    </div></div>
+   
   );
 };
 

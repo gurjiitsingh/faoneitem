@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { FormEvent } from "react"
 import { signIn } from "next-auth/react";// useSession
-import { useRouter } from "next/navigation";
+//import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const SignIn = () => {
@@ -11,7 +11,7 @@ const SignIn = () => {
   // const { data: session, status } = useSession();
   // console.log(session)
 
-  const router = useRouter();
+//  const router = useRouter();
 
 async function submitHandler(event:FormEvent<HTMLFormElement>){
 

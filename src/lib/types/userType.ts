@@ -35,3 +35,21 @@ export const userSchima = z.object({
 });
 
 export type TuserSchem = z.infer<typeof userSchima>;
+
+
+
+export const signUpSchema = z
+  .object({
+    username: z.string().min(2, { message: "User name is required" }),
+    email: z.string().email().min(2, { message: "Email is required" }),
+    password: z
+      .string()
+      .min(4, { message: "Password must be atleast 4 character long" }),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password must match",
+    path: ["confirmPassword"],
+  });
+
+export type TsignUpSchema = z.infer<typeof signUpSchema>;

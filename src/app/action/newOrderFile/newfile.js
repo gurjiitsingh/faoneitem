@@ -1,7 +1,7 @@
 'use server'
 import fs from 'fs';
 
-export async function createNewOrderFile(cartData,address){
+export async function createNewOrderFile(cartData,address, endTotalG){
 
  
 const customAddress = JSON.parse(address) 
@@ -107,8 +107,8 @@ function createNewOrder(orderID) {
  let myOrder = new Order(orderID);
 
  myOrder.AddInfo.PaymentType = 'Barzahlung';
- myOrder.AddInfo.DiscountPercent = 10;
- myOrder.AddInfo.Total = 9.18;
+ myOrder.AddInfo.DiscountPercent = 0;
+ myOrder.AddInfo.Total = endTotalG;
 
  myOrder.ServerData.CreateDateTime = new Date().toISOString();
  myOrder.ServerData.IpAddress = "127.0.0.1";
@@ -185,5 +185,7 @@ fs.writeFile('temp/order_'+orderID+'.json', json, function (err) {
  if (err) throw err;
  console.log('Saved!');
 });
+
+return "success";
 
 }

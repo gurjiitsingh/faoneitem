@@ -10,24 +10,36 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req:NextRequest){
 
     class Order {
+        AddInfo: string;
+        OrderID: string | null;
+        ArticleList: any | null;
+        StoreData: any | null;
+        ServerData: any | null;
+        Customer: any | null;
+    
         constructor() {
-            this.AddInfo = null; // AddInfo
-            this.OrderID = null; // String
-            this.ArticleList = null; // ArticleList
-            this.StoreData = null; // StoreData
-            this.ServerData = null; // ServerData
-            this.Customer = null; // Customer
+            this.AddInfo = "";
+            this.OrderID = null;
+            this.ArticleList = null;
+            this.StoreData = null;
+            this.ServerData = null;
+            this.Customer = null;
         }
     }
     
     class OrderList {
+        Order: Order[];
+        CreateDateTime: string;
+    
         constructor() {
-            this.Order = []; // Array of Order
-            this.CreateDateTime = new Date().toISOString(); // Date
+            this.Order = [];
+            this.CreateDateTime = new Date().toISOString();
         }
     }
     
     class EShopOrder {
+        OrderList: OrderList;
+
         constructor() {
             this.OrderList = new OrderList();
         }

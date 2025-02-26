@@ -5,9 +5,10 @@ import { db } from "@/lib/firebaseConfig";
 //import { address } from "@/--------db/schema";
 import {
   addressSchimaCheckout,
-  signUpSchema,
+ 
  // TsignUpSchema,
-} from "@/lib/types";
+} from "@/lib/types/addressType";
+import { signUpSchema } from "@/lib/types/userType";
 
 //import fs from "fs";
 //import { createNewOrderFile } from "../newOrderFile/newfile";
@@ -85,7 +86,7 @@ export async function addCustomerAddress(formData: FormData) {
         isAdmin: false,
       };
 
-      userDocRef = await addDoc(collection(db, "user"), newuser);
+    //  userDocRef = await addDoc(collection(db, "user"), newuser);
       //console.log("User Document written with ID: ", userDocRef.id);
       // Clear the form
     } catch (e) {

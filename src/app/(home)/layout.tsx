@@ -5,9 +5,9 @@ import { CartProvider } from "@/store/CartProvider";
 import { SiteProvider } from "@/SiteContext/SiteProvider";
 import Header from "@/components/Header";
 
-import { SideCart } from '@/components/MiniCart/SideCart';
-import { BargerMenu } from '@/components/Bargermenu/Menu'
-
+import { SideCart } from "@/components/MiniCart/SideCart";
+import { BargerMenu } from "@/components/Bargermenu/Menu";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,20 +21,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de">
-    <body>
-      
-     <SiteProvider >
-      <CartProvider>
-        <BargerMenu />
-      <SideCart />
-      <Header />
-    {children}
-      </CartProvider>
-      </SiteProvider>
+      <body>
+        <SiteProvider>
+          <CartProvider>
+            <BargerMenu />
+            <SideCart />
+            <Header />
+            {children}
+            <Footer />
+           
+          </CartProvider>
+        </SiteProvider>
       </body>
-  </html>
-    
-     
-     
+    </html>
   );
 }

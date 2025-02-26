@@ -1,20 +1,21 @@
 
+import { ProductType } from "@/lib/types/productType";
 import  { createContext, useContext } from "react";
-//import { cartDataT } from  '@/lib/types/cartDataT'
-//import { cartDataTT } from "@/lib/types/cartDataType";
-import { cartDataT } from "@/lib/types/cartDataType";
+//import { ProductType } from  '@/lib/types/ProductType'
+//import { ProductTypeT } from "@/lib/types/ProductTypeype";
+//import { ProductType } from "@/lib/types/ProductTypeype";
 interface CartContextType {
   counter: number;
   sauceTotalCost: number;
-  cartData: cartDataT[] ;
+  cartData: ProductType[] ;
   address:{} ;
   addAddress:{};
   //getAddress:()=>{};
-  addsauce: cartDataT | {};
-  addsauceToCart:(c:cartDataT)=>void
-  decCartsauce:(c:cartDataT)=>void
-  decCartsauceAll:(c:cartDataT)=>void
-   removeCartsauce:(c:cartDataT)=>void
+  addsauce: ProductType | {};
+  addsauceToCart:(c:ProductType)=>void
+  decCartsauce:(c:ProductType)=>void
+  decCartsauceAll:(c:ProductType)=>void
+   removeCartsauce:(c:ProductType)=>void
    emptyCart:()=>void
 }
 

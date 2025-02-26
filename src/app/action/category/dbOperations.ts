@@ -1,5 +1,5 @@
 "use server";
-import { categorySchema } from '@/lib/types';
+import { categorySchema } from '@/lib/types/categoryType';
 import { db } from "@/lib/firebaseConfig";
 import { upload } from "@/lib/cloudinary";
 import { addDoc, collection, getDocs } from "@firebase/firestore";

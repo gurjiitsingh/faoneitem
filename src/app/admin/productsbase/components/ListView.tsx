@@ -18,11 +18,12 @@ import {
 
 import TableRows from "./TableRows";
 import { fetchProducts } from "@/app/action/productsbase/dbOperation";
-import { cartDataT } from "@/lib/types/cartDataType";
+
+import { ProductType } from "@/lib/types/productType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = ({ title }: productTableProps) => {
-  const [productData, setProductData] = useState<cartDataT[]>([]);
+  const [productData, setProductData] = useState<ProductType[]>([]);
   // var pageNo = 1;
   // var limit = 10
 

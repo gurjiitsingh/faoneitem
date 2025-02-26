@@ -25,7 +25,7 @@ function TableRows({ product }:{product:ProductType}){
 
  async function handleDelete(product:ProductType) {
    console.log(product.id);
-  const result = await deleteProduct(product.id, product.image)
+  const result = await deleteProduct(product.id!, product.image)
 if(result.errors){
   alert(result.errors)
 }else{
@@ -37,7 +37,7 @@ if(result.errors){
   }
 
   return (
-    <TableRow key={product.id} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
+    <TableRow key={product.id!} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
       <TableCell>{product.name}</TableCell>
       <TableCell>&#8364; {product.price}</TableCell>
       {/* <TableCell>
@@ -67,7 +67,7 @@ if(result.errors){
         <p className="flex gap-3">
           <Link
             href={{
-              pathname: `/admin/products/${product.id}`,
+              pathname: `/admin/products/${product.id!}`,
             //  pathname: "/admin/products/editform",
             //   query: {
             //     id: product.id,

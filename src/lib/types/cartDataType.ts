@@ -1,3 +1,5 @@
+import { ProductType } from "./productType";
+
 export type cartDataT = {
     productDesc:string;
     productCat:string;
@@ -65,7 +67,8 @@ export type cartDataT = {
 
       export type purchaseDataT = {
         userId: string | undefined;
-        cartData: cartDataTArr;
+        cartData: ProductType[];
+        total:number;
         address: {
             firstName: string;
             lastName: string;

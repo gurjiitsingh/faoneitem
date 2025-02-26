@@ -2,13 +2,14 @@
 import React, { useEffect } from 'react'
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { editCategorySchema, TeditCategorySchema } from "@/lib/types";
+
 //import { editCategory } from "@/app/action/category/dbOperations";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 
 import Link from 'next/link';
+import { editCategorySchema, TeditCategorySchema } from '@/lib/types/categoryType';
 
 const Form = () => {
 //   const {id,name,slug,desc } = useSearchParams();

@@ -1,66 +1,66 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form"; //, Controller
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressResT, addressSchimaCheckout,  TaddressSchemaCheckout } from "@/lib/types/addressType";
+import {
+  addressResT,
+  addressSchimaCheckout,
+  TaddressSchemaCheckout,
+} from "@/lib/types/addressType";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+//import { useState } from "react";
 //import { useSearchParams } from "next/navigation";
-import { searchAddressEmail,  searchAddressByUserId } from "@/app/action/address/dbOperations";
+import {
+  searchAddressEmail,
+  searchAddressByUserId,
+} from "@/app/action/address/dbOperations";
 import { useRouter, useSearchParams } from "next/navigation";
 // import { resolve } from "path";
- import { useSession } from "next-auth/react";
-import CartContext from "@/store/CartContext";
+import { useSession } from "next-auth/react";
+import CartContext, { useCartContext } from "@/store/CartContext";
 import { searchUserById } from "@/app/action/user/dbOperation";
 import { createNewOrder } from "@/app/action/orders/dbOperations";
 import { purchaseDataT } from "@/lib/types/cartDataType";
-import { createNewOrderFile } from "@/app/action/newOrderFile/newfile";
+import { fetchdeliveryByZip } from "@/app/action/delivery/dbOperation";
+import { UseSiteContext } from "@/SiteContext/SiteContext";
+//import { createNewOrderFile } from "@/app/action/newOrderFile/newfile";
 
 const Address = () => {
-
-  const searchParams = useSearchParams()
- // console.log("email send --------", searchParams.get("email"))
+  const searchParams = useSearchParams();
+  const { endTotalG } = useCartContext();
+  // console.log("email send --------", searchParams.get("email"))
   const { cartData } = useContext(CartContext);
   const { data: session } = useSession();
-  const [addressFound, setAddressFound] = useState(false);
-  const [ addressChanged, setAddressChanged ] = useState(false);
+  const [paymentType, setPaymentType] = useState<string>();
+  //const [addressFound, setAddressFound] = useState(false);
+  // const [ addressChanged, setAddressChanged ] = useState(false);
   const router = useRouter();
   const emailQueryString = searchParams.get("email") as string;
 
+  const { setdeliveryDis } = UseSiteContext();
 
-  useEffect(()=>{
-if(emailQueryString !== undefined){
-  getAddressByEmail(emailQueryString);
- 
-}
-if(session?.user?.id !== undefined){
-getAddressByID();
-}
-setValue("email", emailQueryString)
-  },[session,emailQueryString])
+  useEffect(() => {
+    if (emailQueryString !== undefined) {
+      getAddressByEmail(emailQueryString);
+    }
+    if (session?.user?.id !== undefined) {
+      getAddressByID();
+    }
+    setValue("email", emailQueryString);
+  }, [session, emailQueryString]);
 
-  useEffect(()=>{
-    setValue("email", emailQueryString)
-  },[addressChanged])
+  useEffect(() => {
+    setValue("email", emailQueryString);
+  }, []);
 
-
-  async function handleEmailChange(e: React.ChangeEvent<HTMLInputElement >) {
-    // const inputEmail:string = e.target.value;
-    // let addressRes = null;
-    // if (!addressFound) {
-    //   if (inputEmail.length > 7) {
-    //     addressRes = await searchAddressEmail(inputEmail);
-    //     //  console.log(addressRes);
-    //     if (addressRes !== null) {
-    //       const setemail = false;
-    //       setAddress(addressRes, setemail)
-    //     }
-    //   }
-    // }
-
-    // console.log("address res", addressRes);
+  async function handleZipcodeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const inputEmail: string = e.target.value;
+    console.log("Zipcode-------------", inputEmail);
+    if (inputEmail.length > 4) {
+      const result = await fetchdeliveryByZip(inputEmail);
+      setdeliveryDis(result[0]);
+    }
   }
-  
 
   const {
     register,
@@ -73,12 +73,9 @@ setValue("email", emailQueryString)
   } = useForm<TaddressSchemaCheckout>({
     resolver: zodResolver(addressSchimaCheckout),
   });
-
- 
+  console.log("in address --------------");
   async function onSubmit(data: TaddressSchemaCheckout) {
     const formData = new FormData();
-   // console.log("data.userId --------------", data.userId)
-    
     formData.append("firstName", data.firstName);
     formData.append("lastName", data.lastName);
     formData.append("userId", data.userId!);
@@ -88,13 +85,13 @@ setValue("email", emailQueryString)
     formData.append("addressLine1", data.addressLine1!);
     formData.append("addressLine2", data.addressLine2!);
     formData.append("city", data.city);
-    formData.append("state", data.state);
+    formData.append("state", data.state!);
     formData.append("zipCode", data.zipCode);
 
     const customAddress = {
       firstName: data.firstName,
       lastName: data.lastName,
-      userId:data.userId,
+      userId: data.userId,
       email: data.email,
       mobNo: data.mobNo,
       addressLine1: data.addressLine1,
@@ -103,33 +100,33 @@ setValue("email", emailQueryString)
       state: data.state,
       zipCode: data.zipCode,
     };
-    if (typeof window !== 'undefined') {
-    localStorage.setItem("customer_address", JSON.stringify(customAddress));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("customer_address", JSON.stringify(customAddress));
     }
     //await addCustomerAddress(formData);
- 
+
     const purchaseData = {
       userId: session?.user?.id,
-     cartData,
-     address:customAddress,
+      cartData,
+      total:endTotalG,
+      address: customAddress,
     } as purchaseDataT;
 
     if (cartData.length !== 0) {
       await createNewOrder(purchaseData);
     }
 
-      //createNewOrderFile(cartData, customAddress);
+    //createNewOrderFile(cartData, customAddress);
 
-     if(data.payment === "paypal"){
+    if (paymentType === "paypal") {
       router.push("/pay");
-     }
-     if(data.payment === "cod"){
+    }
+    if (paymentType === "cod") {
+      console.log("going to complete")
       router.push("/complete");
-     }
+    }
 
-   
     //
-   
   }
 
   setValue("userId", session?.user?.id);
@@ -144,13 +141,12 @@ setValue("email", emailQueryString)
   // setValue("zipCode", "144621");
   //setValue("orderDetail", cartData);
 
-
   return (
-    <div className="w-full lg:w-[70%] ">
+    <div className="w-full lg:w-[70%] md:border md:rounded-2xl md:p-5">
       <div className="flex flex-col">
         <div className="flex flex-col gap-2 mb-4">
           <h2 className="text-5 text-slate-600 font-semibold py-3">
-            Shipping address 
+            Shipping address
             {/* -- {session?.user?.id} --- {session?.user?.name} */}
           </h2>
           <p className="text-sm">
@@ -165,14 +161,7 @@ setValue("email", emailQueryString)
               <label className="label-style">
                 Email<span className="text-red-500">*</span>{" "}
               </label>
-              <input
-                {...register("email", {
-                  onChange: (e) => {
-                    handleEmailChange(e);
-                  },
-                })}
-                className="input-style"
-              />
+              <input {...register("email")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.email?.message && <span>{errors.email?.message}</span>}
               </span>
@@ -188,17 +177,19 @@ setValue("email", emailQueryString)
               </span>
             </div>
 
-          {!session &&  <div className="flex flex-col gap-1">
-              <label className="label-style">
-                Password.<span className="text-red-500">Optional</span>{" "}
-              </label>
-              <input {...register("password")} className="input-style" />
-              <span className="text-[0.8rem] font-medium text-destructive">
-                {errors.password?.message && (
-                  <span>{errors.password?.message}</span>
-                )}
-              </span>
-            </div>}
+            {!session && (
+              <div className="flex flex-col gap-1">
+                <label className="label-style">
+                  Password.<span className="text-red-500">Optional</span>{" "}
+                </label>
+                <input {...register("password")} className="input-style" />
+                <span className="text-[0.8rem] font-medium text-destructive">
+                  {errors.password?.message && (
+                    <span>{errors.password?.message}</span>
+                  )}
+                </span>
+              </div>
+            )}
 
             <div className="w-full flex flex-row gap-2">
               <div className="flex flex-col gap-1">
@@ -274,7 +265,14 @@ setValue("email", emailQueryString)
               <label className="label-style">
                 Zip<span className="text-red-500">*</span>{" "}
               </label>
-              <input {...register("zipCode")} className="input-style" />
+              <input
+                {...register("zipCode", {
+                  onChange: (e) => {
+                    handleZipcodeChange(e);
+                  },
+                })}
+                className="input-style"
+              />
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.zipCode?.message && (
                   <span>{errors.zipCode?.message}</span>
@@ -282,34 +280,43 @@ setValue("email", emailQueryString)
               </span>
             </div>
 
-
+            {/* <div className="flex  justify-start gap-8 border rounded-full w-full py-2 px-2 items-center">
+              <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
+                <input
+                  {...register("payment")}
+                  type="radio"
+                  value="paypal"
+                  //  checked
+                />{" "}
+              </div>
+              <div>Paypal</div>
+            </div>
             <div className="flex  justify-start gap-8 border rounded-full w-full py-2 px-2 items-center">
-            <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
-                    <input
-                        {...register("payment")}
-                        type="radio"
-                        value="paypal"
-                      //  checked
-                    /> </div><div>
-                    Paypal
-                    </div>
+              <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
+                <input {...register("payment")} type="radio" value="cod" />{" "}
               </div>
-              <div className="flex  justify-start gap-8 border rounded-full w-full py-2 px-2 items-center">
-          <div className="px-2 py-2 bg-slate-700 rounded-full flex justify-center items-center">
-                    <input
-                        {...register("payment")}
-                        type="radio"
-                        value="cod"
-                       
-                    /> </div><div>
-                    Cash on delivery
-                    </div>
-              </div>
-               
-
-
-            <Button className="w-[200px] py-1 text-center bg-yellow-500 rounded-2xl text-[.8rem]" type="submit">
-              Place order
+              <div>Cash on delivery</div>
+            </div> */}
+            <h3 className=" font-light mt-3">Select payment type</h3>
+            <Button
+              className="w-[200px] py-1 text-center bg-yellow-500 text-blue-600 font-semibold rounded-2xl text-[1rem]"
+              onClick={() => {
+                setPaymentType("paypal");
+              }}
+              value="paypal"
+              name="button_1"
+            >
+              PayPal
+            </Button>
+            <Button
+              className="w-[200px] py-1 text-center bg-amber-500 text-white font-semibold rounded-2xl text-[1rem]"
+              onClick={() => {
+                setPaymentType("cod");
+              }}
+              value="cod"
+              name="button_1"
+            >
+              Cash on Delivery
             </Button>
           </div>
         </form>
@@ -317,56 +324,48 @@ setValue("email", emailQueryString)
     </div>
   );
 
-  async function  getAddressByEmail(inputEmail:string){
-  //  setAddressChanged(!addressChanged)
-  //  console.log(" email ------------",inputEmail);
+  async function getAddressByEmail(inputEmail: string) {
     const addressRes = await searchAddressEmail(inputEmail);
-    if (addressRes.email !== null) {
-     // console.log("address by email found------------",addressRes);
-      const setemail = true;
-      setAddress(addressRes, setemail)
+    if (addressRes?.email !== null) {
+     setAddress(addressRes);
     }
-    setValue("email", inputEmail)
+    setValue("email", inputEmail);
   }
 
-  async function getAddressByID(){
-     const custAddressRes = (await searchAddressByUserId(session?.user.id)) || {};
-    // console.log("custAddressRes1 --- fetched ",custAddressRes);
-    // console.log("custAddressRes --- fetched ",custAddressRes.email); 
-    setFormAddress(custAddressRes)
-}
-
-async function  setFormAddress(custAddressRes:TaddressSchemaCheckout) {
-  
-  let setemail;
-  if (custAddressRes.email !== undefined) {
- 
-   setAddressFound(true)
-  
-    setAddress(custAddressRes,setemail=true)
-  }else{
-   const userResById = await searchUserById(session?.user?.id);
-   if(userResById !== undefined) {
-     setValue("email", userResById.email);
-     // setValue("firstName", userResById.firstName);
-     // setValue("lastName", userResById.lastName);
-     // setValue("userId", userResById.userId);
-     // setValue("email", userResById.email);
-     // setValue("mobNo", userResById.mobNo);
-     // setValue("addressLine1", userResById.addressLine1);
-     // setValue("addressLine2", userResById.addressLine2);
-     // setValue("city", userResById.city);
-     // setValue("state", userResById.state);
-     // setValue("zipCode", userResById.zipCode);
-   }
+  async function getAddressByID() {
+    const custAddressRes =
+      (await searchAddressByUserId(session?.user.id)) || {};
+       setFormAddress(custAddressRes);
   }
 
-}
-function setAddress(addressRes:addressResT, setemail:boolean){
-  //console.log("inside set address ---", setemail,addressRes)
-    setAddressFound(true);
+  async function setFormAddress(custAddressRes: addressResT) {
+    // let setemail;
+    if (custAddressRes.email !== undefined) {
+      // setAddressFound(true)
+
+      setAddress(custAddressRes);
+    } else {
+      const userResById = await searchUserById(session?.user?.id);
+      if (userResById !== undefined) {
+        setValue("email", userResById.email);
+        // setValue("firstName", userResById.firstName);
+        // setValue("lastName", userResById.lastName);
+        // setValue("userId", userResById.userId);
+        // setValue("email", userResById.email);
+        // setValue("mobNo", userResById.mobNo);
+        // setValue("addressLine1", userResById.addressLine1);
+        // setValue("addressLine2", userResById.addressLine2);
+        // setValue("city", userResById.city);
+        // setValue("state", userResById.state);
+        // setValue("zipCode", userResById.zipCode);
+      }
+    }
+  }
+  function setAddress(addressRes: addressResT) {
+    //console.log("inside set address ---", setemail,addressRes)
+    // setAddressFound(true);
     // if(setemail)
-      setValue("email", addressRes.email);
+    setValue("email", addressRes.email);
     setValue("firstName", addressRes.firstName);
     setValue("lastName", addressRes.lastName);
     // setValue("userId", addressRes.userId);
@@ -378,8 +377,7 @@ function setAddress(addressRes:addressResT, setemail:boolean){
     setValue("state", addressRes.state);
     setValue("zipCode", addressRes.zipCode);
   }
-
-};// end of rfc
+}; // end of rfc
 
 export default Address;
 
@@ -398,14 +396,12 @@ export default Address;
 // );
 //     setIsDisabled(true)
 
-
-
 // type Terror = {
-  //   name: string | null;
-  //   price: string | null;
-  //   featured: string | null;
-  //   company: string | null;
-  //   productCat: string | null;
-  //   productDesc: string | null;
-  //   image: string | null;
-  // };
+//   name: string | null;
+//   price: string | null;
+//   featured: string | null;
+//   company: string | null;
+//   productCat: string | null;
+//   productDesc: string | null;
+//   image: string | null;
+// };

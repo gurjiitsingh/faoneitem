@@ -42,6 +42,16 @@ const menuList = [
     link:"/admin/productsauces",
     icon:<TbCategoryPlus />
   },
+  {
+    name:"Coupon",
+    link:"/admin/coupon",
+    icon:<TbCategoryPlus />
+  },
+  {
+    name:"Delivery",
+    link:"/admin/delivery",
+    icon:<TbCategoryPlus />
+  },
  
   // {
   //   name:"Categories",

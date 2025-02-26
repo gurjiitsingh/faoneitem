@@ -25,7 +25,7 @@ function TableRows({ product }:{product:ProductType}){
 
  async function handleDelete(product:ProductType) {
    console.log(product.id);
-  const result = await deleteProduct(product.id, product.image)
+  const result = await deleteProduct(product.id!, product.image)
 if(result.errors){
   alert(result.errors)
 }else{

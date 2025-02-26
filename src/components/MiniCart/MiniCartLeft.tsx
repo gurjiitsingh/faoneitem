@@ -1,17 +1,18 @@
 import Link from 'next/link'
 import React, { useContext } from 'react'
 import CartContext from '@/store/CartContext'
+import { ProductType } from '@/lib/types/productType';
 //import { FaCheckCircle } from 'react-icons/fa';
-import { cartDataT } from '@/lib/types/cartDataType';
+
 
 export default function CartLeft() {
     //const { cartData } =  useCartContext();
     const { cartData } = useContext(CartContext);
     //console.log("kljjljlkll", cartData.lenght)
     let total=0; 
-    cartData.forEach((item:cartDataT)=>{
+    cartData.forEach((item:ProductType)=>{
         // total += parseInt(item.quantity) * parseFloat(item.price);
-        total += item.quantity * parseFloat(item.price);
+        total += item.quantity! * parseFloat(item.price);
     });
   return (
    

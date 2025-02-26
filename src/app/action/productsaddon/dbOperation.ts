@@ -25,16 +25,14 @@ import {
 } from "@firebase/firestore"; //doc, getDoc,
 //import { orderProductsTArr } from "@/lib/type/orderType";
 //import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
-import { orderProductsTArr } from "@/lib/types/orderType";
+//import { orderProductsTArr } from "@/lib/types/orderType";
 import {
-  productT,
-  productTArr,
+  
   ProductType,
-  ProductTypeArr,
-  TnewProductSchemaArr,
+ 
 } from "@/lib/types/productType";
-import { cartDataT } from "@/lib/types/cartDataType";
-import { Result } from "postcss";
+
+//import { Result } from "postcss";
 //productT,productTs, productTsArr, TproductSchemaArr
 
 //from "@/lib/firestore/products/write";
@@ -87,7 +85,7 @@ console.log("zod result", result)
   //   return { errors: "image cannot uploaded" };
   // }
 
-  imageUrl =  "/public/com.jpg";
+  //imageUrl =  "/public/com.jpg";
 
   // const name = formData.get("name");
   // const price = formData.get("price");
@@ -245,7 +243,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProducts(): Promise<cartDataT[]> {
+export async function fetchProducts(): Promise<ProductType[]> {
   // const result = await getDocs(collection(db, "productaddon"))
   // let data = [];
   // result.forEach((doc) => {
@@ -255,9 +253,9 @@ export async function fetchProducts(): Promise<cartDataT[]> {
 
   const result = await getDocs(collection(db, "productaddon"));
 
-  let data = [] as cartDataT[];
+  let data = [] as ProductType[];
   result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as cartDataT;
+    const pData = { id: doc.id, ...doc.data() } as ProductType;
     data.push(pData);
   });
   return data;

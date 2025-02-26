@@ -2,10 +2,10 @@
 
 import React, {  useEffect, useState } from "react";
 import CartContext from "./SauceContext";
-import { cartDataT } from "@/lib/types/cartDataType";
+
 //import { productT } from "@/lib/types/productT";
 import { addressT } from "@/lib/types/addressType";
-import { productT } from "@/lib/types/productType";
+import { productT, ProductType } from "@/lib/types/productType";
 
 interface Props {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export const CartProvider: React.FC<Props> = ({
 }>) => {
   //var now1 = Date.now().toString();
 
-  const [cartData, setCartData] = useState<cartDataT[]>([]);
+  const [cartData, setCartData] = useState<ProductType[]>([]);
   const [address, setAddress] = useState({});
   const [counter, setCounter] = useState(0);
   const [sauceTotalCost, setsauceTotalCost] = useState(0);
@@ -40,7 +40,7 @@ export const CartProvider: React.FC<Props> = ({
       const data = JSON.parse(cart_data_localstorage);
       setCartData([]);
       if (data) {
-        data.map((item: cartDataT) => {
+        data.map((item: ProductType) => {
           setCartData((prevState) => {
             return [...prevState, { ...item }];
           });
@@ -61,7 +61,7 @@ export const CartProvider: React.FC<Props> = ({
     setCartData([]);
 
     if (data) {
-      data.map((item: cartDataT) => {
+      data.map((item: ProductType) => {
         setCartData((prevState) => {
           return [...prevState, { ...item }];
         });
@@ -79,7 +79,7 @@ export const CartProvider: React.FC<Props> = ({
         total =
           total +
         // parseInt(element.quantity) * parseFloat(element.price).toFixed(2);
-        element.quantity * +element.price;
+        element.quantity! * +element.price;
       });
     }
 
@@ -87,7 +87,7 @@ export const CartProvider: React.FC<Props> = ({
     setIsUpdated(true);
   }
 
-  function addsauceToCart(newsauce: cartDataT) {
+  function addsauceToCart(newsauce: ProductType) {
 console.log("sauce to add -------", newsauce)
     const isItemInCart = cartData.find(
       (cartItem) => cartItem.id === newsauce.id
@@ -100,7 +100,7 @@ console.log("sauce to add -------", newsauce)
             cartItem // if the item is already in the cart, increase the quantity of the item
           ) =>
             cartItem.id === newsauce.id
-              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              ? { ...cartItem, quantity: cartItem.quantity! + 1 }
               : cartItem // otherwise, return the cart item
         )
       );
@@ -120,27 +120,27 @@ console.log("sauce to add -------", newsauce)
     // setIsUpdated(true);
   }
 
-  function decCartsauce(decsauce: cartDataT) {
+  function decCartsauce(decsauce: ProductType) {
     //this funciton dec sauce almost to 1
     setCartData(
-      cartData.map((item: cartDataT) => {
+      cartData.map((item: ProductType) => {
         return item.id === decsauce.id
-          ? item.quantity > 1
-            ? { ...item, quantity: item.quantity - 1 }
+          ? item.quantity! > 1
+            ? { ...item, quantity: item.quantity! - 1 }
             : item
           : item;
       })
     );
     setIsUpdated(true);
   }
-  function decCartsauceAll(decsauce: cartDataT) {
+  function decCartsauceAll(decsauce: ProductType) {
     //this funciton dec sauce almost to 0
     //removeCartsauce
     setCartData(
-      cartData.map((item: cartDataT) => {
+      cartData.map((item: ProductType) => {
         return item.id === decsauce.id
-          ? item.quantity > 0
-            ? { ...item, quantity: item.quantity - 1 }
+          ? item.quantity! > 0
+            ? { ...item, quantity: item.quantity! - 1 }
             : item
           : item;
       })
@@ -148,23 +148,23 @@ console.log("sauce to add -------", newsauce)
     setIsUpdated(true);
   }
 
-  function removeCartsauce(item: cartDataT) {
-    const isItemInCart = cartData.find((cartItem) => cartItem.id === item.id) as cartDataT ;
+  function removeCartsauce(item: ProductType) {
+    const isItemInCart = cartData.find((cartItem) => cartItem.id === item.id) as ProductType ;
   //  console.log("item qu-- ", isItemInCart.quantity);
-    if (isItemInCart.quantity <= 1) {
+    if (isItemInCart.quantity! <= 1) {
       setCartData(cartData.filter((cartItem) => cartItem.id !== item.id)); // if the quantity of the item is 1, remove the item from the cart
     } else {
       setCartData(
         cartData.map((cartItem) =>
           cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity - 1 } // if the quantity of the item is greater than 1, decrease the quantity of the item
+            ? { ...cartItem, quantity: cartItem.quantity! - 1 } // if the quantity of the item is greater than 1, decrease the quantity of the item
             : cartItem
         )
       );
     }
 
     // setCartData(
-    //   cartData.filter((item: cartDataT) => {
+    //   cartData.filter((item: ProductType) => {
     //     return item.sauceId !== remsauce.sauceId;
     //   })
     // );
@@ -177,7 +177,7 @@ console.log("sauce to add -------", newsauce)
 
     setIsUpdated(true);
   }
-  function addsauce(newsauce:productT) {
+  function addsauce(newsauce:ProductType) {
     // console.log("new add sauce", newsauce)
     // const sauce = {
     //   id:"kljljl",
@@ -199,7 +199,7 @@ console.log("sauce to add -------", newsauce)
             cartItem // if the item is already in the cart, increase the quantity of the item
           ) =>
             cartItem.id === newsauce.id
-              ? { ...cartItem, quantity: cartItem.quantity + 1 }
+              ? { ...cartItem, quantity: cartItem.quantity! + 1 }
               : cartItem // otherwise, return the cart item
         )
       );

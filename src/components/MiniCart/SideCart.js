@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickAway } from "react-use";
-import { AiOutlineRollback } from "react-icons/ai";
+//import { AiOutlineRollback } from "react-icons/ai";
 import { BiHomeSmile, BiUser } from "react-icons/bi";
 import { HiOutlineChatBubbleBottomCenterText } from "react-icons/hi2";
 import { FiSettings, FiShoppingCart } from "react-icons/fi";
@@ -12,20 +12,38 @@ import MiniCartContent from "./MiniCartcontent";
 import { MiniCartSubtotal } from "./MiniSubtotal";
 import ProccedWithEmail from "./components/ProccedWithEmail";
 import { SessionProvider } from "next-auth/react";
+import { useCartContext } from "@/store/CartContext";
+import { useRouter } from "next/navigation";
 //import Link from "next/link";
 export const SideCart = () => {
   //const [ showEmailForm, setShowEmailForm ] = UseSiteContext();
   const { open, sideBarToggle } = UseSiteContext();
   const { openEmailForm, emailFormToggle } = UseSiteContext();
+  const { cartData } = useCartContext()
   const ref = useRef(null);
+  const router = useRouter();
   useClickAway(ref, () => sideBarToggle());
   // const sideBarToggle = () => setOpen(prev => !prev)
-  function deliveryHandle(){
-   /// setShowEmailForm((state)=>!state)
-   emailFormToggle()
-  }
+  // function deliveryHandle(){
+  //  /// setShowEmailForm((state)=>!state)
+  //  emailFormToggle()
+  //  chageDeliveryType("delivery")
+  // }
   
+  function pickUpHandle(){
+    /// setShowEmailForm((state)=>!state)
+   // chageDeliveryType("pickup")
+     sideBarToggle();
+    emailFormToggle()
+   }
 
+   function shopMoreHandle(){
+    // setShowEmailForm((state)=>!state)
+     sideBarToggle();
+     router.push('/');
+   // chageDeliveryType("pickup")
+   // emailFormToggle()
+   }
   return (
     <><SessionProvider>
     {!openEmailForm &&
@@ -43,7 +61,7 @@ export const SideCart = () => {
               ref={ref}
               aria-label="Sidebar"
             >
-              <div className="flex items-center justify-between p-5 border-b-2 border-zinc-50 ">
+              {/* <div className="flex items-center justify-between p-5 border-b-2 border-zinc-50 ">
                 <span>Welcome</span>
                 <button
                   onClick={sideBarToggle}
@@ -52,8 +70,12 @@ export const SideCart = () => {
                 >
                   <AiOutlineRollback />
                 </button>
-              </div>
-              <div className=" flex items-center justify-center gap-4">
+              </div> */}
+
+              <MiniCartSubtotal />
+              <MiniCartContent />
+
+              <div className=" flex items-center justify-center gap-4 mt-1">
                 {/* <Link
                   href={{
                     pathname: "/checkout",
@@ -64,6 +86,7 @@ export const SideCart = () => {
                     Pickup
                   </div>
                 </Link>
+
                 <Link
                   href={{
                     pathname: "/checkout",
@@ -75,12 +98,19 @@ export const SideCart = () => {
                   </div>
                 </Link> */}
 
-<button onClick={()=>{deliveryHandle()}} className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
+{/* <button onClick={()=>{deliveryHandle()}} className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
                     Delivery
-                  </button>
+                  </button> */}
+            {cartData.length ?  <button onClick={()=>{pickUpHandle()}} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
+                    {/* Pickup */}
+                    Checkout
+                  </button>:<>Cart is empty</>}
+
+                  <button onClick={()=>{shopMoreHandle() }} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">Shop more</button>
+
               </div>
-              <MiniCartSubtotal />
-              <MiniCartContent />
+
+
             </motion.div>
           </>
         )}
@@ -93,7 +123,7 @@ export const SideCart = () => {
     </>
   );
 };
-
+//console.log("llllllllllllll", cartData)
 const items = [
   { title: "Home", Icon: BiHomeSmile, href: "#" },
   { title: "About", Icon: BiUser },

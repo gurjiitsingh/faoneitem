@@ -1,19 +1,31 @@
 //import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CartContext from "@/store/CartContext";
-import { cartDataT } from "@/lib/types/cartDataType";
 
+import { ProductType } from "@/lib/types/productType";
+import { useSearchParams } from "next/navigation";
+import { FaChevronDown } from "react-icons/fa";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
+
+  const searchParams = useSearchParams();
+  const deliveryType = searchParams.get("deliverytype");
+const [addCoupon, setAddCoupon] = useState<boolean>(false);
+  console.log("del type------", searchParams.get("deliverytype"))
   //const { cartData } =  useCartContext();
   const { cartData } = useContext(CartContext);
   //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
-  cartData.forEach((item: cartDataT) => {
-    total += item.quantity * +parseFloat(item.price);
+  cartData.forEach((item: ProductType) => {
+    total += item.quantity! * +parseFloat(item.price);
     // total += parseInt(item.quantity) * +parseFloat(item.price);
   });
+
+  useEffect(()=>{
+    
+  },[deliveryType])
+  console.log("total---------",total)
   return (
     <div className="flex flex-col gap-4 w-full ">
       <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">
@@ -22,18 +34,39 @@ export default function CartLeft() {
             Shopping cart total
           </h2>
 
-          <div className="font-semibold border-b py-3 w-full ">
+          <div className="font-semibold border-b py-3 w-full flex flex-col justify-between gap-4">
+            <div className="w-fit">
+            <button onClick={()=>setAddCoupon(!addCoupon)} className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 rounded-2xl px-3 font-semibold py-1 w-full text-left ">
+             
+             <span>Add a coupon </span><span><FaChevronDown /></span> 
+            </button>
+            </div>
+
+{addCoupon &&<><div className="w-full border rounded-xl py-2 px-2 shadow-md"> 
+ <div className="text-sm text-slate-500">Fill coupon and click button</div>
+  <div className="flex gap-2">
+  <input type="text" name="coupon" className="input-style"></input>
+
+  <button
+              className="w-[200px] py-1 text-center bg-red-200 text-white font-semibold rounded-2xl text-[1rem]"
+             onClick={()=>{}}
+            
+              name="button_1"
+            >
+              Get discount
+            </button>
+            </div>
+  </div></>}
+    
+           
+          </div>
+       {deliveryType === "pickup" &&   <div className="font-semibold border-b py-3 w-full flex justify-between">
             <button className="text-sm font-semibold py-3 w-full text-left">
               {" "}
-              Add Coupon
+              Pickup Discunt 
             </button>
-          </div>
-          <div className="font-semibold border-b py-3 w-full ">
-            <button className="text-sm font-semibold py-3 w-full text-left">
-              {" "}
-              Pickup Discunt
-            </button>
-          </div>
+            <div className="flex gap-1"><span>&#8364;</span> <span>{ (+total*0.1)}</span></div>
+          </div>}
 
           <div className="font-semibold border-b py-3 w-full ">
             <h3 className="text-sm font-semibold py-3 w-full text-left">
@@ -72,7 +105,7 @@ export default function CartLeft() {
         </div>
         <div className="text-[1.1rem]">
           <span className="text-xl">Subtotal ({cartData.length} items) </span>{" "}
-          :${total}.00
+          :${total}
         </div>
         {/* <div className="flex items-center justify-center">
           <Link

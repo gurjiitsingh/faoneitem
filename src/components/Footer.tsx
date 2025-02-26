@@ -5,7 +5,7 @@ import { IoIosMail } from "react-icons/io";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col gap-3 w-full mt-12 bg-blue-100 border-t p-5 md:p-10">
+    <footer className="flex flex-col gap-3 w-full mt-24 bg-slate-100 border-t p-5 md:p-10 mb-0">
       <div className="border-b w-full flex flex-col md:flex-row md:justify-between gap-3">
         <div className="flex">
           <img className="h-8" src="/download.svg" alt="Logo" />

@@ -1,6 +1,15 @@
 ## modifications
 in order, save same item sperately if item it have different extra or sauces --- done  -- add extra id 
 
+coupon: date of start,end  , activate deactivate filed
+
+Delivery: delivery cost, zone
+
+table(delivery):    zip list -- cost  --- distance km
+
+
+change . to comma
+
 
 Bezahlen  pay
 
