@@ -25,7 +25,7 @@ const ChooseProduct = () => {
   const [sauceList, setSauceList] = useState<ProductType[]>([]);
   const [showMessage, setShowMessage ] = useState<boolean>(false);
   const [size, setSize] = useState<Tsize>();
-  const [ quantity, setQuantity ] = useState<number>(0);
+  const [ quantity, setQuantity ] = useState<number>(1);
   const [ productVariat, setProductVariant ] = useState<string>();
    const { setShowProductDetailM, showProductDetailM, baseProductId } =
     UseSiteContext();
@@ -91,7 +91,7 @@ const ChooseProduct = () => {
     console.log("final cart product ----------", cartProduct)
     addProductToCart(cartProduct);
     setSize({});
-    setQuantity(0);
+    setQuantity(1);
     //setCartItem(cartProduct);
   }
 
@@ -109,6 +109,8 @@ const ChooseProduct = () => {
                   className="px-2 py-1 bg-slate-200 rounded-md w-fit"
                   onClick={() => {
                     setShowProductDetailM();
+                    setSize({});
+                    setQuantity(1);
                   }}
                 >
                   <IoClose />
@@ -157,18 +159,18 @@ const ChooseProduct = () => {
             <div className="w-full   bg-white flex flex-row border  rounded-bl-2xl rounded-br-2xl">
               <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
                 <div>
-                {quantity ?  <button onClick={()=>{setQuantity((quantity)=>quantity-1)}} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdRemove size={20} className="text-white " /></button>:<></> }
-                {!quantity ?  <div  className='border px-3 py-3 rounded-full w-11 h-11'></div>:<></> }
+                {quantity > 1?  <button onClick={()=>{setQuantity((quantity)=>quantity-1)}} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdRemove size={20} className="text-white " /></button>:<></> }
+                {quantity < 2?  <button  className='border px-3 py-3 rounded-full bg-blue-300'><IoMdRemove size={20} className="text-white " /></button>:<></> }
                 </div>
               
-                {quantity>0?quantity:<div className="text-white">0</div>}
+                {quantity}
                 <div>
                   {size?.name &&  <button onClick={()=>{setQuantity((quantity)=>quantity+1)}} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdAdd size={20} className="text-white "  /></button> }
                   {!size?.name && <button 
-                      onClick={()=>{setShowMessage(!showMessage)}} className='border px-3 py-3 rounded-full bg-blue-300'><IoMdAdd size={20} className="text-white "  /></button>}
+                      onClick={()=>{setShowMessage(true)}} className='border px-3 py-3 rounded-full bg-blue-300'><IoMdAdd size={20} className="text-white "  /></button>}
                   </div>
 
-                <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{setShowProductDetailM();setShowMessage(false);itemOrderUpdate();}}>Add to cart</button>
+                <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{addToCartL()}}>Add to cart</button>
                
               </div>
             </div>
@@ -177,6 +179,19 @@ const ChooseProduct = () => {
       )}
     </>
   );
+
+
+  function addToCartL(){
+    if(size?.name){
+      setShowProductDetailM();
+      setShowMessage(false);
+      itemOrderUpdate();
+    }else{
+      setShowMessage(true)
+    
+    }
+  }
+
 };
 
 
