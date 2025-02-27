@@ -15,7 +15,11 @@ const SiteContext = createContext({
     couponDisc:{},
     setCouponDisc:(e)=>{},
     deliveryDis:{},
-    setdeliveryDis:(e)=>{}
+    setdeliveryDis:(e)=>{},
+    showProductDetailM:false,
+     setShowProductDetailM:(e)=>{},
+     baseProductId:"",
+     setBaseProductId:(e)=>{},
 })
 
 export const UseSiteContext = () =>{

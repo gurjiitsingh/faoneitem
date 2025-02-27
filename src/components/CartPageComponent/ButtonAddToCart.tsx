@@ -18,6 +18,6 @@ export  function ButtonAddToCartButton({product}:{product:ProductType | undefine
   }
 
   return (
-    <button onClick={()=>addItemToCart(product)} className='border px-3 py-1 rounded-xl bg-green-500'><IoMdAdd  /></button>
+    <button onClick={()=>addItemToCart(product)} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdAdd size={20} className="text-white "  /></button>
   )
 }

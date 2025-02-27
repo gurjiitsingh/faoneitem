@@ -260,17 +260,17 @@ export async function fetchProducts(): Promise<ProductType[]> {
 }
 
 export async function fetchProductById(id: string): Promise<ProductType> {
+  
   const docRef = doc(db, "product", id);
   const docSnap = await getDoc(docRef);
-  let productData = {} as ProductType;
   if (docSnap.exists()) {
     //  console.log("Document data:", docSnap.data());
   } else {
     //   docSnap.data() //will be undefined in this case
     //  console.log("No such document!");
   }
-  productData = docSnap.data() as ProductType;
-  return productData;
+  const product = {id:docSnap.id, ...docSnap.data()} as ProductType
+  return product;
   // const docRef = doc(db, "product", id);
   // const docSnap = await getDoc(docRef);
   //  return docSnap.data();

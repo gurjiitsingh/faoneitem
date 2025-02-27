@@ -10,7 +10,7 @@ export  function ButtonDecCartProduct({product}:{product:ProductType | undefined
 
   const {  removeCartProduct } =  useCartContext();
 
-  console.log("product to add ---------",product)
+  
   
   function decItemFromCart(product:ProductType | undefined){
     
@@ -19,7 +19,7 @@ export  function ButtonDecCartProduct({product}:{product:ProductType | undefined
   }
 
   return (
-    <button onClick={()=>decItemFromCart(product)} className='border px-3 py-1 rounded-xl'> <IoMdRemove /></button>
+    <button onClick={()=>decItemFromCart(product)} className='border px-3 py-3 rounded-full bg-blue-500'> <IoMdRemove size={20} className="text-white " /></button>
   )
 }
 

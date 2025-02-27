@@ -87,7 +87,7 @@ export const CartProvider: React.FC<Props> = ({
   }
 
   function addProductToCart(newProduct: ProductType | undefined) {
-console.log("product to add -------", newProduct)
+
     const isItemInCart = cartData.find(
       (cartItem) => cartItem.id === newProduct?.id
     ); // check if the item is already in the cart

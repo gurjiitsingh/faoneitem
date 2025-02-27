@@ -16,22 +16,22 @@ import { useCartContext } from "@/store/CartContext";
 import { TProduct } from "@/lib/types";
 
 //import FeaturProductUpdate from "./FeaturProductUpdate";
-type Tsize = {name:string,price:string}
-type Tsize1 = {extra:{state:string,name:string,extraPrice:string}};
-type  TcartProduct = {
-  id: string,
-  baseProductId: string,
-  productDesc: string,
-  productCat: string,
-  image: string,
-  isFeatured: boolean,
-  name: string,
-  price: string,
+type Tsize = { name: string; price: string };
+type Tsize1 = { extra: { state: string; name: string; extraPrice: string } };
+type TcartProduct = {
+  id: string;
+  baseProductId: string;
+  productDesc: string;
+  productCat: string;
+  image: string;
+  isFeatured: boolean;
+  name: string;
+  price: string;
 };
 const ListView = () => {
   const params = useParams();
   const baseProductId = params.id as string;
-  //console.log("baseProduct id --------",baseProductId)
+  console.log("baseProduct id --------", baseProductId);
   const [productAddOn, setProductAddon] = useState<ProductType[]>([]);
   const [productBase, setProductBase] = useState<ProductType>();
   const [cartItem, setCartItem] = useState<ProductType | undefined>();
@@ -44,18 +44,17 @@ const ListView = () => {
   const { removeCartProduct, addProductToCart } = useCartContext();
 
   useEffect(() => {
-    async function fetchProduct() {
+     async function fetchProduct() {
       try {
-        const result = await fetchProductByBaseProductId(baseProductId);
-        //console.log("addonproduct by baseproductid---------", result);
-        setProductAddon(result);
         const baseProduct = await fetchProductById(baseProductId);
-      //  console.log("base produt -----------", baseProduct);
         setProductBase(baseProduct);
         setCartItem(baseProduct);
-
+        console.log("addon product ---------", baseProduct);
+        const productAddon = await fetchProductByBaseProductId(baseProductId);
+        setProductAddon(productAddon);
         const sauces = await fetchProductSauces();
         setProductSaces(sauces);
+        
       } catch (error) {
         console.log(error);
       }
@@ -63,23 +62,24 @@ const ListView = () => {
     fetchProduct();
   }, []);
 
-  useEffect(() => {
- //   console.log("saucelist and size changed ------");
-    itemOrderModification();
-  }, [change]);
+  //   useEffect(() => {
+  //  //   console.log("saucelist and size changed ------");
+  //     itemOrderModification();
+  //   }, [change]);
 
   let cartProduct = {} as ProductType;
 
-  // function addExtra(name1:string,price:string) {
-  //  // const extra = {name1,price};
-  //   setSize({name1:name,price:price});
-  //   setChange((state) => !state);
-  //   // itemOrderModification(extra);
-  // }
+  function addExtra({name,price}:{name:string,price:string}) {
+   // const extra = {name1,price};
+   //console.log({name,price})
+    setSize({name:name,price:price});
+    setChange((state) => !state);
+     itemOrderModification();
+  }
 
   // function addSauce(extra: {extra:{state:string,name:string,extraPrice:string}}) {
   //   //Tsize1
-    
+
   //   if (extra.state) {
   //     addProductToCart(extra);
   //   } else {
@@ -114,33 +114,31 @@ const ListView = () => {
     const saucePrice = sauceList.reduce(function (acc, obj) {
       return acc + +obj.price;
     }, 0);
-   // const sizeI = +size;
+    // const sizeI = +size;
 
     const priceBase = productBase?.price as string;
     const finalPrice = (+priceBase + saucePrice).toString();
-    //const id = baseProductId + "" + size.name;
-    const id = baseProductId;
-  //  console.log("product to save-----", productBase);
- const pdesc = productBase?.productCat as string;
- const img = productBase?.image as string;
- const isF = productBase?.isFeatured as boolean;
- const pName = productBase?.name as string;
- const pDesc = size?.name as string;
+    const id = baseProductId + "-" + size?.name;
+   // const id = baseProductId;
+    //  console.log("product to save-----", productBase);
+    const pdesc = productBase?.productCat as string;
+    const img = productBase?.image as string;
+    const isF = productBase?.isFeatured as boolean;
+    const pName = productBase?.name as string;
+    const pDesc = size?.name as string;
 
+    //  id: string;
+    //   baseProductId: string;
+    //    productDesc: string;
+    //    productCat: string;
+    //     image: string;
+    //     isFeatured: boolean;
+    //      name: string;
+    //       price: string;
+    //       purchaseSession: string;
+    //       quantity: string;
+    //       status: string;
 
-
-//  id: string;
-//   baseProductId: string;
-//    productDesc: string; 
-//    productCat: string;
-//     image: string; 
-//     isFeatured: boolean;
-//      name: string;
-//       price: string; 
-//       purchaseSession: string; 
-//       quantity: string; 
-//       status: string;
- 
     cartProduct = {
       id: id,
       baseProductId,
@@ -150,11 +148,11 @@ const ListView = () => {
       isFeatured: isF,
       name: pName,
       price: finalPrice,
-      purchaseSession:"",
-      quantity:1,
-        status:""
+      purchaseSession: "",
+      quantity: 1,
+      status: "",
     } as ProductType;
-//console.log("final cart product ----------", cartProduct)
+    //console.log("final cart product ----------", cartProduct)
     setCartItem(cartProduct);
   }
 
@@ -195,11 +193,11 @@ const ListView = () => {
           </div>
 
           <div className="flex flex-col  flex-wrap ">
-            {/* {productAddOn.map((product, i) => {
+            {productAddOn.map((product, i) => {
               return (
                 <Productvariant key={i} product={product} addExtra={addExtra} />
               );
-            })} */}
+            })}
           </div>
           <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
             Add Sauces
@@ -220,7 +218,7 @@ const ListView = () => {
               {/* <div className="flex items-center h-full  justify-center w-4"><ItemTotal productId={product.id!} /></div> */}
 
               <div>
-                <ButtonAddToCartButton product={cartItem} />
+           {size  &&     <ButtonAddToCartButton product={cartItem} />}
                 {/* <button className='border px-3 py-1 rounded-xl bg-green-500' onClick={addOrderToCart}></button> */}
               </div>
             </div>

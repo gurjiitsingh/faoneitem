@@ -1,35 +1,35 @@
 "use client";
 
-//import { ProductType } from "@/lib/types/ProductTypeype";
+
 //import { TnewProductSchema } from "@/lib/types";
 import { ProductType } from "@/lib/types/productType";
 //import Link from "next/link";
 import React from "react";
-// : { product: ProductType,addExtra:()=>void }
+
 export default function Productvariant({
   product,
-  addExtra,
+  //addSauce,
 }: {
   product: ProductType;
-  addExtra: ({name,price}:{name:string,price:string}) => void;
+ // addSauce: ({state,name,price,id,productDesc}:{state:boolean,name:string,price:string,id:string,productDesc:string}) => void;
 }) {
-  // console.log("----------product data----", product);
+ //  console.log("----------product data----", product.id);
 
   return (
    
       <div className="w-full  bg-white flex flex-row border-b ">
         <div className="w-full flex flex-col p-3 justify-between">
-          <div className="w-full flex justify-between gap-2">
-          <div className="flex gap-4 justify-start">
+          <div className="w-full flex justify-between gap-2 ">
+            <div className="flex gap-4 justify-start">
             <div>
               <input
-                type="radio"
+                type="checkbox"
                 name="extra"
-                value={product.id}
+             
                 // checked={}
-                onChange={() => {
-                  addExtra({name:product.name,price:product.price});
-                }}
+                // onChange={(e) => {
+                //   addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
+                // }}
               />
             </div>
             <div className="font-thin">{product.name}</div>

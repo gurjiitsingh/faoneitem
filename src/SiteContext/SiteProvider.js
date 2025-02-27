@@ -1,7 +1,7 @@
 "use client"
 import { boolean, number, string } from "zod";
 import SiteContext from "./SiteContext";
-import { useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 export const SiteProvider = ({children}) =>{
 
@@ -23,6 +23,11 @@ const [openEmailForm, setEmailFormToggle] = useState();
 const [deliveryType, setDeliveryType] = useState();
 const [couponDisc, setCouponDiscU] = useState({});
 const [deliveryDis, setdeliveryDisU] = useState({});
+const [showProductDetailM, setShowProductDetailML] = useState(false);
+const [ baseProductId,setBaseProductIdL] = useState("")
+
+
+   
 function togleMenu(){
         setIsOpen(!open);
     }
@@ -47,6 +52,18 @@ function setdeliveryDis(dis){
     setEmailFormToggle(!openEmailForm)
     }
 
+    
+  function  setShowProductDetailM(){
+    setShowProductDetailML(!showProductDetailM)
+//showProductDetailM,
+  }
+  
+  
+
+     function setBaseProductId(id){
+        setBaseProductIdL(id)
+     }
+
 return(
     <SiteContext.Provider value={{
         open,
@@ -61,6 +78,10 @@ return(
     setCouponDisc,
     deliveryDis,
     setdeliveryDis,
+    showProductDetailM,
+    setShowProductDetailM,
+    baseProductId,
+     setBaseProductId,
     }}>
 
 {children}

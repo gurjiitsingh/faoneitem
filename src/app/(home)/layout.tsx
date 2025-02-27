@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import { SideCart } from "@/components/MiniCart/SideCart";
 import { BargerMenu } from "@/components/Bargermenu/Menu";
 import Footer from "@/components/Footer";
+import ChooseProduct from "@/components/ChooseProduct/page";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,6 +26,7 @@ export default function RootLayout({
         <SiteProvider>
           <CartProvider>
             <BargerMenu />
+            <ChooseProduct />
             <SideCart />
             <Header />
             {children}
