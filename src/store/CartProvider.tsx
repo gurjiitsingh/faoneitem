@@ -22,6 +22,7 @@ export const CartProvider: React.FC<Props> = ({
    const [endTotalG, setEndTotalL] =useState(0);
   const [productTotalCost, setProductTotalCost] = useState(0);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [  totalDiscountG, setTotalDiscountL] = useState(0);
 
   useEffect(() => {
 
@@ -237,6 +238,11 @@ console.log("new product in context store---------", newProduct.quantity)
 setEndTotalL(t)
        }
 
+      
+ function setTotalDiscountG(d){
+  setTotalDiscountL(d)
+ }
+
   return (
     <CartContext.Provider
       value={{
@@ -254,6 +260,8 @@ setEndTotalL(t)
         decCartProductAll,
         removeCartProduct,
         emptyCart,
+        totalDiscountG,
+  setTotalDiscountG,
       }}
     >
       {children}

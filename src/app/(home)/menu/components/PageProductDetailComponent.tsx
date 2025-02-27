@@ -7,6 +7,7 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 //import {  ProductType } from "@/lib/types/productType";
 import Link from "next/link";
 import React from "react";
+import { IoMdAdd } from "react-icons/io";
 
 export default function PageProductDetailComponent({
   product,
@@ -31,12 +32,20 @@ export default function PageProductDetailComponent({
       </Link>
       <div className="w-full flex flex-col p-3 justify-between ">
         <div className="w-full flex gap-2 justify-between ">
-          <div>{product.name}</div>
+          <div className="min-w-[250px]">{product.name}</div>
           <div>&euro;{product.price}</div>
-            <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{setShowProductDetailM()}}>+</button>
+            <button className="px-2 py-2 bg-slate-200 rounded-full w-fit" onClick={()=>{setShowProductDetailM()}}><IoMdAdd size={20} className="text-gray-700 " /></button>
         </div>
         <div className="text-sm">{product.productDesc}</div>
-        {/* <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
+    
+      </div>
+    </div>
+  );
+}
+
+
+
+    {/* <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
           <div>
           <ButtonDecCartProduct product={product} />
           </div>
@@ -47,7 +56,3 @@ export default function PageProductDetailComponent({
           
           </div>
         </div> */}
-      </div>
-    </div>
-  );
-}

@@ -22,6 +22,7 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   const lastName = purchaseData.address.lastName;
   const firstName = purchaseData.address.firstName;
   const total = purchaseData.total;
+  const totalDiscountG = purchaseData.totalDiscountG;
   //const userId = purchaseData.address.userId;
  // const password = purchaseData.address.password;
  const password = "123456";
@@ -68,6 +69,7 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
     userId: UserAddedId,
     addressId: addressAddedId,
     total:total,
+    totalDiscountG,
     //time: now_india,
   } as orderMasterDataT; 
 

@@ -29,7 +29,7 @@ const Address = () => {
   const searchParams = useSearchParams();
   const { endTotalG } = useCartContext();
   // console.log("email send --------", searchParams.get("email"))
-  const { cartData } = useContext(CartContext);
+  const { cartData, totalDiscountG } = useContext(CartContext);
   const { data: session } = useSession();
   const [paymentType, setPaymentType] = useState<string>();
   //const [addressFound, setAddressFound] = useState(false);
@@ -55,7 +55,7 @@ const Address = () => {
 
   async function handleZipcodeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const inputEmail: string = e.target.value;
-    console.log("Zipcode-------------", inputEmail);
+   // console.log("Zipcode-------------", inputEmail);
     if (inputEmail.length > 4) {
       const result = await fetchdeliveryByZip(inputEmail);
       setdeliveryDis(result[0]);
@@ -73,7 +73,7 @@ const Address = () => {
   } = useForm<TaddressSchemaCheckout>({
     resolver: zodResolver(addressSchimaCheckout),
   });
-  console.log("in address --------------");
+ // console.log("in address --------------");
   async function onSubmit(data: TaddressSchemaCheckout) {
     const formData = new FormData();
     formData.append("firstName", data.firstName);
@@ -109,6 +109,7 @@ const Address = () => {
       userId: session?.user?.id,
       cartData,
       total:endTotalG,
+      totalDiscountG,
       address: customAddress,
     } as purchaseDataT;
 
@@ -121,9 +122,11 @@ const Address = () => {
     if (paymentType === "paypal") {
       router.push("/pay");
     }
+    console.log("going to complete--------")
     if (paymentType === "cod") {
       console.log("going to complete")
-      router.push("/complete");
+      router.push(`/complete?paymentypte="cash"`);
+    //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     }
 
     //

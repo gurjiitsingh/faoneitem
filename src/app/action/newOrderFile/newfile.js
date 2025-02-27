@@ -1,7 +1,7 @@
 'use server'
 import fs from 'fs';
 
-export async function createNewOrderFile(cartData,address, endTotalG){
+export async function createNewOrderFile(cartData,address, endTotalG,productTotalCost, totalDiscountG, PaymentType){
 
  
 const customAddress = JSON.parse(address) 
@@ -106,9 +106,9 @@ class EShopOrder {
 function createNewOrder(orderID) {
  let myOrder = new Order(orderID);
 
- myOrder.AddInfo.PaymentType = 'Barzahlung';
- myOrder.AddInfo.DiscountPercent = 0;
- myOrder.AddInfo.Total = endTotalG;
+ myOrder.AddInfo.PaymentType = PaymentType;
+ myOrder.AddInfo.DiscountPercent = totalDiscountG;
+ myOrder.AddInfo.Total = productTotalCost;
 
  myOrder.ServerData.CreateDateTime = new Date().toISOString();
  myOrder.ServerData.IpAddress = "127.0.0.1";

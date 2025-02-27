@@ -69,6 +69,7 @@ export type cartDataT = {
         userId: string | undefined;
         cartData: ProductType[];
         total:number;
+        totalDiscountG:number;
         address: {
             firstName: string;
             lastName: string;

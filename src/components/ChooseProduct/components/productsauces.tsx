@@ -3,8 +3,9 @@
 
 //import { TnewProductSchema } from "@/lib/types";
 import { ProductType } from "@/lib/types/productType";
+import { useCartContext } from "@/store/CartContext";
 //import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Productvariant({
   product,
@@ -13,8 +14,37 @@ export default function Productvariant({
   product: ProductType;
  // addSauce: ({state,name,price,id,productDesc}:{state:boolean,name:string,price:string,id:string,productDesc:string}) => void;
 }) {
- //  console.log("----------product data----", product.id);
+  const { addProductToCart, removeCartProduct } = useCartContext();
+ const [sauceProductList, setSauceProductList] = useState<ProductType[]>([]);
+  
+  function addSauce(sauces){
+    console.log("----------souce data to add----", sauces.state);
+    if(sauces.state){
+      console.log("----------inside");
+      const cartProduct = {
+            id: sauces.id,
+            baseProductId:sauces.id,
+            productDesc: "",
+            productCat: "",
+            image: "/com.jpg",
+            isFeatured: false,
+            name: sauces.name,
+            price: sauces.price,
+            purchaseSession: "",
+            quantity: 1,
+            status: "",
+          } as ProductType;
+         console.log("final cart product ----------", cartProduct)
 
+         setSauceProductList((st)=>[...st,cartProduct])
+        //  addProductToCart(cartProduct);
+
+    }
+    
+  }
+  useEffect(()=>{},[sauceProductList])
+
+  console.log("----------",sauceProductList )
   return (
    
       <div className="w-full  bg-white flex flex-row border-b ">
@@ -26,10 +56,10 @@ export default function Productvariant({
                 type="checkbox"
                 name="extra"
              
-                // checked={}
-                // onChange={(e) => {
-                //   addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
-                // }}
+                
+                onChange={(e) => {
+                  addSauce({state:e.target.checked,name:product.name,price:product.price, id:product.id,productDesc:product.productDesc});
+                }}
               />
             </div>
             <div className="font-thin">{product.name}</div>

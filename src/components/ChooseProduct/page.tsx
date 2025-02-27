@@ -14,7 +14,7 @@ import { IoMdAdd, IoMdRemove } from "react-icons/io";
 import { ButtonDecCartProduct } from "../CartPageComponent/ButtonDecCartProduct";
 import { useCartContext } from '@/store/CartContext';
 //import FeaturProductUpdate from "./FeaturProductUpdate";
-type Tsize = { name: string; price: string };
+type TVariantType = { name: string; price: string };
 
 const ChooseProduct = () => {
 
@@ -24,7 +24,7 @@ const ChooseProduct = () => {
   const [productSauces, setProductSaces] = useState<ProductType[]>([]);
   const [sauceList, setSauceList] = useState<ProductType[]>([]);
   const [showMessage, setShowMessage ] = useState<boolean>(false);
-  const [size, setSize] = useState<Tsize>();
+  const [VariantType, setVariantType] = useState<TVariantType>();
   const [ quantity, setQuantity ] = useState<number>(1);
   const [ productVariat, setProductVariant ] = useState<string>();
    const { setShowProductDetailM, showProductDetailM, baseProductId } =
@@ -55,25 +55,22 @@ const ChooseProduct = () => {
   let cartProduct = {} as ProductType;
 
   function addExtra({ name, price }: { name: string; price: string }) {
-     setSize({ name: name, price: price });
+     setVariantType({ name: name, price: price });
    }
 
  
   function itemOrderUpdate() {
-    //console.log("Order detail ------- ", size, sauceList);
-
-    const saucePrice = sauceList.reduce(function (acc, obj) {
-      return acc + +obj.price;
-    }, 0);
-    
     const priceBase = productBase?.price as string;
-    const finalPrice = (+priceBase + saucePrice).toString();
-    const id = baseProductId + "-" + size?.name;
+    const priceVariant = VariantType.price! as string;
+   
+   
+    const finalPrice = (parseInt(priceBase) + parseInt(priceVariant)).toString();
+    const id = baseProductId + "-" + VariantType?.name;
     const pdesc = productBase?.productCat as string;
     const img = productBase?.image as string;
     const isF = productBase?.isFeatured as boolean;
     const pName = productBase?.name as string;
-    const pDesc = size?.name as string;
+    const pDesc = VariantType?.name as string;
 
     cartProduct = {
       id: id,
@@ -90,7 +87,7 @@ const ChooseProduct = () => {
     } as ProductType;
     console.log("final cart product ----------", cartProduct)
     addProductToCart(cartProduct);
-    setSize({});
+    setVariantType({});
     setQuantity(1);
     //setCartItem(cartProduct);
   }
@@ -109,7 +106,7 @@ const ChooseProduct = () => {
                   className="px-2 py-1 bg-slate-200 rounded-md w-fit"
                   onClick={() => {
                     setShowProductDetailM();
-                    setSize({});
+                    setVariantType({});
                     setQuantity(1);
                   }}
                 >
@@ -146,16 +143,16 @@ const ChooseProduct = () => {
                 );
               })}
             </div>
-            <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
+          {/*  <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
               Add Sauces
             </div>
-            <div className="flex flex-col  flex-wrap ">
+             <div className="flex flex-col  flex-wrap ">
               {productSauces.map((product, i) => {
                 return (
                      <Productsauces key={i} product={product} />
                 );
               })}
-            </div>
+            </div> */}
             <div className="w-full   bg-white flex flex-row border  rounded-bl-2xl rounded-br-2xl">
               <div className="flex items-center p-1 justify-center  rounded-lg gap-2 fit">
                 <div>
@@ -165,12 +162,12 @@ const ChooseProduct = () => {
               
                 {quantity}
                 <div>
-                  {size?.name &&  <button onClick={()=>{setQuantity((quantity)=>quantity+1)}} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdAdd size={20} className="text-white "  /></button> }
-                  {!size?.name && <button 
+                  {VariantType?.name &&  <button onClick={()=>{setQuantity((quantity)=>quantity+1)}} className='border px-3 py-3 rounded-full bg-blue-500'><IoMdAdd size={20} className="text-white "  /></button> }
+                  {!VariantType?.name && <button 
                       onClick={()=>{setShowMessage(true)}} className='border px-3 py-3 rounded-full bg-blue-300'><IoMdAdd size={20} className="text-white "  /></button>}
                   </div>
 
-                <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{addToCartL()}}>Add to cart</button>
+                <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{addToCartL()}}>Hinzufügen</button>
                
               </div>
             </div>
@@ -182,7 +179,7 @@ const ChooseProduct = () => {
 
 
   function addToCartL(){
-    if(size?.name){
+    if(VariantType?.name){
       setShowProductDetailM();
       setShowMessage(false);
       itemOrderUpdate();
@@ -196,7 +193,7 @@ const ChooseProduct = () => {
 
 
  // function addSauce(extra: {extra:{state:string,name:string,extraPrice:string}}) {
-  //   //Tsize1
+  //   //TVariantType1
 
   //   if (extra.state) {
   //     addProductToCart(extra);

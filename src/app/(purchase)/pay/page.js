@@ -37,6 +37,7 @@ const Checkout = () => {
   //     },
   //   });
   // };
+  //console.log("-----------pay rs",productTotalCost,endTotalG)
 
   //var products =  JSON.parse(window.localStorage.getItem("cart_product_data"));
   if (typeof window !== 'undefined') {
@@ -58,7 +59,7 @@ const Checkout = () => {
           "name": "First Product Name", /* Shows within upper-right dropdown during payment approval */
           "description": "Optional descriptive text..", /* Item details will also be in the completed paypal.com transaction view */
           "unit_amount": {
-            "currency_code": "USD",
+            "currency_code": "EUR",
             "value": "50"
           },
           "quantity": "2"
@@ -93,7 +94,8 @@ const Checkout = () => {
     return actions.order.capture().then((details) => {
       const name = details.payer.name.given_name;
      // alert(`Transaction completed by ${name}`);
-     router.push("/complete")
+     router.push(`/complete?paymentypte='paypal'`)
+    // router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     //  router.push({
     //   pathname: "/complete",
     //   query: { data: details.payer },
@@ -108,12 +110,12 @@ const Checkout = () => {
       ) : (
         <>
           {/* <select value={currency} onChange={onCurrencyChange}>
-                            <option value="USD">💵 USD</option>
+                            <option value="EUR">💵 EUR</option>
                             <option value="EUR">💶 Euro</option>
                     </select> */}
           <PayPalButtons
             message={{
-              amount: 88,
+              amount: productTotalCost,
               align: "center",
               color: "black",
               position: "top",
@@ -132,7 +134,7 @@ const initialOptions = {
   "client-id": "AaE5j_iAGG8h6JeuW6y3khLvftR8OT2qDi2tqlhTaOeC4QxU3feFgMgF1RYMGe7LuYAtd7EyhQZpUhQz",//
   // process.env.PAYPAL_CLIENT_KEY,
   
-  currency: "USD",
+  currency: "EUR",
   intent: "capture",
 };
 

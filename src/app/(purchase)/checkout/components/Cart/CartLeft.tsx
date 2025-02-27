@@ -22,7 +22,7 @@ export default function CartLeft() {
 
   //console.log("del type------", searchParams.get("deliverytype"));
   //const { cartData } =  useCartContext();
-  const { cartData, setEndTotalG } = useCartContext();
+  const { cartData, setEndTotalG, setTotalDiscountG } = useCartContext();
   //console.log("kljjljlkll", cartData.lenght)
   let total = 0;
   cartData.forEach((item: ProductType) => {
@@ -31,8 +31,10 @@ export default function CartLeft() {
   });
 
   let endPrice = total;
+  let TotalDiscount=0;
   if (deliveryType === "pickup") {
     endPrice = endPrice - +total * 0.1;
+    TotalDiscount=10;
   }
 
   if (deliveryType === "delivery") {
@@ -43,13 +45,19 @@ export default function CartLeft() {
 
   if (couponDisc?.price) {
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
+    TotalDiscount = TotalDiscount + couponDisc?.price;
   }
-  setEndTotalG(endPrice)
+ console.log("total discount ------",TotalDiscount)
+ console.log("end price -------", total- total*(+TotalDiscount)/100)
+ 
+
  const endPriceS = endPrice.toString()
   const endPriceComma = endPriceS.split(".").join(",");
-
+ useEffect(()=>{ 
+  setEndTotalG(endPrice)
+},[endPrice])
   useEffect(() => {}, [deliveryType]);
-
+useEffect(()=>{setTotalDiscountG(TotalDiscount)},[TotalDiscount])
   return (
     <div className="flex flex-col gap-4 w-full ">
       <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">

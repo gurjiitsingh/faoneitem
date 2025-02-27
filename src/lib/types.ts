@@ -244,6 +244,7 @@ export type TuserSchem = z.infer<typeof userSchima>;
         addressId: string;
         time: string;
         total:number;
+        totalDiscountG:number;
     }
 
     export type orderMasterDataTArr = {

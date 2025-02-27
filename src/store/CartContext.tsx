@@ -20,6 +20,8 @@ interface CartContextType {
    emptyCart:()=>void
    endTotalG:number;
   setEndTotalG:(c:number)=>void;
+  totalDiscountG:number;
+  setTotalDiscountG:(c:number)=>void;
 }
 
 //const CartContext = createContext<CartContextType | null>(null);
@@ -38,7 +40,9 @@ const CartContext = createContext<CartContextType>({
   decCartProduct:()=>{},
   decCartProductAll:()=>{},
   removeCartProduct:()=>{},
-  emptyCart:()=>{}
+  emptyCart:()=>{},
+  totalDiscountG:0,
+  setTotalDiscountG:()=>{},
   
   });
 

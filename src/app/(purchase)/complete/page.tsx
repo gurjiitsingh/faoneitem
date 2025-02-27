@@ -3,11 +3,15 @@
 import CartContext from "@/store/CartContext";
 import { createNewOrderFile } from "@/app/action/newOrderFile/newfile";
 import { useContext, useEffect, useState } from "react";
+
+import { useSearchParams } from "next/navigation";
  
 const OrderComplete = () => {
+  const searchParams = useSearchParams();
+  const PaymentType = searchParams.get("paymentypte");
   // const { data: session } = useSession();
 const [functionCalled, setFunctionCalled ] = useState(false);
-const { cartData, endTotalG, emptyCart } = useContext(CartContext);
+const { cartData, endTotalG, totalDiscountG,productTotalCost, emptyCart } = useContext(CartContext);
 useEffect(()=>{
   createOrder();
 },[])
@@ -20,7 +24,7 @@ async function createOrder() {
   if(!functionCalled){
     setFunctionCalled(true);
     console.log("function called-------")
-const result = await createNewOrderFile(cartData, address, endTotalG);
+const result = await createNewOrderFile(cartData, address, endTotalG,productTotalCost, totalDiscountG, PaymentType);
 
 if(result === "success"){
   if (typeof window !== 'undefined') {
