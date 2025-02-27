@@ -91,7 +91,7 @@ export const CartProvider: React.FC<Props> = ({
     const isItemInCart = cartData.find(
       (cartItem) => cartItem.id === newProduct?.id
     ); // check if the item is already in the cart
-
+console.log("new product in context store---------", newProduct.quantity)
     if (isItemInCart) {
       setCartData(
         cartData.map(
@@ -99,7 +99,7 @@ export const CartProvider: React.FC<Props> = ({
             cartItem // if the item is already in the cart, increase the quantity of the item
           ) =>
             cartItem.id === newProduct?.id
-              ? { ...cartItem, quantity: cartItem.quantity! + 1 }
+              ? { ...cartItem, quantity: cartItem.quantity! + newProduct.quantity! }
               : cartItem // otherwise, return the cart item
         )
       );
@@ -109,7 +109,7 @@ export const CartProvider: React.FC<Props> = ({
         ...cartData,
         {
           ...newProduct!,
-          quantity: 1,
+          quantity: newProduct.quantity!,
         //  purchaseSession: localStorage.getItem("cart_product_data_id"),
           status: "draft",
         },

@@ -14,7 +14,8 @@ const ProductList = ({ item }) => {
 
   function addProductToCartNew() {
     //console.log("llll")
-    addProductToCart(item);
+    const newProductToAdd = {...item, quantity: 1} 
+    addProductToCart(newProductToAdd);
   }
 
   const total = parseInt(item.quantity) * parseFloat(item.price);
