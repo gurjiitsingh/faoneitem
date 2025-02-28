@@ -1,0 +1,50 @@
+{
+  "AddInfo": {
+    "PaymentType": "Barzahlung",
+    "DiscountPercent": 0,
+    "Total": 37
+  },
+  "OrderID": "1740755214107",
+  "ArticleList": {
+    "Article": [
+      {
+        "Price": "37",
+        "ArticleSize": "Regular",
+        "ArticleName": "Loco Wings Bucket",
+        "ArticleNo": 1,
+        "SubArticleList": {
+          "SubArticle": []
+        },
+        "Count": 1
+      }
+    ]
+  },
+  "StoreData": {
+    "StoreId": "",
+    "StoreName": "Pea and Friy"
+  },
+  "ServerData": {
+    "Agent": "Mozilla/5.0",
+    "CreateDateTime": "2025-02-28T15:06:54.107Z",
+    "Referer": "",
+    "IpAddress": "127.0.0.1"
+  },
+  "Customer": {
+    "DeliveryAddress": {
+      "LastName": "Singh",
+      "AddAddress": "",
+      "Company": "",
+      "Zip": "144621",
+      "Street": "200 Street H No. 38",
+      "Latitude": "",
+      "Country": "Germany",
+      "Longitude": "",
+      "HouseNo": "Avenue",
+      "Title": "",
+      "PhoneNo": "9838883323",
+      "City": "KPT",
+      "FirstName": "Surjit",
+      "EMail": "gurjiitsingh@gmail.com"
+    }
+  }
+}

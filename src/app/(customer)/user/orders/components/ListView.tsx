@@ -4,7 +4,7 @@ type productTableProps = {
   limit?: number;
   title?: string;
 };
-import { TOrderMaster, TOrderProduct } from "@/lib/types";
+import { TOrderMaster } from "@/lib/types/orderMasterType";
 import React, { useEffect, useState } from "react";
 import {
   Table,

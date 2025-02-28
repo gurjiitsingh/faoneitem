@@ -11,7 +11,7 @@ const menuList = [
 
 function Navbar() {
   return (
-    <nav>
+    <nav >
       <ul className="hidden lg:w-full lg:flex lg:gap-3 lg:items-center">
         {menuList?.map((item) => {
           return (

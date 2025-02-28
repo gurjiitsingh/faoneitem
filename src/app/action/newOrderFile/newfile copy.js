@@ -101,7 +101,7 @@ class EShopOrder {
 function createNewOrder(orderID) {
   let myOrder = new Order(orderID);
 
-  myOrder.AddInfo.PaymentType = 'Barzahlung';
+  myOrder.AddInfo.PaymentType = 'Barzahlung'; 
   myOrder.AddInfo.DiscountPercent = 10;
   myOrder.AddInfo.Total = 9.18;
 

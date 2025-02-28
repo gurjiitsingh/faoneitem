@@ -5,8 +5,10 @@ export async function createNewOrderFile(cartData,address, endTotalG,productTota
 
  
 const customAddress = JSON.parse(address) 
-// console.log("cart data in create file -----------------",typeof(cartData),typeof(address));
-// console.log("cart data in create file -----------------",customAddress.firstName);
+// console.log("cart data in create file -----------------",typeof(totalDiscountG),typeof(endTotalG));
+// console.log("productTotalCost -----------------",productTotalCost);
+// console.log("endTotalG -----------------",endTotalG);
+// console.log("discount -----------------",totalDiscountG);
 class AddInfo {}
 
 class SubArticle {
@@ -108,7 +110,7 @@ function createNewOrder(orderID) {
 
  myOrder.AddInfo.PaymentType = PaymentType;
  myOrder.AddInfo.DiscountPercent = totalDiscountG;
- myOrder.AddInfo.Total = productTotalCost;
+ myOrder.AddInfo.Total = endTotalG;
 
  myOrder.ServerData.CreateDateTime = new Date().toISOString();
  myOrder.ServerData.IpAddress = "127.0.0.1";
@@ -129,10 +131,10 @@ function createNewOrder(orderID) {
  
  cartData.map((item,i)=>{
    article = new Article();
-   article.Count = i;
+   article.Count = item.quantity;
    article.ArticleName = item.name;
    article.ArticleSize = item.productDesc;
-   article.ArticleNo = 'P22';
+   article.ArticleNo = i+1;
    article.Price = item.price;
    myOrder.ArticleList.Article.push(article);
  })

@@ -11,11 +11,11 @@ const MiniCartContent = () => {
 //   console.log("incart content ---------------", cartData);
   }, [cartData]);
   return (
-    <div className="flex flex-col gap-4 bg-white px-3 flex-1 ">
-      <div className="py-1 px-3 border-b">
-        <h1 className=" text-[1.1rem]">Dein Warenkorb</h1>
-      </div>
-      <div><div className='max-h-[300px] overflow-y-auto'>
+    <div className="flex flex-col gap-1 bg-white px-1 flex-1 ">
+      {/* <div className="py-1 px-3 border-b">
+        <h1 className=" text-[1.1rem]"></h1>
+      </div> */}
+      <div><div className='max-h-[400px] overflow-y-auto'>
         {cartData.map((item) => {
            return (
            

@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import Cart from "./Cart";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { FaBars } from "react-icons/fa6";
+import Link from "next/link";
 
 //import { useWindowDimensions } from "@/components/useWindowDimensions";
 
@@ -36,8 +37,9 @@ const Header = () => {
   return (
     <header className="bg-white  py-1  px-4 border-b mx-auto w-full md:w-full shadow-sm ">
       <div className="container mx-auto flex items-center justify-between gap-3">
-      <div className="flex gap-2">
-        <img className="h-5 md:h-6" src="/download.svg" alt="Logo" />
+      <div className="flex gap-2 items-center"><Link href="/">
+        <img className="h-12 md:h-12" src="/logo.png" alt="Logo" />
+        </Link>
         <Navbar />
         {/* {showNav ? <Navbar /> : <></>} */}
       </div>
@@ -45,11 +47,11 @@ const Header = () => {
         <SessionProvider>
           <Login />
         </SessionProvider>
-        <Cart />
+        {/* <Cart /> */}
         {/* <CartLink /> */}
 
         <button
-          onClick={bargerMenuToggle}
+          onClick={()=>bargerMenuToggle(false)}
           className="size-lg px-3 block lg:hidden"
           aria-label="toggle burger menu"
         >

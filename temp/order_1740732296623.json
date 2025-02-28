@@ -2,20 +2,20 @@
   "AddInfo": {
     "PaymentType": "Barzahlung",
     "DiscountPercent": 0,
-    "Total": 0
+    "Total": 30
   },
-  "OrderID": "1740645611073",
+  "OrderID": "1740732296623",
   "ArticleList": {
     "Article": [
       {
         "Price": "30",
         "ArticleSize": "Large",
         "ArticleName": "Loco Wings Box",
-        "ArticleNo": "P22",
+        "ArticleNo": 1,
         "SubArticleList": {
           "SubArticle": []
         },
-        "Count": 0
+        "Count": 1
       }
     ]
   },
@@ -25,7 +25,7 @@
   },
   "ServerData": {
     "Agent": "Mozilla/5.0",
-    "CreateDateTime": "2025-02-27T08:40:11.073Z",
+    "CreateDateTime": "2025-02-28T08:44:56.623Z",
     "Referer": "",
     "IpAddress": "127.0.0.1"
   },

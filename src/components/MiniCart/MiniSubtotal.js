@@ -17,7 +17,7 @@ if(cartData.length>0){
 }
 //after discount
 
-const discountedPrice = total-(total*0.1)
+//const discountedPrice = total-(total*0.1)
 
   return (<div className=''>
     {/* max-h-[300px] overflow-y-auto */}
@@ -27,7 +27,10 @@ const discountedPrice = total-(total*0.1)
     {/* <div className='flex border-b-2 by-2 p-3'>Cupone Code</div>
     <div className='flex border-b-2 by-2 p-3 justify-between'><div>Subtotal</div><div>${total.toFixed(2)} </div></div>
     <div className='flex border-b-2 by-2 p-3 justify-between'><div>Shipping</div><div>$0 </div></div> */}
-    <div className='flex gap-3  border-b-2 by-2 p-3 justify-start'><div>Total</div><div className='line-through text-red-600'>	&euro;{total.toFixed(2)} </div><div>	&euro;{discountedPrice.toFixed(2)} </div></div>
+    <div className='flex gap-3  border-b-2 by-2 p-3 justify-start'><div>Total</div><div className=' text-red-600'>	&euro;{total.toFixed(2)} </div><div>	
+    {/* line-through */}
+      {/* &euro;{discountedPrice.toFixed(2)} */}
+       </div></div>
     </div>
   </div>
   )

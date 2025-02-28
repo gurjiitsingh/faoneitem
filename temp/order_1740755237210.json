@@ -4,20 +4,9 @@
     "DiscountPercent": 0,
     "Total": 0
   },
-  "OrderID": "1740645611142",
+  "OrderID": "1740755237210",
   "ArticleList": {
-    "Article": [
-      {
-        "Price": "30",
-        "ArticleSize": "Large",
-        "ArticleName": "Loco Wings Box",
-        "ArticleNo": "P22",
-        "SubArticleList": {
-          "SubArticle": []
-        },
-        "Count": 0
-      }
-    ]
+    "Article": []
   },
   "StoreData": {
     "StoreId": "",
@@ -25,7 +14,7 @@
   },
   "ServerData": {
     "Agent": "Mozilla/5.0",
-    "CreateDateTime": "2025-02-27T08:40:11.142Z",
+    "CreateDateTime": "2025-02-28T15:07:17.210Z",
     "Referer": "",
     "IpAddress": "127.0.0.1"
   },
@@ -35,7 +24,7 @@
       "AddAddress": "",
       "Company": "",
       "Zip": "144621",
-      "Street": "245 Street H No. 138",
+      "Street": "200 Street H No. 38",
       "Latitude": "",
       "Country": "Germany",
       "Longitude": "",
@@ -43,8 +32,8 @@
       "Title": "",
       "PhoneNo": "9838883323",
       "City": "KPT",
-      "FirstName": "Gurjit",
-      "EMail": "gurjiitsingh2@gmail.com"
+      "FirstName": "Surjit",
+      "EMail": "gurjiitsingh@gmail.com"
     }
   }
 }

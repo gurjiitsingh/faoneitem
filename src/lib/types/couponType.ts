@@ -18,33 +18,33 @@ export type couponType = {
 
 
 
-const couponSchema = z.object({
-  // id: z.number().optional(),
-  name: z
-    .string()
-    .trim()
-    .min(2, { message: "coupon name is very short" })
-    .max(30, { message: "coupon name is very long" }),
-  price: z
-    .string()
-    .refine((value) => /^\d+$/.test(value), "Invalid coupon price"), // Refinement
-  productCat: z.string().min(1, { message: "Please select category" }),
+// const couponSchema = z.object({
+//   // id: z.number().optional(),
+//   name: z
+//     .string()
+//     .trim()
+//     .min(2, { message: "coupon name is very short" })
+//     .max(30, { message: "coupon name is very long" }),
+//   price: z
+//     .string()
+//     .refine((value) => /^\d+$/.test(value), "Invalid coupon price"), // Refinement
+//   productCat: z.string().min(1, { message: "Please select category" }),
 
-  couponDesc: z.string().min(1, { message: "Please select category" }),
-  company: z.string().optional(),
-  featured: z.string().optional(),
-  image: typeof window === "undefined" ? z.any() : z.any(),
-  minSpend: z.string().optional(),
-  // image:z.object({
-  //   size: z.number(),
-  // type: z.string(),
-  // name: z.string(),
-  // lastModified: z.number(),
-  //  }),
-});
-export type TcouponSchema = z.infer<typeof couponSchema>;
+//   couponDesc: z.string().min(1, { message: "Please select category" }),
+//   company: z.string().optional(),
+//   featured: z.string().optional(),
+//   image: typeof window === "undefined" ? z.any() : z.any(),
+//   minSpend: z.string().optional(),
+//   // image:z.object({
+//   //   size: z.number(),
+//   // type: z.string(),
+//   // name: z.string(),
+//   // lastModified: z.number(),
+//   //  }),
+// });
+// export type TcouponSchema = z.infer<typeof couponSchema>;
 
-export type TcouponSchemaArr = TcouponSchema[];
+// export type TcouponSchemaArr = TcouponSchema[];
 
 export const newPorductSchema = z.object({
   id: z.string().optional(),
@@ -111,7 +111,7 @@ export const editPorductSchema = z.object({
 
 export type TeditcouponSchema = z.infer<typeof editPorductSchema>;
 
-export default couponSchema;
+//export default couponSchema;
 
 export type Tcoupon = {
   name: string;

@@ -23,6 +23,12 @@ Ábholung   Pickup
 Bitte gib Deine Straße und Hausnummer ein.
 Please enter your street and house number
 
+
+## icons
+import { AiOutlineRollback } from "react-icons/ai";
+import { IoClose } from "react-icons/io5";
+
+
 ## 1. restrict login user to change email at checkout address
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).

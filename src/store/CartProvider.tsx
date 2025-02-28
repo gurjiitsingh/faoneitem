@@ -17,12 +17,20 @@ export const CartProvider: React.FC<Props> = ({
   //var now1 = Date.now().toString();
 
   const [cartData, setCartData] = useState<ProductType[]>([]);
-   const [address, setAddress] = useState({});
-   const [counter, setCounter] = useState(0);
-   const [endTotalG, setEndTotalL] =useState(0);
-  const [productTotalCost, setProductTotalCost] = useState(0);
-  const [isUpdated, setIsUpdated] = useState(false);
-  const [  totalDiscountG, setTotalDiscountL] = useState(0);
+   const [address, setAddress] = useState<addressT>({
+    name: "",
+    mobNo: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    addressLine1: "",
+    addressLine2: "",
+    userId: "",});
+   const [counter, setCounter] = useState<number>(0);
+   const [endTotalG, setEndTotalL] =useState<number>(0);
+  const [productTotalCost, setProductTotalCost] = useState<number>(0);
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [  totalDiscountG, setTotalDiscountL] = useState<number>(0);
 
   useEffect(() => {
 
@@ -87,12 +95,12 @@ export const CartProvider: React.FC<Props> = ({
     setIsUpdated(true);
   }
 
-  function addProductToCart(newProduct: ProductType | undefined) {
+  function addProductToCart(newProduct: ProductType ) {
 
     const isItemInCart = cartData.find(
       (cartItem) => cartItem.id === newProduct?.id
     ); // check if the item is already in the cart
-console.log("new product in context store---------", newProduct.quantity)
+//console.log("new product in context store---------", newProduct?.quantity)
     if (isItemInCart) {
       setCartData(
         cartData.map(
@@ -234,12 +242,12 @@ console.log("new product in context store---------", newProduct.quantity)
   // }
 
   
-       function setEndTotalG(t){
+       function setEndTotalG(t:number){
 setEndTotalL(t)
        }
 
       
- function setTotalDiscountG(d){
+ function setTotalDiscountG(d:number){
   setTotalDiscountL(d)
  }
 

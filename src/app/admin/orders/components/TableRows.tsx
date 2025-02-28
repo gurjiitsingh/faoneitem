@@ -7,7 +7,7 @@ import {
   TableRow,
 //  TableCaption,
 } from "@/components/ui/table";
-import { orderMasterDataT } from "@/lib/types";
+import { orderMasterDataT } from "@/lib/types/orderMasterType";
 
 import Link from "next/link";
 function TableRows({ order }:{order:orderMasterDataT}){

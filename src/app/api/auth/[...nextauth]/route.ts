@@ -100,7 +100,7 @@ const handler = NextAuth({
 
     async redirect({ url, baseUrl }) {
     //  baseUrl =  process.env.NEXT_PUBLIC_BASE_PATH as string;
-      console.log("in redirect ---",url,"baseurl", baseUrl )
+    //  console.log("in redirect ---",url,"baseurl", baseUrl )
       // Allows relative callback URLs
       if (url.startsWith("/")) return `${baseUrl}${url}`
       // Allows callback URLs on the same origin

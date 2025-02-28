@@ -1,4 +1,5 @@
 import { fetchcouponByCode } from "@/app/action/coupon/dbOperation";
+import { couponCodeSchema, TcouponCodeSchema } from "@/lib/types/couponDiscType";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
@@ -9,12 +10,7 @@ export default function CouponDiscount() {
 
   const { setCouponDisc } = UseSiteContext();
 
-   const couponCodeSchema = z.object({
-    
-    coupon: z.string().min(4, { message: "coupon code is required" })
-  })
-
-   type TcouponCodeSchema = z.infer<typeof couponCodeSchema>;
+  
 
     const {
       register,
@@ -23,7 +19,7 @@ export default function CouponDiscount() {
       // control,
       // watch,
       handleSubmit,
-       setError,
+      // setError,
       formState: {}, //dirtyFields
     } = useForm<TcouponCodeSchema>({
       resolver: zodResolver(couponCodeSchema),
@@ -35,7 +31,7 @@ export default function CouponDiscount() {
   
      const result = await fetchcouponByCode(couponCode);
 
-     console.log("00000000000", result[0])
+    // console.log("00000000000", result[0])
      setCouponDisc(result[0])
     //  if (!result?.errors) {
     //    // router.push('/admin/coupons')
@@ -47,17 +43,17 @@ export default function CouponDiscount() {
       coupon: string ;
      }
  
-     if (result.errors) {
-       // not network error but data validation error
-       const errors: Terror = result.errors;
+    //  if (result.errors) {
+    //    // not network error but data validation error
+    //    const errors: Terror = result.errors;
  
-       if (errors.coupon) {
-         setError("coupon", {
-           type: "server",
-           message: errors.coupon,
-         });
-       } 
-     }
+    //    if (errors.coupon) {
+    //      setError("coupon", {
+    //        type: "server",
+    //        message: errors.coupon,
+    //      });
+    //    } 
+    //  }
  
      console.log("response in create coupon form ", result);
    }

@@ -15,7 +15,7 @@ import { MdDeleteForever } from "react-icons/md";
 //import Image from "next/image";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
-import { deletedelivery } from "@/app/action/delivery/dbOperation";
+//import { deletedelivery } from "@/app/action/delivery/dbOperation";
 import { deliveryType } from "@/lib/types/deliveryType";
 //import { deletedelivery } from "@/app/action/deliverys/dbOperation";
 //import { useRouter  } from "next/navigation";
@@ -25,14 +25,14 @@ function TableRows({ delivery }:{delivery:deliveryType}){
 
  async function handleDelete(delivery:deliveryType) {
    console.log(delivery.id);
-  const result = await deletedelivery(delivery.id!, delivery.image)
-if(result.errors){
-  alert(result.errors)
-}else{
-  // router.push('/admin/deliverys')
-   //   router.refresh()
-      location.reload()
-}
+ // const result = await deletedelivery(delivery.id!)
+// if(result.errors){
+//   alert(result.errors)
+// }else{
+//   // router.push('/admin/deliverys')
+//    //   router.refresh()
+//       location.reload()
+// }
 
   }
 

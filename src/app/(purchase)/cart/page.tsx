@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import CartContent from "@/components/Cart/cartcontent";
 //import Link from "next/link";
 //import { useSession } from "next-auth/react";
@@ -13,8 +13,10 @@ const Cart = () => {
   return (
     <div className="bg-slate-100 px-32 py-32 flex flex-col ">
       <div className="flex flex-col md:flex-row gap-6 ">
+        <Suspense>
         <CartContent />
        <CartLeft />
+       </Suspense>
       </div>
     </div>
   );

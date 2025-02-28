@@ -8,7 +8,7 @@ export default function CouponDisc({total}:{total:number}) {
       {couponDisc?.price &&
     <div className="font-semibold border-b py-3 w-full flex justify-between">
               <div className="text-sm font-semibold py-3 w-full text-left">
-                Coupon Discunt
+                Coupon Discunt {couponDisc?.price}%
               </div>
               <div className="flex gap-1">
                 - <span>&#8364;</span>{" "}

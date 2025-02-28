@@ -5,13 +5,13 @@ import { fetchProductByBaseProductId } from "@/app/action/productsaddon/dbOperat
 import { ProductType } from "@/lib/types/productType";
 import Productvariant from "./components/productvariant";
 import { fetchProductById } from "@/app/action/productsbase/dbOperation";
-import { ButtonAddToCartButton } from "@/components/CartPageComponent/ButtonAddToCart";
+//import { ButtonAddToCartButton } from "@/components/CartPageComponent/ButtonAddToCart";
 import { fetchProductSauces } from "@/app/action/productsauces/dbOperation";
-import Productsauces from "./components/productsauces";
+//import Productsauces from "./components/productsauces";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import { IoClose } from "react-icons/io5";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
-import { ButtonDecCartProduct } from "../CartPageComponent/ButtonDecCartProduct";
+//import { ButtonDecCartProduct } from "../CartPageComponent/ButtonDecCartProduct";
 import { useCartContext } from '@/store/CartContext';
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 type TVariantType = { name: string; price: string };
@@ -22,14 +22,14 @@ const ChooseProduct = () => {
   const [productBase, setProductBase] = useState<ProductType>();
   const [cartItem, setCartItem] = useState<ProductType | undefined>();
   const [productSauces, setProductSaces] = useState<ProductType[]>([]);
-  const [sauceList, setSauceList] = useState<ProductType[]>([]);
+ // const [sauceList, setSauceList] = useState<ProductType[]>([]);
   const [showMessage, setShowMessage ] = useState<boolean>(false);
   const [VariantType, setVariantType] = useState<TVariantType>();
   const [ quantity, setQuantity ] = useState<number>(1);
-  const [ productVariat, setProductVariant ] = useState<string>();
+  //const [ productVariat, setProductVariant ] = useState<string>();
    const { setShowProductDetailM, showProductDetailM, baseProductId } =
     UseSiteContext();
-    const { addProductToCart, removeCartProduct } = useCartContext();
+    const { addProductToCart } = useCartContext();
  
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const ChooseProduct = () => {
  
   function itemOrderUpdate() {
     const priceBase = productBase?.price as string;
-    const priceVariant = VariantType.price! as string;
+    const priceVariant = VariantType?.price as string;
    
    
     const finalPrice = (parseInt(priceBase) + parseInt(priceVariant)).toString();
@@ -85,9 +85,9 @@ const ChooseProduct = () => {
       quantity: quantity,
       status: "",
     } as ProductType;
-    console.log("final cart product ----------", cartProduct)
+    //console.log("final cart product ----------", cartProduct)
     addProductToCart(cartProduct);
-    setVariantType({});
+    setVariantType({name:"", price:""});
     setQuantity(1);
     //setCartItem(cartProduct);
   }
@@ -105,8 +105,8 @@ const ChooseProduct = () => {
                 <button
                   className="px-2 py-1 bg-slate-200 rounded-md w-fit"
                   onClick={() => {
-                    setShowProductDetailM();
-                    setVariantType({});
+                    setShowProductDetailM(false);
+                    setVariantType({name:"", price:""});
                     setQuantity(1);
                   }}
                 >
@@ -180,7 +180,7 @@ const ChooseProduct = () => {
 
   function addToCartL(){
     if(VariantType?.name){
-      setShowProductDetailM();
+      setShowProductDetailM(false);
       setShowMessage(false);
       itemOrderUpdate();
     }else{

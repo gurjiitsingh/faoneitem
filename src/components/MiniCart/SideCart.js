@@ -3,9 +3,10 @@
 import { useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useClickAway } from "react-use";
-//import { AiOutlineRollback } from "react-icons/ai";
+
 import { BiHomeSmile, BiUser } from "react-icons/bi";
 import { HiOutlineChatBubbleBottomCenterText } from "react-icons/hi2";
+import { IoClose } from "react-icons/io5";
 import { FiSettings, FiShoppingCart } from "react-icons/fi";
 import { UseSiteContext } from "@/SiteContext/SiteContext";
 import MiniCartContent from "./MiniCartcontent";
@@ -53,61 +54,38 @@ export const SideCart = () => {
             <motion.div
               {...framerSidebarBackground}
               aria-hidden="true"
-              className="fixed bottom-0 left-0 right-0 top-0 z-40 bg-[rgba(244,243,243,0.1)] backdrop-blur-sm"
+              className="fixed bottom-0 left-0 right-0 top-0 z-40 bg-[rgba(244,243,243,0.1)] backdrop-blur-sm "
             ></motion.div>
             <motion.div
               {...framerSidebarPanel}
-              className="fixed top-0 bottom-0 left-0 z-50 w-full h-screen max-w-lg border-r-2 border-zinc-50 bg-white"
+              className="fixed top-0 bottom-0 left-0 z-50 w-full h-screen max-w-lg border-r-2 border-zinc-50 bg-white p-2"
               ref={ref}
               aria-label="Sidebar"
             >
-              {/* <div className="flex items-center justify-between p-5 border-b-2 border-zinc-50 ">
-                <span>Welcome</span>
+              <div className="flex items-center px-2 pt-2 justify-between p-2  rounded-2xl  border ">
+                <span>Dein Warenkorb</span>
                 <button
                   onClick={sideBarToggle}
-                  className="p-3 border-2 border-zinc-800 rounded-xl"
+                  className="p-1 border-zinc-800 rounded-xl"
                   aria-label="close sidebar"
                 >
-                  <AiOutlineRollback />
+                  <IoClose size={30} />
                 </button>
-              </div> */}
+              </div>
 
-              <MiniCartSubtotal />
+              
               <MiniCartContent />
-
-              <div className=" flex items-center justify-center gap-4 mt-1">
-                {/* <Link
-                  href={{
-                    pathname: "/checkout",
-                    //  query:{ userId: session?.user?.id}
-                  }}
-                >
-                  <div className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
-                    Pickup
-                  </div>
-                </Link>
-
-                <Link
-                  href={{
-                    pathname: "/checkout",
-                    //  query:{ userId: session?.user?.id}
-                  }}
-                >
-                  <div className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
-                    Delivery
-                  </div>
-                </Link> */}
-
-{/* <button onClick={()=>{deliveryHandle()}} className="min-w-[200px] py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
-                    Delivery
-                  </button> */}
+              <MiniCartSubtotal />
+              <div className=" flex items-center justify-center gap-4 mt-2">
+           
             {cartData.length ?  <button onClick={()=>{pickUpHandle()}} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">
                     {/* Pickup */}
-                    Checkout
-                  </button>:<>Cart is empty</>}
-
-                  <button onClick={()=>{shopMoreHandle() }} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">Shop more</button>
-
+                    Kasse
+                  </button>:<></>}
+                  <div className="flex flex-col gap-2 justify-center">
+{cartData.length ?<></>:<div className="min-w-[200px] mt-5 py-1 text-center  rounded-2xl text-[1rem] font-semibold">Warenkorb ist leer</div>}
+                  <button onClick={()=>{shopMoreHandle() }} className="min-w-[200px] mt-5 py-1 text-center bg-blue-500 rounded-2xl text-white text-[1rem]">Mehr einkaufen</button>
+                  </div>
               </div>
 
 

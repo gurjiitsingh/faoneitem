@@ -94,7 +94,7 @@ const Checkout = () => {
     return actions.order.capture().then((details) => {
       const name = details.payer.name.given_name;
      // alert(`Transaction completed by ${name}`);
-     router.push(`/complete?paymentypte='paypal'`)
+     router.push(`/complete?paymentypte=paypal`)
     // router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     //  router.push({
     //   pathname: "/complete",

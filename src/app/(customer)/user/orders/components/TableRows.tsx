@@ -7,7 +7,7 @@ import {
   TableRow,
 //  TableCaption,
 } from "@/components/ui/table";
-import { TOrderMaster } from "@/lib/types";
+import { TOrderMaster } from "@/lib/types/orderMasterType";
 
 function TableRows({ order }:{order:TOrderMaster}){
 

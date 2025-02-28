@@ -1,0 +1,50 @@
+{
+  "AddInfo": {
+    "PaymentType": "Barzahlung",
+    "DiscountPercent": 0,
+    "Total": 30
+  },
+  "OrderID": "1740732296586",
+  "ArticleList": {
+    "Article": [
+      {
+        "Price": "30",
+        "ArticleSize": "Large",
+        "ArticleName": "Loco Wings Box",
+        "ArticleNo": 1,
+        "SubArticleList": {
+          "SubArticle": []
+        },
+        "Count": 1
+      }
+    ]
+  },
+  "StoreData": {
+    "StoreId": "",
+    "StoreName": "Pea and Friy"
+  },
+  "ServerData": {
+    "Agent": "Mozilla/5.0",
+    "CreateDateTime": "2025-02-28T08:44:56.586Z",
+    "Referer": "",
+    "IpAddress": "127.0.0.1"
+  },
+  "Customer": {
+    "DeliveryAddress": {
+      "LastName": "Singh",
+      "AddAddress": "",
+      "Company": "",
+      "Zip": "144621",
+      "Street": "245 Street H No. 138",
+      "Latitude": "",
+      "Country": "Germany",
+      "Longitude": "",
+      "HouseNo": "Avenue",
+      "Title": "",
+      "PhoneNo": "9838883323",
+      "City": "KPT",
+      "FirstName": "Gurjit",
+      "EMail": "gurjiitsingh2@gmail.com"
+    }
+  }
+}

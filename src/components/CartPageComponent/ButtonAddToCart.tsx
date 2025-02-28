@@ -6,12 +6,12 @@ import { ProductType } from '@/lib/types/productType';
 //import { ProductType } from '@/lib/types/productType';
 
 
-export  function ButtonAddToCartButton({product}:{product:ProductType | undefined}) {
+export  function ButtonAddToCartButton({product}:{product:ProductType}) {
  
  
   const ctx = useCartContext();
 
-  function addItemToCart(product:ProductType | undefined){
+  function addItemToCart(product:ProductType){
    
    // ctx.addProduct(product);
    ctx.addProductToCart(product);

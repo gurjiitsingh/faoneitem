@@ -276,7 +276,7 @@ const Page = () => {
                 </div> */}
 
                 <input
-                  {...register("deliveryDistance", { value: false })}
+                  {...register("deliveryDistance", { value: "4" })}
                   type="hidden"
                 />
 

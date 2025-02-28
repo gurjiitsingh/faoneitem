@@ -1,8 +1,5 @@
 import fs from 'fs';
-import path from 'path';
-
-
-
+// import path from 'path';
 import { NextRequest, NextResponse } from "next/server";
 // import { json } from 'stream/consumers';
 // import { any, unknown } from 'zod';
@@ -10,15 +7,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req:NextRequest){
 
     class Order {
-        AddInfo: string;
-        OrderID: string | null;
-        ArticleList: any | null;
-        StoreData: any | null;
-        ServerData: any | null;
-        Customer: any | null;
+        AddInfo;
+        OrderID;
+        ArticleList;
+        StoreData;
+        ServerData;
+        Customer;
     
         constructor() {
-            this.AddInfo = "";
+            this.AddInfo = ""
             this.OrderID = null;
             this.ArticleList = null;
             this.StoreData = null;
@@ -28,8 +25,8 @@ export async function GET(req:NextRequest){
     }
     
     class OrderList {
-        Order: Order[];
-        CreateDateTime: string;
+        Order;
+        CreateDateTime;
     
         constructor() {
             this.Order = [];
@@ -38,7 +35,7 @@ export async function GET(req:NextRequest){
     }
     
     class EShopOrder {
-        OrderList: OrderList;
+        OrderList;
 
         constructor() {
             this.OrderList = new OrderList();
@@ -56,7 +53,6 @@ export async function GET(req:NextRequest){
             try {
                 const rawData = fs.readFileSync("./temp/"+file, 'utf-8');
                 const order = JSON.parse(rawData);
-              //  console.log("order--------------------",order)
                 EShopOrders.OrderList.Order.push(order);
             } catch (error) {
                 console.error(`Error reading or parsing ${file}:`, error);

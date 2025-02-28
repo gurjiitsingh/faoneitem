@@ -12,8 +12,7 @@ console.log(cartData);
 if(cartData.length>0){
  cartData.forEach(element => {
    total = total + parseInt(element.quantity) * parseFloat(element.price).toFixed(2)
-   
-});
+  });
 }
 
   return (<>

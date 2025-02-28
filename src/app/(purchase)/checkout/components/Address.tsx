@@ -47,10 +47,13 @@ const Address = () => {
       getAddressByID();
     }
     setValue("email", emailQueryString);
+   // console.log("this is befor email set---------------4",emailQueryString)
   }, [session, emailQueryString]);
 
   useEffect(() => {
+   // console.log("this is befor email set---------------",emailQueryString)
     setValue("email", emailQueryString);
+   // console.log("this is befor email set---------------5",emailQueryString)
   }, []);
 
   async function handleZipcodeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -60,6 +63,7 @@ const Address = () => {
       const result = await fetchdeliveryByZip(inputEmail);
       setdeliveryDis(result[0]);
     }
+   
   }
 
   const {
@@ -125,7 +129,7 @@ const Address = () => {
     console.log("going to complete--------")
     if (paymentType === "cod") {
       console.log("going to complete")
-      router.push(`/complete?paymentypte="cash"`);
+      router.push(`/complete?paymentypte=Barzahlung`);
     //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     }
 
@@ -333,6 +337,7 @@ const Address = () => {
      setAddress(addressRes);
     }
     setValue("email", inputEmail);
+  //  console.log("this is befor email set---------------1",inputEmail)
   }
 
   async function getAddressByID() {
@@ -350,7 +355,8 @@ const Address = () => {
     } else {
       const userResById = await searchUserById(session?.user?.id);
       if (userResById !== undefined) {
-        setValue("email", userResById.email);
+     //   setValue("email", userResById.email);
+        console.log("this is befor email set---------------2",userResById.email)
         // setValue("firstName", userResById.firstName);
         // setValue("lastName", userResById.lastName);
         // setValue("userId", userResById.userId);
@@ -369,6 +375,7 @@ const Address = () => {
     // setAddressFound(true);
     // if(setemail)
     setValue("email", addressRes.email);
+   // console.log("this is befor email set---------------3",addressRes.email)
     setValue("firstName", addressRes.firstName);
     setValue("lastName", addressRes.lastName);
     // setValue("userId", addressRes.userId);

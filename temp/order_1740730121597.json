@@ -2,20 +2,20 @@
   "AddInfo": {
     "PaymentType": "Barzahlung",
     "DiscountPercent": 0,
-    "Total": 0
+    "Total": 30
   },
-  "OrderID": "1740647012066",
+  "OrderID": "1740730121597",
   "ArticleList": {
     "Article": [
       {
-        "Price": "37",
-        "ArticleSize": "Regular",
-        "ArticleName": "Loco Wings Bucket",
-        "ArticleNo": "P22",
+        "Price": "30",
+        "ArticleSize": "Large",
+        "ArticleName": "Loco Wings Box",
+        "ArticleNo": 1,
         "SubArticleList": {
           "SubArticle": []
         },
-        "Count": 0
+        "Count": 1
       }
     ]
   },
@@ -25,7 +25,7 @@
   },
   "ServerData": {
     "Agent": "Mozilla/5.0",
-    "CreateDateTime": "2025-02-27T09:03:32.066Z",
+    "CreateDateTime": "2025-02-28T08:08:41.597Z",
     "Referer": "",
     "IpAddress": "127.0.0.1"
   },

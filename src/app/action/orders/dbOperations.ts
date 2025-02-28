@@ -5,7 +5,7 @@ import { db } from "@/lib/firebaseConfig";
 import {  addDoc, collection, doc, getDoc, getDocs, query, where } from "@firebase/firestore";
 import { addUserDirect } from "../user/dbOperation";
 import { addCustomerAddressDirect } from "../address/dbOperations";
-import {  TOrderMaster, orderMasterDataT, orderMasterDataTArr, TOrderMasterArr } from "@/lib/types";
+import {  TOrderMaster, orderMasterDataT } from "@/lib/types/orderMasterType";
 import { orderProductsTArr } from "@/lib/types/orderType";
 import {   purchaseDataT } from "@/lib/types/cartDataType";
 import { ProductType } from "@/lib/types/productType";
@@ -140,14 +140,8 @@ export async function addOrderToMaster(element:orderMasterDataT) {
   }
 
 
-  export async function fetchOrdersMaster():Promise<orderMasterDataTArr>{
-//   const result = await getDocs(collection(db, "orderMaster")) 
-//   let data = [] as orderMasterDataTArr;
-//   result.forEach((doc) => {
-//        data.push({id:doc.id, ...doc.data()});
-//      });
-//  return data;
-// new version
+  export async function fetchOrdersMaster():Promise<orderMasterDataT[]>{
+
 
 let data = [] as orderMasterDataT[];
     const q = query(collection(db, "orderMaster"));
@@ -174,12 +168,12 @@ let data = [] as orderMasterDataT[];
     //  });
     //  return data;
 
-    let data = [] as TOrderMasterArr;
+    let data = [] as orderMasterDataT[];
     
       const q = query(collection(db, "orderMaster"), where("userId", "==", userId));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        data = doc.data() as TOrderMasterArr;
+        data = doc.data() as orderMasterDataT[];
       });
       return data;
    

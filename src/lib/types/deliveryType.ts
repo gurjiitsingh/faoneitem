@@ -9,11 +9,11 @@ export type deliveryType = {
   minSpend: string;
   deliveryDesc: string;
   productCat: string;
-  image: string;
+  //image: string;
   deliveryDistance: string;
-  purchaseSession: string | null;
-  quantity: number | null;
-  status: string | null;
+ // purchaseSession: string | null;
+ // quantity: number | null;
+ // status: string | null;
 };
 
 

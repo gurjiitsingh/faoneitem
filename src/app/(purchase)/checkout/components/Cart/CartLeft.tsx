@@ -33,19 +33,21 @@ export default function CartLeft() {
   let endPrice = total;
   let TotalDiscount=0;
   if (deliveryType === "pickup") {
-    endPrice = endPrice - +total * 0.1;
+    let pickupDiscount = (+total * 0.1);
+    pickupDiscount = +pickupDiscount.toFixed(2);
+    endPrice = endPrice - pickupDiscount;
     TotalDiscount=10;
   }
 
   if (deliveryType === "delivery") {
     if (deliveryDis?.price !== undefined) {
-      endPrice = endPrice + +deliveryDis?.price!;
+      endPrice = endPrice + +deliveryDis?.price;
     }
   }
 
   if (couponDisc?.price) {
     endPrice = endPrice - (+total * +couponDisc?.price) / 100;
-    TotalDiscount = TotalDiscount + couponDisc?.price;
+    TotalDiscount = TotalDiscount + (+couponDisc?.price);
   }
  console.log("total discount ------",TotalDiscount)
  console.log("end price -------", total- total*(+TotalDiscount)/100)

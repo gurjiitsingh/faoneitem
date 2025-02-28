@@ -21,17 +21,17 @@ import { fetchCategories } from "@/app/action/category/dbOperations";
 //   couponDesc: string | null;
 //   image: string | null;
 // };
-const Page = ({ params }: { params: { id: string } }) => {
-  const minSpend = params.id;
+const Page = () => {
+ // const minSpend = params.id;
  // console.log("addonprodut form  minSpend============", minSpend);
 
-  const [categories, setCategory] = useState<couponType[]>([]);
+  //const [categories, setCategory] = useState<couponType[]>([]);
 
   useEffect(() => {
     async function prefetch() {
-      const catData = await fetchCategories();
+    //  const catData = await fetchCategories();
       //   const offerTypeData = await fetchofferTypes();
-      setCategory(catData);
+     // setCategory(catData);
       // setofferType(offerTypeData);
     }
     prefetch();

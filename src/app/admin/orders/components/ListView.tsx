@@ -19,7 +19,7 @@ import {
 
 import TableRows from "./TableRows";
 import { fetchOrdersMaster } from "@/app/action/orders/dbOperations";
-import { orderMasterDataT } from "@/lib/types";
+import { orderMasterDataT } from "@/lib/types/orderMasterType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 
 const ListView = ({ title }: productTableProps) => {

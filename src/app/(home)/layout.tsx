@@ -9,6 +9,7 @@ import { SideCart } from "@/components/MiniCart/SideCart";
 import { BargerMenu } from "@/components/Bargermenu/Menu";
 import Footer from "@/components/Footer";
 import ChooseProduct from "@/components/ChooseProduct/page";
+import Cart from "@/components/CartBottom/CartBottom"
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,7 +32,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
-           
+          <div className="sticky  bottom-4 flex justify-end pr-3"><Cart /></div> 
           </CartProvider>
         </SiteProvider>
       </body>

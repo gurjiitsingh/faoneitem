@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 //import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { editPorductSchema, TeditdeliverySchema } from "@/lib/types";
+import { editPorductSchema, TeditdeliverySchema } from "@/lib/types/deliveryType";
 //import { Images } from "lucide-react";
 import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchofferTypes } from "@/app/action/brads/dbOperations";
@@ -13,7 +13,7 @@ import {
   editdelivery,
   fetchdeliveryById,
 } from "@/app/action/delivery/dbOperation";
-import {  useRouter, useSearchParams } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import { categoryTypeArr } from "@/lib/types/categoryType";
 
 type Terror = {
@@ -54,7 +54,7 @@ console.log("-----------",id)
       setValue("id", id);
       setValue("name", deliveryData.name);
       setValue("deliveryDesc", deliveryData.deliveryDesc);
-      setValue("oldImgageUrl", deliveryData.image);
+    //  setValue("oldImgageUrl", deliveryData.image);
       setValue("price", deliveryData.price);
       setValue("productCat", deliveryData.productCat);
       setValue("deliveryDistance", deliveryData.deliveryDistance);

@@ -5,26 +5,26 @@ import React, { useEffect, useState } from "react";
 //import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { editPorductSchema, TeditcouponSchema } from "@/lib/types";
+import { editPorductSchema, TeditcouponSchema } from "@/lib/types/couponType";
 //import { Images } from "lucide-react";
 import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchofferTypes } from "@/app/action/brads/dbOperations";
 import {
   editcoupon,
   fetchcouponById,
-} from "@/app/action/coupons/dbOperation";
-import {  useRouter, useSearchParams } from "next/navigation";
+} from "@/app/action/coupon/dbOperation";
+import {  useRouter } from "next/navigation";
 import { categoryTypeArr } from "@/lib/types/categoryType";
 
-type Terror = {
-  name: string | null;
-  price: string | null;
-  isFeatured: string | null;
-  company: string | null;
-  productCat: string | null;
-  couponDesc: string | null;
-  image: string | null;
-};
+// type Terror = {
+//   name: string | null;
+//   price: string | null;
+//   isFeatured: string | null;
+//   company: string | null;
+//   productCat: string | null;
+//   couponDesc: string | null;
+//   image: string | null;
+// };
 const Page = ({ params }: { params: { editform: string } }) => {
   //const searchParams = useSearchParams();
   //const id = searchParams.get("id") || "";

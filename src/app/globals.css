@@ -21,6 +21,12 @@
 .mp{
   @apply px-32 py-32;
 }
+.primary{
+  @apply bg-blue-600;
+}
+.dim{
+  @apply bg-blue-400;
+}
 /* #F2F0EC; */
 /* bg-gradient-to-bl from-[#ffe4e6]  to-[#ccfbf1]  */
 :root {

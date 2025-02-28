@@ -21,7 +21,7 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 const ProccedWithEmail = () => {
   //const { cartData } = useContext(CartContext);
   const {  emailFormToggle, deliveryType } = UseSiteContext();
-  const {  sideBarToggle } = UseSiteContext();
+ // const {  sideBarToggle } = UseSiteContext();
   const {data: session } = useSession();
  // const [addressFound, setAddressFound] = useState(false);
   const router = useRouter();
@@ -71,7 +71,7 @@ const userEmail = session?.user?.email as string;
     //     email: data.email,
     // //  mobNo: data.mobNo,
     //   };
-      emailFormToggle() 
+      emailFormToggle(false) 
      // sideBarToggle()
       router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
       
@@ -91,7 +91,7 @@ const userEmail = session?.user?.email as string;
       <div className="flex flex-col  w-full px-2 p-2">
         <div className="flex justify-end w-full">
         <div >
-        <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{emailFormToggle()}}><IoClose /></button>
+        <button className="px-2 py-1 bg-slate-200 rounded-md w-fit" onClick={()=>{emailFormToggle(false)}}><IoClose /></button>
         </div>
         </div>
         <div className="flex flex-col">
