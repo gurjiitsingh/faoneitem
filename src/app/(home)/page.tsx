@@ -21,8 +21,8 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="overflow-hidden">
-      <div className="container mx-auto py-5 p-1">
+    <div className="overflow-hidden min-h-screen">
+      <div className="container mx-auto pt-7 p-1">
         <div className="w-full flex flex-col md:flex-row flex-wrap gap-3">
           {products.map((product, i) => {
             return <PageProductDetailComponent key={i} product={product} />;
