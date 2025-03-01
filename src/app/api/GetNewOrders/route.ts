@@ -56,7 +56,7 @@ export async function GET(req:NextRequest){
             try {
                 const rawData = fs.readFileSync("./temp/"+file, 'utf-8');
                 const order = JSON.parse(rawData);
-              //  console.log("order--------------------",order)
+                console.log("order--------------------",order)
                 EShopOrders.OrderList.Order.push(order);
             } catch (error) {
                 console.error(`Error reading or parsing ${file}:`, error);
