@@ -1,21 +1,34 @@
 
-import { NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
-// import { json } from 'stream/consumers';
-// import { any, unknown } from 'zod';
+import fs from 'fs';
 
-export async function POST(req:NextRequest,res:NextApiResponse){
+export async function POST(req:NextRequest){
 // THIS API ENDPOINT RECEIVE STATUS
-//  console.log(req.body.trackingstatus)
-//  console.log(req.body.ReadableStream)
- const myResponse =  req.body;
- console.log(myResponse);
-//     const data = fs.readFileSync('temp/order_174019159692.json') ;
-// //console.log(JSON.parse(data));
-// const Filereaded = JSON.parse(data);
+//const myResponse =  req.body;
 
-   //  return NextResponse.json("ok");
-    // return  res.status(200).json({ name: 'Next.js' })
-   //  res.status(200).json({ message: 'ok' })
-    return NextResponse.json({"ok":"kk"});
+const jsonData = await req.json();
+// jsonData.message
+// jsonData.ordersid
+// jsonData.trackingstatus
+//console.log("inside send tracking status--------",jsonData.ordersid);
+
+const filePath = 'temp/order_'+jsonData.ordersid+'.json'; 
+console.log(" file to delete --------",filePath);
+fs.unlinkSync(filePath);
+
+return NextResponse.json({"status":"ok"});
 }
+
+
+
+// function handler(req, res) { 
+//     if (req.method === 'POST') 
+//     { const data = req.body; // This will contain your JSON data
+        
+//      res.status(200).json({ message: "Data received", data }); } 
+//      else 
+//      { 
+//         res.setHeader('Allow', ['POST']); 
+//         res.status(405).end(`Method ${req.method} Not Allowed`);
+//      } 
+//     } 
