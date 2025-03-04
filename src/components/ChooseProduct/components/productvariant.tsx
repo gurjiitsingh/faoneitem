@@ -13,8 +13,8 @@ export default function Productvariant({
   product: ProductType;
   addExtra: ({name,price}:{name:string,price:string}) => void;
 }) {
-  // console.log("----------product data----", product);
-
+ // console.log("----------product data----", product);
+  const price = product.price.replace(/\./g, ',')  
   return (
    
       <div className="w-full  bg-white flex flex-row border-b ">
@@ -34,7 +34,7 @@ export default function Productvariant({
             </div>
             <div className="font-thin">{product.name}</div>
             </div>
-            <div className="font-thin">&euro;{product.price}</div>
+            <div className="font-thin">&euro;{price}</div>
           </div>
         </div>
       </div>

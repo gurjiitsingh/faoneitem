@@ -21,6 +21,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "@firebase/firestore"; //doc, getDoc,
 //import { orderProductsTArr } from "@/lib/type/orderType";
@@ -92,15 +93,17 @@ console.log("zod result", result)
   // const productCat = formData.get("productCat");
   // const productDesc = formData.get("productDesc");
   // const featured = formData.get("isFeatured");
+  const priceValue = formData.get("price") as string;
+  const price = priceValue.replace(/,/g, '.')
   const data = {
     name: formData.get("name"),
-    price: formData.get("price"),
+    price,
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
     baseProductId : formData.get("baseProductId"),
    // image: imageUrl,
     isFeatured: featured_img,
-  };
+  }; 
   //console.log("data to be saved ---", data)
 
   try {
@@ -110,10 +113,39 @@ console.log("zod result", result)
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+
+  updateBaseProduct(formData.get("baseProductId"))
+
   return { message: "Product saved" };
 
 
 }//end of add new product 
+
+async function updateBaseProduct(id){
+  const productUpdtedData = {
+    flavors: true,
+      };
+  //console.log("update data ------------", productUpdtedData)
+  // update database
+  try {
+    const docRef = doc(db,"product", id);
+   await updateDoc(docRef, productUpdtedData);
+
+  // Set the "capital" field of the city 'DC'
+// await updateDoc(washingtonRef, {
+//   capital: true
+// });
+
+//   const cityRef = db.collection('cities').doc('DC');
+
+// // Set the 'capital' field of the city
+// const res = await cityRef.update({capital: true});
+
+  } catch (error) {
+    console.log("error", error);
+    return { errors: "Cannot update" };
+  }
+}
 
 
 

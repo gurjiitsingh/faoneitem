@@ -147,8 +147,9 @@ let data = [] as orderMasterDataT[];
     const q = query(collection(db, "orderMaster"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      const docData = doc.data() as orderMasterDataT;
-      data.push(docData);
+
+      const pData = { id: doc.id, ...doc.data() } as orderMasterDataT;
+      data.push(pData);
     });
     return data;
 

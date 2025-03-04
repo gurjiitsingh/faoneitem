@@ -1,14 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { couponType, newPorductSchema, TnewcouponSchema } from "@/lib/types/couponType";
+import {  TcouponSchema, couponSchema } from "@/lib/types/couponType";
 //import { fetchofferTypes } from "@/app/action/brads/dbOperations";
 import { addNewcoupon } from "@/app/action/coupon/dbOperation";
 //import Images from "@/app/admin/coupons/form/componets/Images";
-import { fetchCategories } from "@/app/action/category/dbOperations";
+//import { fetchCategories } from "@/app/action/category/dbOperations";
 
 //import Input from "./componets/input";
 
@@ -46,17 +46,17 @@ const Page = () => {
     handleSubmit,
     // setError,
     formState: {}, //dirtyFields
-  } = useForm<TnewcouponSchema>({
-    resolver: zodResolver(newPorductSchema),
+  } = useForm<TcouponSchema>({
+    resolver: zodResolver(couponSchema),
   });
 
   //const images = watch("images");
 
-  async function onsubmit(data: TnewcouponSchema) {
+  async function onsubmit(data: TcouponSchema) {
     //typeof(data.featured)
     const formData = new FormData();
 
-    console.log("images---------",data)
+  //  console.log("images---------",data)
     const code = (data.name).toUpperCase()
     formData.append("name", code);
     formData.append("price", data.price);
@@ -74,7 +74,7 @@ const Page = () => {
       // router.push('/admin/coupons')
 
       setValue("name", "");
-     // setValue("couponDesc", "");
+      setValue("couponDesc", "");
       setValue("price", "");
       // setValue("productCat", "");
        setValue("minSpend", "");
@@ -127,7 +127,7 @@ const Page = () => {
     //   }
     // }
 
-    console.log("response in create coupon form ", result);
+   // console.log("response in create coupon form ", result);
   }
 
   return (
@@ -264,7 +264,7 @@ const Page = () => {
                   type="hidden"
                 />
 
-                {/* <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1">
                   <label className="label-style">Description</label>
 
                   <textarea
@@ -278,7 +278,7 @@ const Page = () => {
                   <p className="text-[0.8rem] font-medium text-destructive">
                     {errors.couponDesc && <span>Description is required</span>}
                   </p>
-                </div> */}
+                </div>
 
                 {/* <div className="flex  items-center gap-4 ">
                   <label className="label-style">Normal coupon</label>
@@ -305,7 +305,7 @@ const Page = () => {
                   </span>
                 </div> */}
 
-                <Button type="submit">Add Sauce </Button>
+                <Button type="submit">Add </Button>
               </div>
             </div>
           </div>

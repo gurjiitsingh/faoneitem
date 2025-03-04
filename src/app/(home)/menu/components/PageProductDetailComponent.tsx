@@ -13,9 +13,12 @@ export default function PageProductDetailComponent({
   product: ProductType;
 }) {
   //console.log("----------product data----", product);
+
+  
+  const price = product.price.replace(/\./g, ',')
   const { setShowProductDetailM, setBaseProductId } = UseSiteContext();
   return (
-    <div className="w-full   bg-white flex flex-row border  rounded-2xl " onClick={()=>{ setBaseProductId(product.id!); setShowProductDetailM(false);}}>
+    <div className="w-full   bg-amber-200  flex flex-row border  rounded-2xl " onClick={()=>{ setBaseProductId(product.id!); setShowProductDetailM(false);}}>
       <Link
         href={{
           pathname: `productvariant/${product.id}`,
@@ -31,10 +34,10 @@ export default function PageProductDetailComponent({
       <div className="w-full flex flex-col p-3 justify-between ">
         <div className="w-full flex gap-2 justify-between ">
           <div className="min-w-[250px]">{product.name}</div>
-          <div>&euro;{product.price}</div>
+          <div>&euro;{price}</div>
             <button className="px-2 py-2 bg-blue-500 rounded-full w-fit" onClick={()=>{setShowProductDetailM(false)}}><IoMdAdd size={20} className="text-white " /></button>
         </div>
-        <div className="text-sm">{product.productDesc}</div>
+        <div className="text-sm"><div className="max-w-[240px] max-h-[22px] overflow-hidden">{product.productDesc}</div></div>
     
       </div>
     </div>

@@ -13,7 +13,7 @@ import {
   editProduct,
   fetchProductById,
 } from "@/app/action/products/dbOperation";
-import {  useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { categoryTypeArr } from "@/lib/types/categoryType";
 
 type Terror = {
@@ -25,10 +25,14 @@ type Terror = {
   productDesc: string | null;
   image: string | null;
 };
-const Page = ({ params }: { params: { editform: string } }) => {
+const Page = () => {
   //const searchParams = useSearchParams();
   //const id = searchParams.get("id") || "";
-  const id = params.editform as string;
+  //const id = params.editform as string;
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+  // console.log("this is product edit---------------",id)
 
   const [categories, setCategory] = useState<categoryTypeArr>([]);
   //const [product, setProduct] = useState({});
@@ -46,10 +50,10 @@ const Page = ({ params }: { params: { editform: string } }) => {
     let productData;
     async function prefetch() {
       productData = await fetchProductById(id);
-    console.log("productData.id ----", id)
-    //setProduct(productData);
+      console.log("productData.id ----", id);
+      //setProduct(productData);
       const catData = await fetchCategories();
-    //  console.log("----------------- product data in edit", catData);
+      //  console.log("----------------- product data in edit", catData);
       setCategory(catData);
       setValue("id", id);
       setValue("name", productData.name);
@@ -64,7 +68,6 @@ const Page = ({ params }: { params: { editform: string } }) => {
   }, []);
 
   async function onsubmit(data: TeditProductSchema) {
-       
     const formData = new FormData();
 
     formData.append("name", data.name);
@@ -72,14 +75,14 @@ const Page = ({ params }: { params: { editform: string } }) => {
     formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
     formData.append("image", data.image[0]);
-     formData.append("oldImgageUrl",data.oldImgageUrl!)
+    formData.append("oldImgageUrl", data.oldImgageUrl!);
     // formData.append("isFeatured",data.isFeatured)
     formData.append("id", data.id!);
 
     const result = await editProduct(formData);
 
     if (!result?.errors) {
-      router.push("/admin/products");
+      router.push("/admin/productsbase");
     } else {
       alert("Some thing went wrong");
     }
@@ -131,7 +134,7 @@ const Page = ({ params }: { params: { editform: string } }) => {
   //setSelectedIndex(document.getElementById("ddl_example3"),5);
 
   return (
-    <> 
+    <>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
           <h1>Edit Product</h1>
@@ -143,7 +146,7 @@ const Page = ({ params }: { params: { editform: string } }) => {
                 <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <input {...register("id")} hidden />
-                  <input {...register("oldImgageUrl")} />
+                
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Product Name<span className="text-red-500">*</span>{" "}
@@ -155,8 +158,8 @@ const Page = ({ params }: { params: { editform: string } }) => {
                       )}
                     </span>
                   </div>
-
-                  <div className="flex flex-col gap-1 w-full">
+                  <input {...register("productCat", {value:"all"})}  hidden />
+                  {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
@@ -179,7 +182,7 @@ const Page = ({ params }: { params: { editform: string } }) => {
                         <p>{errors.productCat?.message}</p>
                       )}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
@@ -204,7 +207,7 @@ const Page = ({ params }: { params: { editform: string } }) => {
               </div>
             </div>
             {/* End of left box */}
-
+            <input {...register("oldImgageUrl")} hidden />
             <div className="flex-1 flex flex-col gap-5 h-full">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
@@ -263,7 +266,9 @@ const Page = ({ params }: { params: { editform: string } }) => {
                   </p>
                 </div>
 
-                <Button className="bg-red-500" type="submit">Edit Product </Button>
+                <Button className="bg-red-500" type="submit">
+                  Edit Product{" "}
+                </Button>
               </div>
             </div>
           </div>

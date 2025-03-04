@@ -126,7 +126,7 @@ const Address = () => {
     if (paymentType === "paypal") {
       router.push("/pay");
     }
-    console.log("going to complete--------")
+    //console.log("going to complete--------")
     if (paymentType === "cod") {
       console.log("going to complete")
       router.push(`/complete?paymentypte=Barzahlung`);

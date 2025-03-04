@@ -13,6 +13,8 @@ import { IoClose } from "react-icons/io5";
 import { IoMdAdd, IoMdRemove } from "react-icons/io";
 //import { ButtonDecCartProduct } from "../CartPageComponent/ButtonDecCartProduct";
 import { useCartContext } from '@/store/CartContext';
+import { fetchflavorsProductG } from "@/app/action/flavorsProductG/dbOperation";
+import { flavorsProductGType } from "@/lib/types/flavorsProductGType";
 //import FeaturProductUpdate from "./FeaturProductUpdate";
 type TVariantType = { name: string; price: string };
 
@@ -22,6 +24,7 @@ const ChooseProduct = () => {
   const [productBase, setProductBase] = useState<ProductType>();
   const [cartItem, setCartItem] = useState<ProductType | undefined>();
   const [productSauces, setProductSaces] = useState<ProductType[]>([]);
+  const [ flavorsProductG, setFlavorsProductG] = useState<flavorsProductGType[]>([])
  // const [sauceList, setSauceList] = useState<ProductType[]>([]);
   const [showMessage, setShowMessage ] = useState<boolean>(false);
   const [VariantType, setVariantType] = useState<TVariantType>();
@@ -33,17 +36,22 @@ const ChooseProduct = () => {
  
 
   useEffect(() => {
-    console.log("baseProductId in modal ---- ", baseProductId);
+   // console.log("baseProductId in modal ---- ", baseProductId);
     async function fetchProduct() {
       try {
         const baseProduct = await fetchProductById(baseProductId);
+      //  console.log("-------",baseProduct)
         setProductBase(baseProduct);
         setCartItem(baseProduct);
-        console.log("addon product ---------", baseProduct);
+        //console.log("addon product ---------", baseProduct.flavors);
         const productAddon = await fetchProductByBaseProductId(baseProductId);
         setProductAddon(productAddon);
         const sauces = await fetchProductSauces();
         setProductSaces(sauces);
+        if(!productBase?.flavors){
+          const flavorsProductG = await fetchflavorsProductG();
+          setFlavorsProductG(flavorsProductG);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -62,9 +70,10 @@ const ChooseProduct = () => {
   function itemOrderUpdate() {
     const priceBase = productBase?.price as string;
     const priceVariant = VariantType?.price as string;
+  
    
+    const finalPrice = (parseFloat(priceBase) + parseFloat(priceVariant)).toString();
    
-    const finalPrice = (parseInt(priceBase) + parseInt(priceVariant)).toString();
     const id = baseProductId + "-" + VariantType?.name;
     const pdesc = productBase?.productCat as string;
     const img = productBase?.image as string;
@@ -92,8 +101,8 @@ const ChooseProduct = () => {
     //setCartItem(cartProduct);
   }
 
- 
-
+  const price = productBase?.price.replace(/\./g, ',')  
+//console.log("-------this is product vari", productBase)
   return (
     <>
      
@@ -126,14 +135,14 @@ const ChooseProduct = () => {
               <div className="w-full flex flex-col p-3 justify-between ">
                 <div className="w-full flex gap-2 justify-between ">
                   <div>{productBase?.name}</div>
-                  <div>&euro;{productBase?.price}</div>
+                  <div>&euro;{price}</div>
                 </div>
 
               </div>
             </div>
             <> {showMessage && <div className="z-50 text-red-500 w-full text-sm bg-slate-100 rounded-lg p-3">Wähle dein Flavour</div>}</>
             <div className="flex flex-col  flex-wrap ">
-              {productAddOn.map((product, i) => {
+              {productBase?.flavors&&productAddOn.map((product, i) => {
                 return (
                   <Productvariant
                     key={i}
@@ -141,7 +150,20 @@ const ChooseProduct = () => {
                     addExtra={addExtra}
                   />
                 );
-              })}
+              })} 
+              {!productBase?.flavors&&
+              
+              flavorsProductG.map((product, i) => {
+                return (
+                  <Productvariant
+                    key={i}
+                    product={product}
+                    addExtra={addExtra}
+                  />
+                );
+              })
+              
+              }
             </div>
           {/*  <div className="w-full flex bg-white font-semibold text-[#222] text-center py-3  px-6">
               Add Sauces

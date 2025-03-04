@@ -1,91 +1,91 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-//import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
-
-import {  couponSchema, TcouponSchema } from "@/lib/types/couponType";
-//import { Images } from "lucide-react";
-
-//import { fetchofferTypes } from "@/app/action/brads/dbOperations";
-import { editcoupon, fetchcouponById } from "@/app/action/coupon/dbOperation";
-import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import { flavorsProductGSchema, flavorsProductGSchemaType } from "@/lib/types/flavorsProductGType";
+//import { fetchbrands } from "@/app/action/brads/dbOperations";
+import { addNewProduct } from "@/app/action/flavorsProductG/dbOperation";
+//import Images from "@/app/admin/products/form/componets/Images";
+import { fetchCategories } from "@/app/action/category/dbOperations";
+import { categoryTypeArr } from "@/lib/types/categoryType";
+//import Input from "./componets/input";
 
 // type Terror = {
 //   name: string | null;
 //   price: string | null;
 //   isFeatured: string | null;
-//   company: string | null;
+//  // company: string | null;
 //   productCat: string | null;
-//   couponDesc: string | null;
+//   productDesc: string | null;
 //   image: string | null;
 // };
-const Page = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id") || "";
+const Page = ({ params }: { params: { id: string } }) => {
+  const baseProductId = params.id;
+ // console.log("addonprodut form  baseproductId============", baseProductId);
 
-  //console.log("-----------",id)
-  //const [categories, setCategory] = useState<categoryTypeArr>([]);
-  //const [coupon, setcoupon] = useState({});
-  const router = useRouter();
+  const [categories, setCategory] = useState<categoryTypeArr>([]);
+
+  useEffect(() => {
+    async function prefetch() {
+      const catData = await fetchCategories();
+      //   const brandData = await fetchbrands();
+      setCategory(catData);
+      // setBrand(brandData);
+    }
+    prefetch();
+  }, []);
+
   const {
     register,
     formState: { errors },
     setValue,
+    // control,
+    // watch,
     handleSubmit,
     // setError,
-  } = useForm<TcouponSchema>({
-      resolver: zodResolver(couponSchema),
-    });
-  useEffect(() => {
-    let couponData;
-    async function prefetch() {
-      couponData = await fetchcouponById(id);
-      console.log("couponData.id ----", id);
-      //setcoupon(couponData);
-      //  const catData = await fetchCategories();
-      //  console.log("----------------- coupon data in edit", catData);
-      // setCategory(catData);
-      setValue("id", id);
-      setValue("name", couponData.name);
-      setValue("couponDesc", couponData.couponDesc);
-      //  setValue("oldImgageUrl", couponData.image);
-      setValue("price", couponData.price);
-      setValue("minSpend", couponData.minSpend);
-      // setValue("productCat", couponData.productCat);
-      setValue("isFeatured", couponData.isFeatured);
-    }
+    formState: {}, //dirtyFields
+  } = useForm<flavorsProductGSchemaType>({
+    resolver: zodResolver(flavorsProductGSchema),
+  });
 
-    prefetch();
-  }, []);
+  //const images = watch("images");
 
-  async function onsubmit(data: TcouponSchema) {
+  async function onsubmit(data: flavorsProductGSchemaType) {
+    //typeof(data.featured)
     const formData = new FormData();
-    console.log(data);
+    console.log("flavor global---------",data)
     formData.append("name", data.name);
     formData.append("price", data.price);
+    // formData.append("isFeatured", data.isFeatured);
+    //formData.append("brand", data.brand);
+    // formData.append("weight", data.weight);
+    // formData.append("dimensions", data.dimensions);
     formData.append("productCat", data.productCat);
-    formData.append("couponDesc", data.couponDesc!);
-    formData.append("minSpend", data.minSpend!);
-    // formData.append("image", data.image[0]);
-    //  formData.append("oldImgageUrl",data.oldImgageUrl!)
-    // formData.append("isFeatured",data.isFeatured)
-    formData.append("id", data.id!);
-
-    const result = await editcoupon(formData);
+    formData.append("productDesc", data.productDesc);
+    //formData.append("image", data.image[0]);
+    formData.append("baseProductId", baseProductId);
+    const result = await addNewProduct(formData);
 
     if (!result?.errors) {
-      router.push("/admin/coupon");
+      // router.push('/admin/products')
+
+      setValue("name", "");
+      setValue("productDesc", "");
+      setValue("price", "");
+      setValue("productCat", "Select Category");
+      // setValue("brand", "Select Brand");
+      // setValue("weight", "");
+      // setValue("dimensions", "");
+      setValue("isFeatured", false);
     } else {
       alert("Some thing went wrong");
     }
 
     // if (result.errors) {
     //   // not network error but data validation error
-    //   const errors:Terror = result.errors;
+    //   const errors: Terror = result.errors;
 
     //   if (errors.name) {
     //     setError("name", {
@@ -103,10 +103,10 @@ const Page = () => {
     //       message: errors.productCat,
     //     });
     //   }
-    //   if (errors.couponDesc) {
-    //     setError("couponDesc", {
+    //   if (errors.productDesc) {
+    //     setError("productDesc", {
     //       type: "server",
-    //       message: errors.couponDesc,
+    //       message: errors.productDesc,
     //     });
     //   }
     //   if (errors.image) {
@@ -115,53 +115,61 @@ const Page = () => {
     //       message: errors.image,
     //     });
     //   }
-
-    //    else {
-    //   //  alert("Something went wrong");
+    //   if (errors.company) {
+    //     // setError("company", {
+    //     //   type: "server",
+    //     //   message: errors.company,
+    //     // });
+    //   } else {
+    //     //  alert("Something went wrong");
     //   }
     // }
 
-    // console.log(result);
+    console.log("response in create product form ", result);
   }
-  //   function setSelectedIndex(s, i){
-  // s.options[i-1].selected = true;
-  // return;
-  // }
-  //setSelectedIndex(document.getElementById("ddl_example3"),5);
 
   return (
     <>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Edit coupon</h1>
+          <h1>Create Sauce</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
             <div className="flex-1 flex flex-col gap-y-5">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
-                <h1 className="font-semibold">coupon</h1>
+                <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
-                  <input {...register("id")} hidden />
-                  {/* <input {...register("oldImgageUrl")} /> */}
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
-                      coupon Name<span className="text-red-500">*</span>{" "}
+                    <label className="label-style" htmlFor="product-title">
+                      Name<span className="text-red-500">*</span>{" "}
                     </label>
-                    <input {...register("name")} className="input-style" />
+                    <input
+                      {...register("baseProductId", { value: baseProductId })}
+                      type="hidden"
+                    />
+                    <input
+                      {...register("name")}
+                      className="input-style"
+                      placeholder="Enter Title"
+                    />
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.name?.message && (
                         <span>{errors.name?.message}</span>
                       )}
                     </span>
                   </div>
-                  <input {...register("productCat", { value: "all" })} hidden />
+                  <input
+                    {...register("productCat", { value: "all" })}
+                    type="hidden"
+                  />
                   {/* <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
+                    <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
                     <select {...register("productCat")} className="input-style">
                       <option key="wer" value="Mobile">
-                        Select coupon Category
+                        Select Product Category
                       </option>
                       {categories.map(
                         (category: { name: string }, i: number) => {
@@ -181,13 +189,12 @@ const Page = () => {
                   </div> */}
                 </div>
               </div>
-
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
-                <h1 className="font-semibold">Discount Details</h1>
+                <h1 className="font-semibold">Price Details</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
-                      Discount %<span className="text-red-500">*</span>{" "}
+                    <label className="label-style" htmlFor="product-title">
+                      Price<span className="text-red-500">*</span>{" "}
                     </label>
                     <input
                       {...register("price")}
@@ -201,27 +208,7 @@ const Page = () => {
                     </span>
                   </div>
                 </div>
-
-                <div className="flex w-full flex-col gap-2  my-15 ">
-                <div className="flex flex-col gap-1 w-full">
-                  <label className="label-style" htmlFor="coupon-title">
-                    Min spend<span className="text-red-500">*</span>{" "}
-                  </label>
-                  <input
-                    {...register("minSpend")}
-                    className="input-style"
-                    placeholder="Enter min spend"
-                  />
-                  <span className="text-[0.8rem] font-medium text-destructive">
-                    {errors.minSpend?.message && (
-                      <span>{errors.minSpend?.message}</span>
-                    )}
-                  </span>
-                </div>
               </div>
-              </div>
-
-             
             </div>
             {/* End of left box */}
 
@@ -229,7 +216,7 @@ const Page = () => {
               {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">coupon Image</label>
+                  <label className="label-style">Featured Image</label>
                   <input
                     {...register("image", { required: true })}
                     type="file"
@@ -237,7 +224,7 @@ const Page = () => {
                   />
 
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.image && <span>Select coupon image</span>}
+                    {errors.image && <span>Select product image</span>}
                   </p>
                 </div>
               </div> */}
@@ -246,10 +233,10 @@ const Page = () => {
                 <h1 className="font-semibold">General Detail</h1>
 
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">coupon description</label>
+                  <label className="label-style">Description</label>
 
                   <textarea
-                    {...register("couponDesc", {
+                    {...register("productDesc", {
                       validate: {
                         pattern: (value: string) => !/[!]/.test(value),
                       },
@@ -257,35 +244,36 @@ const Page = () => {
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.couponDesc && (
-                      <span>coupon description is required</span>
-                    )}
+                    {errors.productDesc && <span>Description is required</span>}
                   </p>
                 </div>
 
                 {/* <div className="flex  items-center gap-4 ">
-                  <label className="label-style">Normal coupon</label>
-                  <input {...register("isFeatured")} type="radio" value="false" />
+                  <label className="label-style">Normal Product</label>
+                  <input {...register("featured")} type="radio" value="false" />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.isFeatured?.message && (
-                      <p>{errors.isFeatured?.message}</p>
+                    {errors.featured?.message && (
+                      <p>{errors.featured?.message}</p>
                     )}
                   </p>
                 </div> */}
 
-                <div className="flex    items-center gap-4">
-                  <label className="label-style">Featured coupon</label>
+                <input
+                  {...register("isFeatured", { value: false })}
+                  type="hidden"
+                />
+
+                {/* <div className="flex    items-center gap-4">
+                  <label className="label-style">Featured Product</label>
                   <input {...register("isFeatured")} type="checkbox" />
-                  <p className="text-[0.8rem] font-medium text-destructive">
+                  <span className="text-[0.8rem] font-medium text-destructive">
                     {errors.isFeatured?.message && (
                       <p>{errors.isFeatured?.message}</p>
                     )}
-                  </p>
-                </div>
+                  </span>
+                </div> */}
 
-                <Button className="bg-red-500" type="submit">
-                  Edit coupon{" "}
-                </Button>
+                <Button type="submit">Add Sauce </Button>
               </div>
             </div>
           </div>

@@ -25,11 +25,11 @@ export const BargerMenu = () => {
             <motion.div
               {...framerMenuBackground}
               aria-hidden="true"
-              className="fixed  mx-auto   rounded-[30px] top-28 z-50  backdrop-blur-sm"
+              className="fixed  mx-auto   rounded-b-3xl top-28 z-50  backdrop-blur-sm"
             ></motion.div>
             <motion.div
               {...framerMenuPanel}
-              className="fixed   mx-auto right-5 left-5 rounded-[30px] top-28 p-6  z-50   bg-[#9aae58]"
+              className="fixed   mx-auto right-5 left-5 rounded-b-3xl top-0 px-6 pt-12 pb-3  z-50   primary"
               ref={ref}
               aria-label="Menu"
             >
@@ -55,7 +55,7 @@ export const BargerMenu = () => {
                         href={href}
                         className="flex items-center justify-between gap-5 p-5 transition-all border-b-2 hover:bg-zinc-400 border-zinc-100"
                       >
-                        <motion.span {...framerText(idx)}>{title}</motion.span>
+                        <motion.span {...framerText(idx)} className='text-white'>{title}</motion.span>
                         <motion.div {...framerIcon}>
                           <Icon className="text-2xl" />
                         </motion.div>

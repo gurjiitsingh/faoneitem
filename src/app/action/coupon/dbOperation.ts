@@ -7,6 +7,7 @@ import { db } from "@/lib/firebaseConfig";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -14,17 +15,20 @@ import {
   setDoc,
   where,
 } from "@firebase/firestore"; //doc, getDoc,
-import { couponType, newPorductSchema, editPorductSchema, } from "@/lib/types/couponType";
-
+import {
+  couponType,
+  couponSchema,
+  
+} from "@/lib/types/couponType";
 
 export async function addNewcoupon(formData: FormData) {
   let featured_img: boolean = false;
   console.log(formData.get("name"));
   console.log(formData.get("price"));
-   console.log(formData.get("minSpend"));
-   console.log(formData.get("productCat"));
+  console.log(formData.get("minSpend"));
+  console.log(formData.get("productCat"));
   console.log(formData.get("couponDesc"));
- // console.log(formData.get("image"));
+  // console.log(formData.get("image"));
   console.log(formData.get("isFeatured"));
 
   if (formData.get("isFeatured") === "ture") featured_img = true;
@@ -41,7 +45,7 @@ export async function addNewcoupon(formData: FormData) {
     isFeatured: featured_img,
   };
 
-  const result = newPorductSchema.safeParse(receivedData);
+  const result = couponSchema.safeParse(receivedData);
   console.log("zod result", result);
   let zodErrors = {};
   if (!result.success) {
@@ -55,7 +59,7 @@ export async function addNewcoupon(formData: FormData) {
   }
 
   //const image = formData.get("image");
- // let imageUrl;
+  // let imageUrl;
   // try {
   //   imageUrl = await upload(image);
   //   console.log(imageUrl);
@@ -65,7 +69,7 @@ export async function addNewcoupon(formData: FormData) {
   //   return { errors: "image cannot uploaded" };
   // }
 
- // imageUrl = "/public/com.jpg";
+  // imageUrl = "/public/com.jpg";
 
   // const name = formData.get("name");
   // const price = formData.get("price");
@@ -91,59 +95,24 @@ export async function addNewcoupon(formData: FormData) {
     console.error("Error adding document: ", e);
   }
   return { message: "coupon saved" };
-
 } //end of add new coupon
 
-
-
 type rt = {
-  errors: string;
+  success: string;
+ 
+  
 };
 
-export async function deletecoupon(
-  id: string,
-  oldImgageUrl: string
-): Promise<rt> {
-  console.log("out put ", id, oldImgageUrl);
-  return { errors: "Delete not implimented jet" };
+export async function deletecoupon(id: string): Promise<rt> {
+  const docRef = doc(db, "coupon", id);
+  await deleteDoc(docRef);
+  return { success: "Delete implimented" };
 }
-
-// export async function deletecoupon(id:string, oldImgageUrl:string) {
-
-//   const result = await db.delete(coupon).where(eq(coupon.id, id));
-
-//   if (result?.rowCount === 1) {
-
-//     const imageUrlArray = oldImgageUrl.split("/");
-//     console.log(imageUrlArray[imageUrlArray.length - 1]);
-//     const imageName =
-//       imageUrlArray[imageUrlArray.length - 2] +
-//       "/" +
-//       imageUrlArray[imageUrlArray.length - 1];
-
-//     const image_public_id = imageName.split(".")[0];
-//     console.log(image_public_id);
-//     try {
-//       let deleteResult = await deleteImage(image_public_id);
-//       console.log("image delete data", deleteResult);
-//     } catch (error) {
-//      // console.log(error);
-//       return {errors:"Somthing went wrong, can not delete coupon picture"}
-//     }
-
-//        return {
-//       message: { sucess: "Deleted coupon" },
-//     };
-//   }else{
-//     return {errors:"Somthing went wrong, can not delete coupon"}
-//   }
-
-// }
 
 export async function editcoupon(formData: FormData) {
   const id = formData.get("id") as string;
   const image = formData.get("image");
-  const oldImgageUrl = formData.get("oldImgageUrl") as string;
+ // const oldImgageUrl = formData.get("oldImgageUrl") as string;
   const featured_img: boolean = false;
   // featured_img = formData.get("oldImgageUrl");
 
@@ -152,11 +121,12 @@ export async function editcoupon(formData: FormData) {
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     couponDesc: formData.get("couponDesc"),
-    image: formData.get("image"),
+    minSpend:formData.get("minSpend"),
+   // image: formData.get("image"),
     isFeatured: featured_img,
   };
 
-  const result = editPorductSchema.safeParse(receivedData);
+  const result = couponSchema.safeParse(receivedData);
 
   let zodErrors = {};
   if (!result.success) {
@@ -169,46 +139,47 @@ export async function editcoupon(formData: FormData) {
       : { success: true };
   }
 
-  let imageUrl;
-  if (image === "undefined" || image === null) {
-    imageUrl = oldImgageUrl;
-    //  console.log("----------------not change image")
-  } else {
-    //  console.log("---------------- change image")
-    try {
-      imageUrl = (await upload(image)) as string;
-      console.log(imageUrl);
-    } catch (error) {
-      //  throw new Error("error")
-      console.log(error);
-      return { errors: "image cannot uploaded" };
-    }
-    const d = false;
-    if (d) {
-      const imageUrlArray = oldImgageUrl?.split("/");
-      console.log("old image url", imageUrlArray);
-      const imageName =
-        imageUrlArray[imageUrlArray.length - 2] +
-        "/" +
-        imageUrlArray[imageUrlArray.length - 1];
+  // let imageUrl;
+  // if (image === "undefined" || image === null) {
+  //   imageUrl = oldImgageUrl;
+  //   //  console.log("----------------not change image")
+  // } else {
+  //   //  console.log("---------------- change image")
+  //   try {
+  //     imageUrl = (await upload(image)) as string;
+  //     console.log(imageUrl);
+  //   } catch (error) {
+  //     //  throw new Error("error")
+  //     console.log(error);
+  //     return { errors: "image cannot uploaded" };
+  //   }
+  //   const d = false;
+  //   if (d) {
+  //     const imageUrlArray = oldImgageUrl?.split("/");
+  //     console.log("old image url", imageUrlArray);
+  //     const imageName =
+  //       imageUrlArray[imageUrlArray.length - 2] +
+  //       "/" +
+  //       imageUrlArray[imageUrlArray.length - 1];
 
-      const image_public_id = imageName.split(".")[0];
-      console.log("image_public_id ---", image_public_id);
-      try {
-        const deleteResult = await deleteImage(image_public_id);
-        console.log(deleteResult);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  //     const image_public_id = imageName.split(".")[0];
+  //     console.log("image_public_id ---", image_public_id);
+  //     try {
+  //       const deleteResult = await deleteImage(image_public_id);
+  //       console.log(deleteResult);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
 
   const couponUpdtedData = {
     name: formData.get("name"),
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     couponDesc: formData.get("couponDesc"),
-    image: imageUrl,
+    minSpend:formData.get("minSpend"),
+    //image: imageUrl,
     isFeatured: featured_img,
   };
   //console.log("update data ------------", couponUpdtedData)
@@ -223,13 +194,6 @@ export async function editcoupon(formData: FormData) {
 }
 
 export async function fetchcoupon(): Promise<couponType[]> {
-  // const result = await getDocs(collection(db, "coupon"))
-  // let data = [];
-  // result.forEach((doc) => {
-  //   data.push({id:doc.id, ...doc.data()});
-  // });
-  //  return data;
-
   const result = await getDocs(collection(db, "coupon"));
 
   let data = [] as couponType[];
@@ -258,10 +222,7 @@ export async function fetchcouponByCode(
   condname: string
 ): Promise<couponType[]> {
   let data = [] as couponType[];
-  const q = query(
-    collection(db, "coupon"),
-    where("name", "==", condname)
-  );
+  const q = query(collection(db, "coupon"), where("name", "==", condname));
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {

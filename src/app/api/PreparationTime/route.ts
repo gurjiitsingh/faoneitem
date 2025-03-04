@@ -3,6 +3,7 @@ import { NextApiResponse } from "next";
 import { NextRequest } from "next/server";
 // import { json } from 'stream/consumers';
 // import { any, unknown } from 'zod';
+export const revalidate = 0;
 
 export async function PUT(req:NextRequest,res:NextApiResponse){
 

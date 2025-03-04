@@ -7,14 +7,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editPorductSchema, TeditdeliverySchema } from "@/lib/types/deliveryType";
 //import { Images } from "lucide-react";
-import { fetchCategories } from "@/app/action/category/dbOperations";
+//import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchofferTypes } from "@/app/action/brads/dbOperations";
 import {
   editdelivery,
   fetchdeliveryById,
 } from "@/app/action/delivery/dbOperation";
-import {  useRouter } from "next/navigation";
-import { categoryTypeArr } from "@/lib/types/categoryType";
+import {  useRouter, useSearchParams } from "next/navigation";
+
 
 type Terror = {
   name: string | null;
@@ -25,12 +25,12 @@ type Terror = {
   deliveryDesc: string | null;
   image: string | null;
 };
-const Page = ({ params }: { params: { editform: string } }) => {
-  //const searchParams = useSearchParams();
-  //const id = searchParams.get("id") || "";
-  const id = params.editform as string;
-console.log("-----------",id)
-  const [categories, setCategory] = useState<categoryTypeArr>([]);
+const Page = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+ // const id = params.editform as string;
+//console.log("-----------",id)
+ // const [categories, setCategory] = useState<categoryTypeArr>([]);
   //const [delivery, setdelivery] = useState({});
   const router = useRouter();
   const {
@@ -46,15 +46,16 @@ console.log("-----------",id)
     let deliveryData;
     async function prefetch() {
       deliveryData = await fetchdeliveryById(id);
-    console.log("deliveryData.id ----", id)
+    console.log("deliveryData.id ----", deliveryData)
     //setdelivery(deliveryData);
-      const catData = await fetchCategories();
+    //  const catData = await fetchCategories();
     //  console.log("----------------- delivery data in edit", catData);
-      setCategory(catData);
+    //  setCategory(catData);
       setValue("id", id);
       setValue("name", deliveryData.name);
       setValue("deliveryDesc", deliveryData.deliveryDesc);
-    //  setValue("oldImgageUrl", deliveryData.image);
+      setValue("minSpend", deliveryData.minSpend);
+          //  setValue("oldImgageUrl", deliveryData.image);
       setValue("price", deliveryData.price);
       setValue("productCat", deliveryData.productCat);
       setValue("deliveryDistance", deliveryData.deliveryDistance);
@@ -65,21 +66,23 @@ console.log("-----------",id)
 
   async function onsubmit(data: TeditdeliverySchema) {
        
+    console.log('-----------',data)
     const formData = new FormData();
 
     formData.append("name", data.name);
     formData.append("price", data.price);
     formData.append("productCat", data.productCat);
     formData.append("deliveryDesc", data.deliveryDesc);
-    formData.append("image", data.image[0]);
-     formData.append("oldImgageUrl",data.oldImgageUrl!)
-    // formData.append("deliveryDistance",data.deliveryDistance)
+   // formData.append("image", data.image[0]);
+    // formData.append("oldImgageUrl",data.oldImgageUrl!)
+     formData.append("minSpend", data.minSpend!);
+     formData.append("deliveryDistance",data.deliveryDistance!)
     formData.append("id", data.id!);
 
     const result = await editdelivery(formData);
 
     if (!result?.errors) {
-      router.push("/admin/deliverys");
+      router.push("/admin/delivery");
     } else {
       alert("Some thing went wrong");
     }
@@ -156,7 +159,7 @@ console.log("-----------",id)
                     </span>
                   </div>
 
-                  <div className="flex flex-col gap-1 w-full">
+                  {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="delivery-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
@@ -179,7 +182,7 @@ console.log("-----------",id)
                         <p>{errors.productCat?.message}</p>
                       )}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
@@ -201,12 +204,36 @@ console.log("-----------",id)
                     </span>
                   </div>
                 </div>
+
+                <div className="flex w-full flex-col gap-2  my-15 ">
+                  <div className="flex flex-col gap-1 w-full">
+                    <label className="label-style" htmlFor="delivery-title">
+                      Min spend<span className="text-red-500">*</span>{" "}
+                    </label>
+                    <input
+                      {...register("minSpend")}
+                      className="input-style"
+                      placeholder="Enter min spend"
+                    />
+                    <span className="text-[0.8rem] font-medium text-destructive">
+                      {errors.minSpend?.message && (
+                        <span>{errors.minSpend?.message}</span>
+                      )}
+                    </span>
+                  </div>
+                </div>
+
               </div>
+
+
+              
             </div>
             {/* End of left box */}
 
+            
+
             <div className="flex-1 flex flex-col gap-5 h-full">
-              <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
+              {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
                   <label className="label-style">delivery Image</label>
@@ -220,10 +247,27 @@ console.log("-----------",id)
                     {errors.image && <span>Select delivery image</span>}
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
+
+                <div className="flex flex-col gap-1 w-full">
+                  <label className="label-style" htmlFor="delivery-title">
+                    Delivery distance<span className="text-red-500">*</span>{" "}
+                  </label>
+                  <input
+                    {...register("deliveryDistance")}
+                    className="input-style"
+                    placeholder="Enter distance"
+                  />
+                  <span className="text-[0.8rem] font-medium text-destructive">
+                    {errors.deliveryDistance?.message && (
+                      <span>{errors.deliveryDistance?.message}</span>
+                    )}
+                  </span>
+                </div>
+
 
                 <div className="flex flex-col gap-1">
                   <label className="label-style">delivery description</label>
@@ -243,17 +287,9 @@ console.log("-----------",id)
                   </p>
                 </div>
 
-                {/* <div className="flex  items-center gap-4 ">
-                  <label className="label-style">Normal delivery</label>
-                  <input {...register("deliveryDistance")} type="radio" value="false" />
-                  <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.deliveryDistance?.message && (
-                      <p>{errors.deliveryDistance?.message}</p>
-                    )}
-                  </p>
-                </div> */}
+             
 
-                <div className="flex    items-center gap-4">
+                {/* <div className="flex    items-center gap-4">
                   <label className="label-style">Featured delivery</label>
                   <input {...register("deliveryDistance")} type="checkbox" />
                   <p className="text-[0.8rem] font-medium text-destructive">
@@ -261,7 +297,7 @@ console.log("-----------",id)
                       <p>{errors.deliveryDistance?.message}</p>
                     )}
                   </p>
-                </div>
+                </div> */}
 
                 <Button className="bg-red-500" type="submit">Edit delivery </Button>
               </div>

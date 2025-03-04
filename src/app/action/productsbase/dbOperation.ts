@@ -93,9 +93,12 @@ export async function addNewProduct(formData: FormData) {
   // const productCat = formData.get("productCat");
   // const productDesc = formData.get("productDesc");
   // const featured = formData.get("isFeatured");
+const priceValue = formData.get("price") as string;
+  const price = priceValue.replace(/,/g, '.')
   const data = {
     name: formData.get("name"),
-    price: formData.get("price"),
+    price,
+    flavors: false,
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
     image: imageUrl,

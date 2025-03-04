@@ -1,36 +1,30 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
-
-//import Description from "./componets/Description";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { editPorductSchema, TeditProductSchema } from "@/lib/types";
-//import { Images } from "lucide-react";
-import { fetchCategories } from "@/app/action/category/dbOperations";
+//import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
-import {
-  editProduct,
-  fetchProductById,
-} from "@/app/action/products/dbOperation";
+import {  saucePorductSchema, sauceProductType } from "@/lib/types/productSaucesType";
 import {  useRouter, useSearchParams } from "next/navigation";
-import { categoryTypeArr } from "@/lib/types/categoryType";
+import { editProduct, fetchProductById } from "@/app/action/productsauces/dbOperation";
 
-type Terror = {
-  name: string | null;
-  price: string | null;
-  isFeatured: string | null;
-  company: string | null;
-  productCat: string | null;
-  productDesc: string | null;
-  image: string | null;
-};
-const Page = ({ params }: { params: { editform: string } }) => {
-  //const searchParams = useSearchParams();
-  //const id = searchParams.get("id") || "";
-  const id = params.editform as string;
-console.log("-----------",id)
-  const [categories, setCategory] = useState<categoryTypeArr>([]);
+
+// type Terror = {
+//   name: string | null;
+//   price: string | null;
+//   isFeatured: string | null;
+//   company: string | null;
+//   productCat: string | null;
+//   productDesc: string | null;
+//   image: string | null;
+// };
+const Page = () => {
+  const searchParams = useSearchParams();
+ const id = searchParams.get("id") || "";
+  // const id = params.id as string;
+
+  //const [categories, setCategory] = useState<categoryTypeArr>([]);
   //const [product, setProduct] = useState({});
   const router = useRouter();
   const {
@@ -39,47 +33,48 @@ console.log("-----------",id)
     setValue,
     handleSubmit,
     // setError,
-  } = useForm<TeditProductSchema>({
-    resolver: zodResolver(editPorductSchema),
+  } = useForm<sauceProductType>({
+    resolver: zodResolver(saucePorductSchema),
   });
   useEffect(() => {
     let productData;
     async function prefetch() {
       productData = await fetchProductById(id);
-    console.log("productData.id ----", id)
+   // console.log("productData.id ----", id)
     //setProduct(productData);
-      const catData = await fetchCategories();
+    //  const catData = await fetchCategories();
     //  console.log("----------------- product data in edit", catData);
-      setCategory(catData);
+    //  setCategory(catData);
       setValue("id", id);
       setValue("name", productData.name);
       setValue("productDesc", productData.productDesc);
-      setValue("oldImgageUrl", productData.image);
+    //  setValue("oldImgageUrl", productData.image);
       setValue("price", productData.price);
-      setValue("productCat", productData.productCat);
-      setValue("isFeatured", productData.isFeatured);
+     // setValue("productCat", productData.productCat);
+     // setValue("isFeatured", productData.isFeatured);
     }
 
     prefetch();
   }, []);
 
-  async function onsubmit(data: TeditProductSchema) {
+  async function onsubmit(data: sauceProductType) {
        
     const formData = new FormData();
+    //console.log("---------formdata", data)
 
-    formData.append("name", data.name);
-    formData.append("price", data.price);
-    formData.append("productCat", data.productCat);
-    formData.append("productDesc", data.productDesc);
-    formData.append("image", data.image[0]);
-     formData.append("oldImgageUrl",data.oldImgageUrl!)
-    // formData.append("isFeatured",data.isFeatured)
-    formData.append("id", data.id!);
+     formData.append("name", data.name);
+     formData.append("price", data.price);
+     formData.append("productCat", data.productCat);
+     formData.append("productDesc", data.productDesc);
+    // formData.append("image", data.image[0]);
+    //  formData.append("oldImgageUrl",data.oldImgageUrl!)
+    // // formData.append("isFeatured",data.isFeatured)
+     formData.append("id", data.id!);
 
-    const result = await editProduct(formData);
+     const result = await editProduct(formData);
 
     if (!result?.errors) {
-      router.push("/admin/products");
+      router.push("/admin/productsauces");
     } else {
       alert("Some thing went wrong");
     }
@@ -134,7 +129,7 @@ console.log("-----------",id)
     <> 
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Edit Product</h1>
+          <h1>Edit Form</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
@@ -143,7 +138,7 @@ console.log("-----------",id)
                 <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <input {...register("id")} hidden />
-                  <input {...register("oldImgageUrl")} />
+                  {/* <input {...register("oldImgageUrl")} /> */}
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Product Name<span className="text-red-500">*</span>{" "}
@@ -155,8 +150,8 @@ console.log("-----------",id)
                       )}
                     </span>
                   </div>
-
-                  <div className="flex flex-col gap-1 w-full">
+                  <input {...register("productCat",  { value: "all" }) } hidden />
+                  {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
@@ -179,7 +174,7 @@ console.log("-----------",id)
                         <p>{errors.productCat?.message}</p>
                       )}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
@@ -206,7 +201,7 @@ console.log("-----------",id)
             {/* End of left box */}
 
             <div className="flex-1 flex flex-col gap-5 h-full">
-              <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
+              {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
                   <label className="label-style">Product Image</label>
@@ -220,7 +215,7 @@ console.log("-----------",id)
                     {errors.image && <span>Select product image</span>}
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
@@ -253,7 +248,7 @@ console.log("-----------",id)
                   </p>
                 </div> */}
 
-                <div className="flex    items-center gap-4">
+                {/* <div className="flex    items-center gap-4">
                   <label className="label-style">Featured Product</label>
                   <input {...register("isFeatured")} type="checkbox" />
                   <p className="text-[0.8rem] font-medium text-destructive">
@@ -261,9 +256,9 @@ console.log("-----------",id)
                       <p>{errors.isFeatured?.message}</p>
                     )}
                   </p>
-                </div>
+                </div> */}
 
-                <Button className="bg-red-500" type="submit">Edit Product </Button>
+                <Button className="bg-red-500" type="submit">Edit </Button>
               </div>
             </div>
           </div>

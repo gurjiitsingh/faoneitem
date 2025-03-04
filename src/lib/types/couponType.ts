@@ -46,7 +46,7 @@ export type couponType = {
 
 // export type TcouponSchemaArr = TcouponSchema[];
 
-export const newPorductSchema = z.object({
+export const couponSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(4, { message: "coupon name is required" }),
   price: z
@@ -71,9 +71,9 @@ export const newPorductSchema = z.object({
   // ),
 });
 
-export type TnewcouponSchema = z.infer<typeof newPorductSchema>;
+export type TcouponSchema = z.infer<typeof couponSchema>;
 
-export type TnewcouponSchemaArr = TnewcouponSchema[];
+
 export type ShowPorductT = {
   id: string;
   name: string;
@@ -85,7 +85,7 @@ export type ShowPorductT = {
   image: string;
 };
 
-export const editPorductSchema = z.object({
+export const editCouponSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(4, { message: "coupon name is required" }),
   price: z
@@ -109,7 +109,7 @@ export const editPorductSchema = z.object({
   // ),
 });
 
-export type TeditcouponSchema = z.infer<typeof editPorductSchema>;
+export type TeditcouponSchema = z.infer<typeof editCouponSchema>;
 
 //export default couponSchema;
 

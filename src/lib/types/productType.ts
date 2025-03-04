@@ -32,6 +32,7 @@ export type ProductType = {
   purchaseSession: string | null;
   quantity: number | null;
   status: string | null;
+  flavors:boolean;
 };
 
 
@@ -79,7 +80,8 @@ export const newPorductSchema = z.object({
   name: z.string().min(4, { message: "Product name is required" }),
   price: z
     .string()
-    .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
+    .refine((value) =>/[.,\d]+/.test(value), "Invalid product price"),
+   // .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
   productCat: z.string().min(1, { message: "Please select category" }),
   productDesc: z
     .string()
@@ -118,7 +120,8 @@ export const editPorductSchema = z.object({
   name: z.string().min(4, { message: "Product name is required" }),
   price: z
     .string()
-    .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
+    .refine((value) =>/[.,\d]+/.test(value), "Invalid product price"),
+   // .refine((value) => /^\d+$/.test(value), "Invalid product price"), // Refinement
   productCat: z.string().min(1, { message: "Please select category" }),
   productDesc: z
     .string()

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,8 +8,8 @@ import { newPorductSchema, TnewProductSchema } from "@/lib/types";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
 import { addNewProduct } from "@/app/action/productsbase/dbOperation";
 //import Images from "@/app/admin/products/form/componets/Images";
-import { fetchCategories } from "@/app/action/category/dbOperations";
-import { categoryTypeArr } from "@/lib/types/categoryType";
+// import { fetchCategories } from "@/app/action/category/dbOperations";
+// import { categoryTypeArr } from "@/lib/types/categoryType";
 //import Input from "./componets/input";
 
 // type Terror = {
@@ -22,17 +22,17 @@ import { categoryTypeArr } from "@/lib/types/categoryType";
 //   image: string | null;
 // };
 const Page = () => {
-  const [categories, setCategory] = useState<categoryTypeArr>([]);
+  //const [categories, setCategory] = useState<categoryTypeArr>([]);
 
-  useEffect(() => {
-    async function prefetch() {
-      const catData = await fetchCategories();
-      //   const brandData = await fetchbrands();
-      setCategory(catData);
-      // setBrand(brandData);
-    }
-    prefetch();
-  }, []);
+  // useEffect(() => {
+  //   async function prefetch() {
+  //     const categoriesData = await fetchCategories();
+  //     //   const brandData = await fetchbrands();
+  //     setCategory(categoriesData);
+  //     // setBrand(brandData);
+  //   }
+  //   prefetch();
+  // }, []);
 
   const {
     register,
@@ -52,7 +52,7 @@ const Page = () => {
   async function onsubmit(data: TnewProductSchema) {
     //typeof(data.featured)
     const formData = new FormData();
-    console.log("images---------", data);
+   // console.log("images---------", data);
     formData.append("name", data.name);
     formData.append("price", data.price);
     // formData.append("isFeatured", data.isFeatured);

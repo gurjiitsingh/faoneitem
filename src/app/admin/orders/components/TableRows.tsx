@@ -12,10 +12,10 @@ import { orderMasterDataT } from "@/lib/types/orderMasterType";
 import Link from "next/link";
 function TableRows({ order }:{order:orderMasterDataT}){
 
-
+  
 
   return (
-    <TableRow key={order.userId} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
+    <TableRow className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
        <TableCell>{order.userId}--{order.customerName}</TableCell>
       <TableCell>{order.time}</TableCell>
       <TableCell>completed</TableCell>

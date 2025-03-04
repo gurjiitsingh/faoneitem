@@ -16,6 +16,7 @@ import { db } from "@/lib/firebaseConfig";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -123,43 +124,40 @@ type rt = {
   errors:string;
 }
 
-export async function deleteProduct(id: string, oldImgageUrl: string):Promise<rt> {
 
-console.log("out put ", id, oldImgageUrl)
-  return {"errors":"Delete not implimented jet"};
+
+export async function deleteProduct(id:string, oldImgageUrl:string) {
+
+ const docRef = doc(db, "product", id);
+   await deleteDoc(docRef);                     
+   //return { errors: "Delete not implimented jet" };
+   // if (result?.rowCount === 1) {
+
+    const imageUrlArray = oldImgageUrl.split("/");
+    console.log(imageUrlArray[imageUrlArray.length - 1]);
+    const imageName =
+      imageUrlArray[imageUrlArray.length - 2] +
+      "/" +
+      imageUrlArray[imageUrlArray.length - 1];
+
+    const image_public_id = imageName.split(".")[0];
+    console.log(image_public_id);
+    try {
+      const deleteResult = await deleteImage(image_public_id);
+      console.log("image delete data", deleteResult);
+    } catch (error) {
+      console.log(error);
+      return {errors:"Somthing went wrong, can not delete product picture"}
+    }
+
+       return {
+      message: { sucess: "Deleted product" },
+    };
+  // }else{
+  //   return {errors:"Somthing went wrong, can not delete product"}
+  // }
+
 }
-
-// export async function deleteProduct(id:string, oldImgageUrl:string) {
-
-//   const result = await db.delete(product).where(eq(product.id, id));
-
-//   if (result?.rowCount === 1) {
-
-//     const imageUrlArray = oldImgageUrl.split("/");
-//     console.log(imageUrlArray[imageUrlArray.length - 1]);
-//     const imageName =
-//       imageUrlArray[imageUrlArray.length - 2] +
-//       "/" +
-//       imageUrlArray[imageUrlArray.length - 1];
-
-//     const image_public_id = imageName.split(".")[0];
-//     console.log(image_public_id);
-//     try {
-//       let deleteResult = await deleteImage(image_public_id);
-//       console.log("image delete data", deleteResult);
-//     } catch (error) {
-//      // console.log(error);
-//       return {errors:"Somthing went wrong, can not delete product picture"}
-//     }
-
-//        return {
-//       message: { sucess: "Deleted product" },
-//     };
-//   }else{
-//     return {errors:"Somthing went wrong, can not delete product"}
-//   }
-
-// }
 
 export async function editProduct(formData: FormData) {
   const id = formData.get("id") as string;
@@ -271,6 +269,7 @@ export async function fetchProducts(): Promise<ProductType[]> {
 }
 
 export async function fetchProductById(id: string): Promise<ProductType> {
+  console.log("tis is sauce action-------------",id)
   const docRef = doc(db, "product", id);
   const docSnap = await getDoc(docRef);
   let productData = {} as ProductType;

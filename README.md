@@ -7,8 +7,18 @@ Delivery: delivery cost, zone
 
 table(delivery):    zip list -- cost  --- distance km
 
+## modification
+change . to comma  (,)
 
-change . to comma
+get only dot, comma, and numbers
+.refine((value) =>/[.,\d]+/.test(value), "Invalid product price"),
+comma to dot: 
+const priceValue = formData.get("price") as string;
+  const price = priceValue.replace(/,/g, '.')
+
+dot to comma:
+const price = product.price.replace(/\./g, ',')  
+
 
 
 Bezahlen  pay

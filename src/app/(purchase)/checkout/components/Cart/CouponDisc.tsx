@@ -12,7 +12,7 @@ export default function CouponDisc({total}:{total:number}) {
               </div>
               <div className="flex gap-1">
                 - <span>&#8364;</span>{" "}
-                <span>{(+total * +couponDisc?.price) / 100}</span>
+                <span>{((+total * +couponDisc?.price) / 100).toFixed(2).replace(/\./g, ',') }</span>
               </div>
             </div>}
     </>

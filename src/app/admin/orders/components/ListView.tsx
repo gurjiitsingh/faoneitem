@@ -40,7 +40,7 @@ const ListView = ({ title }: productTableProps) => {
     fetchOrder();
   
   }, []);
- 
+
   return (
     <>
       <div className="mt-10 p-2">
@@ -63,7 +63,7 @@ const ListView = ({ title }: productTableProps) => {
           <TableBody>
             {orderData?.map((order) => {
               return (
-                <TableRows key={order.userId} order={order} />
+                <TableRows key={order.id} order={order} />
               );
             })}
           </TableBody>

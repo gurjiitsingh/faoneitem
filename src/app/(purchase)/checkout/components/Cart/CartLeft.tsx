@@ -30,7 +30,8 @@ export default function CartLeft() {
     // total += parseInt(item.quantity) * +parseFloat(item.price);
   });
 
-  let endPrice = total;
+  total = +total.toFixed(2);
+  let endPrice = +total;
   let TotalDiscount=0;
   if (deliveryType === "pickup") {
     let pickupDiscount = (+total * 0.1);
@@ -46,11 +47,13 @@ export default function CartLeft() {
   }
 
   if (couponDisc?.price) {
-    endPrice = endPrice - (+total * +couponDisc?.price) / 100;
+    console.log("----coupon disc", (+total * +couponDisc?.price))
+    endPrice = (endPrice - ((+total * +couponDisc?.price) / 100));
+    endPrice = +endPrice.toFixed(2)
     TotalDiscount = TotalDiscount + (+couponDisc?.price);
   }
- console.log("total discount ------",TotalDiscount)
- console.log("end price -------", total- total*(+TotalDiscount)/100)
+//  console.log("total discount ------",TotalDiscount)
+//  console.log("end price -------", total- total*(+TotalDiscount)/100)
  
 
  const endPriceS = endPrice.toString()
@@ -93,7 +96,7 @@ useEffect(()=>{setTotalDiscountG(TotalDiscount)},[TotalDiscount])
               Subtotal
             </div>
             <div className="flex gap-1">
-              <span>&#8364;</span> <span>{total}</span>
+              <span>&#8364;</span> <span>{(total.toString()).replace(/\./g, ',')}</span>
             </div>
           </div>
 

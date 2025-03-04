@@ -51,11 +51,11 @@ const Page = () => {
     //typeof(data.featured)
     const formData = new FormData();
 
-    console.log("images---------", data);
+    // console.log("images---------", data);
     const code = data.name.toUpperCase();
     formData.append("name", code);
     formData.append("price", data.price);
-     formData.append("deliveryDistance", data.deliveryDistance!);
+    formData.append("deliveryDistance", data.deliveryDistance!);
     //formData.append("offerType", data.offerType);
     // formData.append("weight", data.weight);
     // formData.append("dimensions", data.dimensions);
@@ -69,13 +69,13 @@ const Page = () => {
       // router.push('/admin/deliverys')
 
       setValue("name", "");
-      // setValue("deliveryDesc", "");
-     // setValue("price", "");
-      // setValue("productCat", "");
-      //setValue("minSpend", "");
+      setValue("deliveryDesc", "");
+      setValue("price", "");
+      setValue("productCat", "");
+      setValue("minSpend", "");
       // setValue("weight", "");
       // setValue("dimensions", "");
-      //setValue("deliveryDistance", "");
+      setValue("deliveryDistance", "");
     } else {
       alert("Some thing went wrong");
     }
@@ -122,7 +122,7 @@ const Page = () => {
     //   }
     // }
 
-    console.log("response in create delivery form ", result);
+    // console.log("response in create delivery form ", result);
   }
 
   return (
@@ -193,7 +193,7 @@ const Page = () => {
                     <input
                       {...register("price")}
                       className="input-style"
-                      placeholder="Enter percentage"
+                      placeholder="Enter cost"
                     />
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.price?.message && (
@@ -275,12 +275,7 @@ const Page = () => {
                   </p>
                 </div> */}
 
-                <input
-                  {...register("deliveryDistance", { value: "4" })}
-                  type="hidden"
-                />
-
-          
+              
 
                 <div className="flex flex-col gap-1 w-full">
                   <label className="label-style" htmlFor="delivery-title">
@@ -296,6 +291,24 @@ const Page = () => {
                       <span>{errors.deliveryDistance?.message}</span>
                     )}
                   </span>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="label-style">delivery description</label>
+
+                  <textarea
+                    {...register("deliveryDesc", {
+                      validate: {
+                        pattern: (value: string) => !/[!]/.test(value),
+                      },
+                    })}
+                    className="textarea-style"
+                  />
+                  <p className="text-[0.8rem] font-medium text-destructive">
+                    {errors.deliveryDesc && (
+                      <span>delivery description is required</span>
+                    )}
+                  </p>
                 </div>
 
                 <Button type="submit">Add delivery detail </Button>

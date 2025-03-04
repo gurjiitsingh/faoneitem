@@ -1,16 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { IoMdMenu } from "../../../../node_modules/react-icons/io";
-
-export default function Header({togelSideBar}) {
+import { UseSiteContext } from "@/SiteContext/SiteContext";
  
- function sidebarTogle(){
-  togelSideBar()
-  }
+export default function Header() {
+  const {  setAdminSideBarToggleG} = UseSiteContext();
+ 
   return (
     <section className="fixed w-full top-0 flex items-center gap-3 bg-white border-b px-4 py-3">
-      <div className="flex justify-center items-center md:hidden">
-        <Button onClick={sidebarTogle}>
+      <div className="flex justify-center items-center lg:hidden">
+        <Button onClick={()=>{setAdminSideBarToggleG()}}>
         <IoMdMenu />
         </Button>
      

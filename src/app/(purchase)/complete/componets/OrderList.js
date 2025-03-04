@@ -5,7 +5,7 @@ import Image from "next/image";
 import { IoMdAdd } from "react-icons/io";
 import { IoMdRemove } from "react-icons/io";
 
-const ProductList = ({ item }) => {
+const OrderList = ({ item }) => {
   const { addProductToCart, decCartProduct, removeCartProduct } =
     useContext(CartContext);
 
@@ -17,17 +17,7 @@ const ProductList = ({ item }) => {
     addProductToCart(newProductToAdd);
   }
 
-  let total = parseInt(item.quantity) * parseFloat(item.price);
-  total = total.toFixed(2)
- //let totalS = total.toString;
- const totalSComma = total.replace(/\./g, ',') 
-//  const price = item.price.replace(/\./g, ',')  
-
-const priceFloat = (parseFloat(item.price)).toFixed(2)
-
-const priceS = priceFloat.replace(/\./g, ',') 
-
-  
+  const total = parseInt(item.quantity) * parseFloat(item.price);
   return (
     <div className="flex flex-row gap-2 bg-amber-200   justify-between border-b mt-2 rounded-xl ">
       <div className="min-w-[20%]">
@@ -53,10 +43,10 @@ const priceS = priceFloat.replace(/\./g, ',')
 
           <div className="text-[1rem] w-[13%] flex items-start justify-end ">
             {" "}
-            &euro;{priceS}
+            &euro;{item.price}
           </div>
         </div>
-        {/* <div className="text-sm"> {item.productDesc} </div> */}
+        <div className="text-sm"> {item.productDesc} </div>
 
         <div className="flex flex-row justify-between ">
           <div className="flex justify-between items-center gap-2 ">
@@ -90,7 +80,7 @@ const priceS = priceFloat.replace(/\./g, ',')
           </div>
 
           <div className="flex justify-end   text-sm ">
-            &euro;{totalSComma}
+            &euro;{total.toFixed(2)}
           </div>
         </div>
       </div>
@@ -98,4 +88,4 @@ const priceS = priceFloat.replace(/\./g, ',')
   );
 };
 
-export default ProductList;
+export default OrderList;

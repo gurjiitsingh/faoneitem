@@ -1,12 +1,13 @@
 "use server";
 
 //import { z } from "zod";
-import { deleteImage, upload } from "@/lib/cloudinary";
+//import { deleteImage, upload } from "@/lib/cloudinary";
 import { db } from "@/lib/firebaseConfig";
 
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -14,8 +15,11 @@ import {
   setDoc,
   where,
 } from "@firebase/firestore"; //doc, getDoc,
-import { ProductType, newPorductSchema, editPorductSchema, } from "@/lib/types/productType";
-
+import {
+  sauceProductType,
+  saucePorductSchema,
+ 
+} from "@/lib/types/productSaucesType";
 
 export async function addNewProduct(formData: FormData) {
   let featured_img: boolean = false;
@@ -34,14 +38,14 @@ export async function addNewProduct(formData: FormData) {
   const receivedData = {
     name: formData.get("name"),
     price: formData.get("price"),
-    baseProductId: formData.get("baseProductId"),
+    baseProductId: "",
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
     //image: formData.get("image"),
     isFeatured: featured_img,
   };
 
-  const result = newPorductSchema.safeParse(receivedData);
+  const result = saucePorductSchema.safeParse(receivedData);
   console.log("zod result", result);
   let zodErrors = {};
   if (!result.success) {
@@ -55,7 +59,7 @@ export async function addNewProduct(formData: FormData) {
   }
 
   //const image = formData.get("image");
- // let imageUrl;
+  // let imageUrl;
   // try {
   //   imageUrl = await upload(image);
   //   console.log(imageUrl);
@@ -65,7 +69,7 @@ export async function addNewProduct(formData: FormData) {
   //   return { errors: "image cannot uploaded" };
   // }
 
- // imageUrl = "/public/com.jpg";
+  // imageUrl = "/public/com.jpg";
 
   // const name = formData.get("name");
   // const price = formData.get("price");
@@ -77,7 +81,7 @@ export async function addNewProduct(formData: FormData) {
     price: formData.get("price"),
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
-    baseProductId: formData.get("baseProductId"),
+    baseProductId: "",
     // image: imageUrl,
     isFeatured: featured_img,
   };
@@ -91,72 +95,46 @@ export async function addNewProduct(formData: FormData) {
     console.error("Error adding document: ", e);
   }
   return { message: "Product saved" };
-
 } //end of add new product
 
-
-
-type rt = {
-  errors: string;
-};
-
-export async function deleteProduct(
-  id: string,
-  oldImgageUrl: string
-): Promise<rt> {
-  console.log("out put ", id, oldImgageUrl);
-  return { errors: "Delete not implimented jet" };
+type deleteType ={
+  error:string | undefined;
+  success: string | undefined;
 }
 
-// export async function deleteProduct(id:string, oldImgageUrl:string) {
+export async function  deleteProduct(
+  id: string ,
+ ): Promise<string> {
 
-//   const result = await db.delete(product).where(eq(product.id, id));
+  const docRef = doc(db, "productsauces", id);
+  await deleteDoc(docRef);                     
+  //return { errors: "Delete not implimented jet" };
+  return "ok"
+}
 
-//   if (result?.rowCount === 1) {
 
-//     const imageUrlArray = oldImgageUrl.split("/");
-//     console.log(imageUrlArray[imageUrlArray.length - 1]);
-//     const imageName =
-//       imageUrlArray[imageUrlArray.length - 2] +
-//       "/" +
-//       imageUrlArray[imageUrlArray.length - 1];
-
-//     const image_public_id = imageName.split(".")[0];
-//     console.log(image_public_id);
-//     try {
-//       let deleteResult = await deleteImage(image_public_id);
-//       console.log("image delete data", deleteResult);
-//     } catch (error) {
-//      // console.log(error);
-//       return {errors:"Somthing went wrong, can not delete product picture"}
-//     }
-
-//        return {
-//       message: { sucess: "Deleted product" },
-//     };
-//   }else{
-//     return {errors:"Somthing went wrong, can not delete product"}
-//   }
-
-// }
 
 export async function editProduct(formData: FormData) {
-  const id = formData.get("id") as string;
-  const image = formData.get("image");
-  const oldImgageUrl = formData.get("oldImgageUrl") as string;
-  const featured_img: boolean = false;
+  // const id = formData.get("id") as string;
+  // const image = formData.get("image");
+  //  const oldImgageUrl = formData.get("oldImgageUrl") as string;
+  // const featured_img: boolean = false;
   // featured_img = formData.get("oldImgageUrl");
 
+ // console.log("this is edit sauce -------", formData);
+const id = formData.get("id");
+const priceValue = formData.get("price") as string;
+const price = priceValue.replace(/,/g, '.')
   const receivedData = {
     name: formData.get("name"),
-    price: formData.get("price"),
+    price: price,
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
-    image: formData.get("image"),
-    isFeatured: featured_img,
+   // image: formData.get("image"),
+ //   isFeatured: featured_img,
   };
 
-  const result = editPorductSchema.safeParse(receivedData);
+   const result = saucePorductSchema.safeParse(receivedData);
 
   let zodErrors = {};
   if (!result.success) {
@@ -169,50 +147,50 @@ export async function editProduct(formData: FormData) {
       : { success: true };
   }
 
-  let imageUrl;
-  if (image === "undefined" || image === null) {
-    imageUrl = oldImgageUrl;
-    //  console.log("----------------not change image")
-  } else {
-    //  console.log("---------------- change image")
-    try {
-      imageUrl = (await upload(image)) as string;
-      console.log(imageUrl);
-    } catch (error) {
-      //  throw new Error("error")
-      console.log(error);
-      return { errors: "image cannot uploaded" };
-    }
-    const d = false;
-    if (d) {
-      const imageUrlArray = oldImgageUrl?.split("/");
-      console.log("old image url", imageUrlArray);
-      const imageName =
-        imageUrlArray[imageUrlArray.length - 2] +
-        "/" +
-        imageUrlArray[imageUrlArray.length - 1];
+  //let imageUrl;
+  // if (image === "undefined" || image === null) {
+  //   imageUrl = oldImgageUrl;
+  //   //  console.log("----------------not change image")
+  // } else {
+  //   //  console.log("---------------- change image")
+  //   try {
+  //     imageUrl = (await upload(image)) as string;
+  //     console.log(imageUrl);
+  //   } catch (error) {
+  //     //  throw new Error("error")
+  //     console.log(error);
+  //     return { errors: "image cannot uploaded" };
+  //   }
+  //   const d = false;
+  //   if (d) {
+  //     const imageUrlArray = oldImgageUrl?.split("/");
+  //     console.log("old image url", imageUrlArray);
+  //     const imageName =
+  //       imageUrlArray[imageUrlArray.length - 2] +
+  //       "/" +
+  //       imageUrlArray[imageUrlArray.length - 1];
 
-      const image_public_id = imageName.split(".")[0];
-      console.log("image_public_id ---", image_public_id);
-      try {
-        const deleteResult = await deleteImage(image_public_id);
-        console.log(deleteResult);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
+  //     const image_public_id = imageName.split(".")[0];
+  //     console.log("image_public_id ---", image_public_id);
+  //     try {
+  //       const deleteResult = await deleteImage(image_public_id);
+  //       console.log(deleteResult);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
 
   const productUpdtedData = {
     name: formData.get("name"),
-    price: formData.get("price"),
+    price: price,
     productCat: formData.get("productCat"),
     productDesc: formData.get("productDesc"),
-    image: imageUrl,
-    isFeatured: featured_img,
+   // image: imageUrl,
+  //  isFeatured: featured_img,
   };
-  //console.log("update data ------------", productUpdtedData)
-  // update database
+  console.log("update data ------------", productUpdtedData)
+ 
   try {
     const docRef = doc(db, "productsauces", id);
     await setDoc(docRef, productUpdtedData);
@@ -222,7 +200,7 @@ export async function editProduct(formData: FormData) {
   }
 }
 
-export async function fetchProductSauces(): Promise<ProductType[]> {
+export async function fetchProductSauces(): Promise<sauceProductType[]> {
   // const result = await getDocs(collection(db, "productsauces"))
   // let data = [];
   // result.forEach((doc) => {
@@ -232,32 +210,32 @@ export async function fetchProductSauces(): Promise<ProductType[]> {
 
   const result = await getDocs(collection(db, "productsauces"));
 
-  let data = [] as ProductType[];
+  let data = [] as sauceProductType[];
   result.forEach((doc) => {
-    const pData = { id: doc.id, ...doc.data() } as ProductType;
+    const pData = { id: doc.id, ...doc.data() } as sauceProductType;
     data.push(pData);
   });
   return data;
 }
 
-export async function fetchProductById(id: string): Promise<ProductType> {
+export async function fetchProductById(id: string): Promise<sauceProductType> {
   const docRef = doc(db, "productsauces", id);
   const docSnap = await getDoc(docRef);
-  let productData = {} as ProductType;
+  let productData = {} as sauceProductType;
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
+  //  console.log("Document data:", docSnap.data());
   } else {
     //   docSnap.data() //will be undefined in this case
     console.log("No such document!");
   }
-  productData = docSnap.data() as ProductType;
+  productData = docSnap.data() as sauceProductType;
   return productData;
 }
 
 export async function fetchProductByBaseProductId(
   id: string
-): Promise<ProductType[]> {
-  let data = [] as ProductType[];
+): Promise<sauceProductType[]> {
+  let data = [] as sauceProductType[];
   const q = query(
     collection(db, "productsauces"),
     where("baseProductId", "==", id)
@@ -265,7 +243,7 @@ export async function fetchProductByBaseProductId(
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {
-    const datas = doc.data() as ProductType;
+    const datas = doc.data() as sauceProductType;
     data.push(datas);
   });
   return data;

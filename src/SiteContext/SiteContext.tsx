@@ -21,6 +21,8 @@ type SiteContextType = {
   setShowProductDetailM: (e: boolean) => void;
   baseProductId: string ;
   setBaseProductId: (e: string) => void;
+  adminSideBarToggle:boolean;
+  setAdminSideBarToggleG:() => void;
 };
 
 const SiteContext = createContext<SiteContextType>({
@@ -67,6 +69,8 @@ const SiteContext = createContext<SiteContextType>({
   setBaseProductId: (e) => {
     return e;
   },
+  adminSideBarToggle:false,
+     setAdminSideBarToggleG:()=> {},
 });
 
 export const UseSiteContext = () => {

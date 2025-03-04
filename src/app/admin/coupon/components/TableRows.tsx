@@ -25,7 +25,7 @@ function TableRows({ coupon }:{coupon:couponType}){
 
  async function handleDelete(coupon:couponType) {
    console.log(coupon.id);
-  const result = await deletecoupon(coupon.id!, coupon.image)
+  const result = await deletecoupon(coupon.id!)
 if(result.errors){
   alert(result.errors)
 }else{
@@ -67,11 +67,11 @@ if(result.errors){
         <p className="flex gap-3">
           <Link
             href={{
-              pathname: `/admin/coupons/${coupon.id}`,
-            //  pathname: "/admin/coupons/editform",
-            //   query: {
-            //     id: coupon.id,
-            //    },
+             // pathname: `/admin/coupons/${coupon.id}`,
+             pathname: "/admin/coupon/editform",
+              query: {
+                id: coupon.id,
+               },
             }
           }
           >

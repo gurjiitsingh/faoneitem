@@ -15,7 +15,7 @@ import { MdDeleteForever } from "react-icons/md";
 //import Image from "next/image";
 import Link from "next/link";
 import { CiEdit } from "react-icons/ci";
-import { deleteProduct } from "@/app/action/products/dbOperation";
+import { deleteProduct } from "@/app/action/productsauces/dbOperation";
 import { ProductType } from "@/lib/types/productType";
 //import { deleteProduct } from "@/app/action/products/dbOperation";
 //import { useRouter  } from "next/navigation";
@@ -24,15 +24,15 @@ function TableRows({ product }:{product:ProductType}){
 //const router = useRouter();
 
  async function handleDelete(product:ProductType) {
-   console.log(product.id);
-  const result = await deleteProduct(product.id!, product.image)
-if(result.errors){
-  alert(result.errors)
-}else{
+  
+ const result = await deleteProduct(product.id!)
+// if(result.errors){
+//   alert(result.errors)
+// }else{
   // router.push('/admin/products')
    //   router.refresh()
       location.reload()
-}
+// }
 
   }
 
@@ -67,11 +67,11 @@ if(result.errors){
         <p className="flex gap-3">
           <Link
             href={{
-              pathname: `/admin/products/${product.id}`,
-            //  pathname: "/admin/products/editform",
-            //   query: {
-            //     id: product.id,
-            //    },
+            //  pathname: `/admin/productsauces/editform?id=${product.id}`,
+             pathname: "/admin/productsauces/editform",
+              query: {
+                id: product.id,
+               },
             }
           }
           >

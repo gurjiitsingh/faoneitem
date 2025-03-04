@@ -37,11 +37,12 @@ if(result.errors){
 }
 
   }
-
+  
+  const price = product.price.replace(/\./g, ',') 
   return (
     <TableRow key={product.id} className="whitespace-nowrap bg-slate-50 rounded-lg p-1 my-1">
        <TableCell>
-        <div className=" px-3 py-1 text-center ">
+        <div className=" px-3 py-1 text-center min-w-[100px]">
           {product?.image&&
           <Image
             className="h-12 w-12 object-cover rounded-md border p-1"
@@ -53,7 +54,7 @@ if(result.errors){
         </div>
       </TableCell>
       <TableCell>{product.name}</TableCell>
-      <TableCell>{product.price}</TableCell>
+      <TableCell>{price}</TableCell>
        {/* <TableCell>{product.productCat}</TableCell> */}
       {/* <TableCell></TableCell> */}
       <TableCell>{product.productDesc}</TableCell>
@@ -87,11 +88,11 @@ if(result.errors){
 
           <Link
             href={{
-              pathname: `/admin/products/${product.id}`,
+              pathname: `/admin/productsbase/editform`,
             //  pathname: "/admin/products/editform",
-            //   query: {
-            //     id: product.id,
-            //    },
+              query: {
+                id: product.id,
+               },
             }
           }
           >

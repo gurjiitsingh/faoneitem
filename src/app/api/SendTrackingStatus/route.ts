@@ -1,6 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import fs from 'fs';
+export const revalidate = 0;
 
 export async function POST(req:NextRequest){
 // THIS API ENDPOINT RECEIVE STATUS
@@ -13,7 +14,7 @@ const jsonData = await req.json();
 //console.log("inside send tracking status--------",jsonData.ordersid);
 
 const filePath = 'temp/order_'+jsonData.ordersid+'.json'; 
-console.log(" file to delete --------",filePath);
+//console.log(" file to delete --------",filePath);
 fs.unlinkSync(filePath);
 
 return NextResponse.json({"status":"ok"});

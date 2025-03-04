@@ -34,7 +34,10 @@ const [deliveryType, setDeliveryType] = useState<string>("");
 const [couponDisc, setCouponDiscU] = useState<couponDiscType | undefined>();
 const [deliveryDis, setdeliveryDisU] = useState<deliveryType | undefined>();
 const [showProductDetailM, setShowProductDetailML] = useState<boolean>(false);
-const [ baseProductId,setBaseProductIdL] = useState<string>("")
+const [ baseProductId,setBaseProductIdL] = useState<string>("");
+const [adminSideBarToggle, setAdminSideBarToggleL] = useState<boolean>(false)
+
+
 
 
    
@@ -74,6 +77,13 @@ function setdeliveryDis(e:deliveryType | undefined){
         setBaseProductIdL(e)
      }
 
+     
+
+     function setAdminSideBarToggleG(){
+     
+      setAdminSideBarToggleL(!adminSideBarToggle)
+     }
+
 return(
     <SiteContext.Provider value={{
         open,
@@ -92,6 +102,8 @@ return(
     setShowProductDetailM,
     baseProductId,
      setBaseProductId,
+     adminSideBarToggle,
+     setAdminSideBarToggleG,
     }}>
 
 {children}

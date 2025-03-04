@@ -45,11 +45,15 @@ const handler = NextAuth({
       //  const current_user = User[0];
      //  console.log("-----------------inside NextAuth -----------------");
 
-         const collectionRef = collection(db, 'user')
-            const targetQuery = query(collectionRef, where('email', '==', email), limit(1))
-            const querySnapshot = await getDocs(targetQuery)
+        //  const collectionRef = collection(db, 'user')
+        //     const targetQuery = query(collectionRef, where('email', '==', email), limit(1))
+        //     const querySnapshot = await getDocs(targetQuery)
+
+
+           const q = query(collection(db, "user"), where("email", "==", email));
+           const querySnapshot = await getDocs(q);
            // if (!querySnapshot.empty) return  NextResponse.json({error: "User allready exists", status: 400})
-            const current_user = querySnapshot.docs.map((doc) => doc.data())[0]
+           const current_user = querySnapshot.docs.map((doc) => doc.data())[0]
            const current_id = querySnapshot.docs.map((doc) => doc.id)[0]
           
 
