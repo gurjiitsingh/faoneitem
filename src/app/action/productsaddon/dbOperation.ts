@@ -113,15 +113,15 @@ console.log("zod result", result)
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-
-  updateBaseProduct(formData.get("baseProductId"))
+const idS = formData.get("baseProductId") as string;
+  updateBaseProduct(idS)
 
   return { message: "Product saved" };
 
 
 }//end of add new product 
 
-async function updateBaseProduct(id){
+async function updateBaseProduct(id:string){
   const productUpdtedData = {
     flavors: true,
       };

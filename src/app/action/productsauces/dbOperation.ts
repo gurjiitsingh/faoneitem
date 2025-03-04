@@ -97,10 +97,10 @@ export async function addNewProduct(formData: FormData) {
   return { message: "Product saved" };
 } //end of add new product
 
-type deleteType ={
-  error:string | undefined;
-  success: string | undefined;
-}
+// type deleteType ={
+//   error:string | undefined;
+//   success: string | undefined;
+// }
 
 export async function  deleteProduct(
   id: string ,
@@ -122,7 +122,7 @@ export async function editProduct(formData: FormData) {
   // featured_img = formData.get("oldImgageUrl");
 
  // console.log("this is edit sauce -------", formData);
-const id = formData.get("id");
+const id = formData.get("id") as string;
 const priceValue = formData.get("price") as string;
 const price = priceValue.replace(/,/g, '.')
   const receivedData = {

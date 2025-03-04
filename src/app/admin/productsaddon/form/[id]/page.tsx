@@ -236,11 +236,13 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <label className="label-style">Description</label>
 
                   <textarea
-                    {...register("productDesc", {
-                      validate: {
-                        pattern: (value: string) => !/[!]/.test(value),
-                      },
-                    })}
+                    {...register("productDesc"
+                    //   , {
+                    //   validate: {
+                    //     pattern: (value: string) => !/[!]/.test(value),
+                    //   },
+                    // }
+                  )}
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">

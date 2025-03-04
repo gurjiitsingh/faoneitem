@@ -229,11 +229,13 @@ console.log("-----------",id)
                   <label className="label-style">Product description</label>
 
                   <textarea
-                    {...register("productDesc", {
-                      validate: {
-                        pattern: (value: string) => !/[!]/.test(value),
-                      },
-                    })}
+                    {...register("productDesc"
+                    //   , {
+                    //   validate: {
+                    //     pattern: (value: string) => !/[!]/.test(value),
+                    //   },
+                    // }
+                  )}
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">

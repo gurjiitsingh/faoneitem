@@ -2,92 +2,94 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
 
+//import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {  TcouponSchema, couponSchema } from "@/lib/types/couponType";
-//import { fetchofferTypes } from "@/app/action/brads/dbOperations";
-import { addNewcoupon } from "@/app/action/coupon/dbOperation";
-//import Images from "@/app/admin/coupons/form/componets/Images";
+import { editPorductSchema, TeditdeliverySchema } from "@/lib/types/deliveryType";
+//import { Images } from "lucide-react";
 //import { fetchCategories } from "@/app/action/category/dbOperations";
+//import { fetchofferTypes } from "@/app/action/brads/dbOperations";
+import {
+  editdelivery,
+  fetchdeliveryById,
+} from "@/app/action/delivery/dbOperation";
+import {  useRouter, useSearchParams } from "next/navigation";
 
-//import Input from "./componets/input";
 
 // type Terror = {
 //   name: string | null;
 //   price: string | null;
-//   isFeatured: string | null;
-//  // company: string | null;
+//   deliveryDistance: string | null;
+//   company: string | null;
 //   productCat: string | null;
-//   couponDesc: string | null;
+//   deliveryDesc: string | null;
 //   image: string | null;
 // };
-const Page = () => {
- // const minSpend = params.id;
- // console.log("addonprodut form  minSpend============", minSpend);
-
-  //const [categories, setCategory] = useState<couponType[]>([]);
-
-  useEffect(() => {
-    async function prefetch() {
-    //  const catData = await fetchCategories();
-      //   const offerTypeData = await fetchofferTypes();
-     // setCategory(catData);
-      // setofferType(offerTypeData);
-    }
-    prefetch();
-  }, []);
-
+const PageComp = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+ // const id = params.editform as string;
+//console.log("-----------",id)
+ // const [categories, setCategory] = useState<categoryTypeArr>([]);
+  //const [delivery, setdelivery] = useState({});
+  const router = useRouter();
   const {
     register,
     formState: { errors },
     setValue,
-    // control,
-    // watch,
     handleSubmit,
     // setError,
-    formState: {}, //dirtyFields
-  } = useForm<TcouponSchema>({
-    resolver: zodResolver(couponSchema),
+  } = useForm<TeditdeliverySchema>({
+    resolver: zodResolver(editPorductSchema),
   });
+  useEffect(() => {
+    let deliveryData;
+    async function prefetch() {
+      deliveryData = await fetchdeliveryById(id);
+    console.log("deliveryData.id ----", deliveryData)
+    //setdelivery(deliveryData);
+    //  const catData = await fetchCategories();
+    //  console.log("----------------- delivery data in edit", catData);
+    //  setCategory(catData);
+      setValue("id", id);
+      setValue("name", deliveryData.name);
+      setValue("deliveryDesc", deliveryData.deliveryDesc);
+      setValue("minSpend", deliveryData.minSpend);
+          //  setValue("oldImgageUrl", deliveryData.image);
+      setValue("price", deliveryData.price);
+      setValue("productCat", deliveryData.productCat);
+      setValue("deliveryDistance", deliveryData.deliveryDistance);
+    }
 
-  //const images = watch("images");
+    prefetch();
+  }, []);
 
-  async function onsubmit(data: TcouponSchema) {
-    //typeof(data.featured)
+  async function onsubmit(data: TeditdeliverySchema) {
+       
+    console.log('-----------',data)
     const formData = new FormData();
 
-  //  console.log("images---------",data)
-    const code = (data.name).toUpperCase()
-    formData.append("name", code);
+    formData.append("name", data.name);
     formData.append("price", data.price);
-    // formData.append("isFeatured", data.isFeatured);
-    //formData.append("offerType", data.offerType);
-    // formData.append("weight", data.weight);
-    // formData.append("dimensions", data.dimensions);
     formData.append("productCat", data.productCat);
-    formData.append("couponDesc", data.couponDesc!);
-  //  formData.append("image", data.image[0]);
-    formData.append("minSpend", data.minSpend!);
-    const result = await addNewcoupon(formData);
+    formData.append("deliveryDesc", data.deliveryDesc);
+   // formData.append("image", data.image[0]);
+    // formData.append("oldImgageUrl",data.oldImgageUrl!)
+     formData.append("minSpend", data.minSpend!);
+     formData.append("deliveryDistance",data.deliveryDistance!)
+    formData.append("id", data.id!);
+
+    const result = await editdelivery(formData);
 
     if (!result?.errors) {
-      // router.push('/admin/coupons')
-
-      setValue("name", "");
-      setValue("couponDesc", "");
-      setValue("price", "");
-      // setValue("productCat", "");
-       setValue("minSpend", "");
-      // setValue("weight", "");
-      // setValue("dimensions", "");
-      setValue("isFeatured", false);
+      router.push("/admin/delivery");
     } else {
       alert("Some thing went wrong");
     }
 
     // if (result.errors) {
     //   // not network error but data validation error
-    //   const errors: Terror = result.errors;
+    //   const errors:Terror = result.errors;
 
     //   if (errors.name) {
     //     setError("name", {
@@ -105,10 +107,10 @@ const Page = () => {
     //       message: errors.productCat,
     //     });
     //   }
-    //   if (errors.couponDesc) {
-    //     setError("couponDesc", {
+    //   if (errors.deliveryDesc) {
+    //     setError("deliveryDesc", {
     //       type: "server",
-    //       message: errors.couponDesc,
+    //       message: errors.deliveryDesc,
     //     });
     //   }
     //   if (errors.image) {
@@ -117,58 +119,53 @@ const Page = () => {
     //       message: errors.image,
     //     });
     //   }
-    //   if (errors.company) {
-    //     // setError("company", {
-    //     //   type: "server",
-    //     //   message: errors.company,
-    //     // });
-    //   } else {
-    //     //  alert("Something went wrong");
+
+    //    else {
+    //   //  alert("Something went wrong");
     //   }
     // }
 
-   // console.log("response in create coupon form ", result);
+    // console.log(result);
   }
+  //   function setSelectedIndex(s, i){
+  // s.options[i-1].selected = true;
+  // return;
+  // }
+  //setSelectedIndex(document.getElementById("ddl_example3"),5);
 
   return (
-    <>
+    <> 
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Create coupon</h1>
+          <h1>Edit delivery</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
             <div className="flex-1 flex flex-col gap-y-5">
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
-                <h1 className="font-semibold">Coupon detail</h1>
+                <h1 className="font-semibold">delivery</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
+                  <input {...register("id")} hidden />
+                  <input {...register("oldImgageUrl")} />
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
-                      Coupon code<span className="text-red-500">*</span>{" "}
+                    <label className="label-style" htmlFor="delivery-title">
+                      delivery Name<span className="text-red-500">*</span>{" "}
                     </label>
-                  
-                    <input
-                      {...register("name")}
-                      className="input-style"
-                      placeholder="Enter code"
-                    />
+                    <input {...register("name")} className="input-style" />
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.name?.message && (
                         <span>{errors.name?.message}</span>
                       )}
                     </span>
                   </div>
-                  <input
-                    {...register("productCat", { value: "all" })}
-                    type="hidden"
-                  />
+
                   {/* <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
+                    <label className="label-style" htmlFor="delivery-title">
                       Category<span className="text-red-500">*</span>{" "}
                     </label>
                     <select {...register("productCat")} className="input-style">
                       <option key="wer" value="Mobile">
-                        Select coupon Category
+                        Select delivery Category
                       </option>
                       {categories.map(
                         (category: { name: string }, i: number) => {
@@ -189,16 +186,16 @@ const Page = () => {
                 </div>
               </div>
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
-                <h1 className="font-semibold">Discount Details</h1>
+                <h1 className="font-semibold">Price Details</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
-                      Discount %<span className="text-red-500">*</span>{" "}
+                    <label className="label-style" htmlFor="delivery-title">
+                      Price<span className="text-red-500">*</span>{" "}
                     </label>
                     <input
                       {...register("price")}
                       className="input-style"
-                      placeholder="Enter percentage"
+                      placeholder="Enter Title"
                     />
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.price?.message && (
@@ -210,7 +207,7 @@ const Page = () => {
 
                 <div className="flex w-full flex-col gap-2  my-15 ">
                   <div className="flex flex-col gap-1 w-full">
-                    <label className="label-style" htmlFor="coupon-title">
+                    <label className="label-style" htmlFor="delivery-title">
                       Min spend<span className="text-red-500">*</span>{" "}
                     </label>
                     <input
@@ -229,21 +226,17 @@ const Page = () => {
               </div>
 
 
-             
-
-
-
-  
-
-
+              
             </div>
             {/* End of left box */}
+
+            
 
             <div className="flex-1 flex flex-col gap-5 h-full">
               {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Featured Image</label>
+                  <label className="label-style">delivery Image</label>
                   <input
                     {...register("image", { required: true })}
                     type="file"
@@ -251,7 +244,7 @@ const Page = () => {
                   />
 
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.image && <span>Select coupon image</span>}
+                    {errors.image && <span>Select delivery image</span>}
                   </p>
                 </div>
               </div> */}
@@ -259,16 +252,28 @@ const Page = () => {
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
 
-                <input
-                  {...register("couponDesc", { value: "This is discount coupon" })}
-                  type="hidden"
-                />
+                <div className="flex flex-col gap-1 w-full">
+                  <label className="label-style" htmlFor="delivery-title">
+                    Delivery distance<span className="text-red-500">*</span>{" "}
+                  </label>
+                  <input
+                    {...register("deliveryDistance")}
+                    className="input-style"
+                    placeholder="Enter distance"
+                  />
+                  <span className="text-[0.8rem] font-medium text-destructive">
+                    {errors.deliveryDistance?.message && (
+                      <span>{errors.deliveryDistance?.message}</span>
+                    )}
+                  </span>
+                </div>
+
 
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Description</label>
+                  <label className="label-style">delivery description</label>
 
                   <textarea
-                    {...register("couponDesc", {
+                    {...register("deliveryDesc", {
                       // validate: {
                       //   pattern: (value: string) => !/[!]/.test(value),
                       // },
@@ -276,36 +281,25 @@ const Page = () => {
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.couponDesc && <span>Description is required</span>}
+                    {errors.deliveryDesc && (
+                      <span>delivery description is required</span>
+                    )}
                   </p>
                 </div>
 
-                {/* <div className="flex  items-center gap-4 ">
-                  <label className="label-style">Normal coupon</label>
-                  <input {...register("featured")} type="radio" value="false" />
+             
+
+                {/* <div className="flex    items-center gap-4">
+                  <label className="label-style">Featured delivery</label>
+                  <input {...register("deliveryDistance")} type="checkbox" />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.featured?.message && (
-                      <p>{errors.featured?.message}</p>
+                    {errors.deliveryDistance?.message && (
+                      <p>{errors.deliveryDistance?.message}</p>
                     )}
                   </p>
                 </div> */}
 
-                <input
-                  {...register("isFeatured", { value: false })}
-                  type="hidden"
-                />
-
-                {/* <div className="flex    items-center gap-4">
-                  <label className="label-style">Featured coupon</label>
-                  <input {...register("isFeatured")} type="checkbox" />
-                  <span className="text-[0.8rem] font-medium text-destructive">
-                    {errors.isFeatured?.message && (
-                      <p>{errors.isFeatured?.message}</p>
-                    )}
-                  </span>
-                </div> */}
-
-                <Button type="submit">Add </Button>
+                <Button className="bg-red-500" type="submit">Edit delivery </Button>
               </div>
             </div>
           </div>
@@ -315,4 +309,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PageComp;

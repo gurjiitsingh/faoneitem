@@ -2,90 +2,94 @@
 import { Button } from "@/components/ui/button";
 import React, { useEffect, useState } from "react";
 
+//import Description from "./componets/Description";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { flavorsProductGSchema, flavorsProductGSchemaType } from "@/lib/types/flavorsProductGType";
+import { editPorductSchema, TeditProductSchema } from "@/lib/types";
+//import { Images } from "lucide-react";
+// import { fetchCategories } from "@/app/action/category/dbOperations";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
-import { addNewProduct } from "@/app/action/flavorsProductG/dbOperation";
-//import Images from "@/app/admin/products/form/componets/Images";
-import { fetchCategories } from "@/app/action/category/dbOperations";
-import { categoryTypeArr } from "@/lib/types/categoryType";
-//import Input from "./componets/input";
+import {
+  editProduct,
+  fetchProductById,
+} from "@/app/action/products/dbOperation";
+import { useRouter, useSearchParams } from "next/navigation";
+// import { categoryTypeArr } from "@/lib/types/categoryType";
 
 // type Terror = {
 //   name: string | null;
 //   price: string | null;
 //   isFeatured: string | null;
-//  // company: string | null;
+//   company: string | null;
 //   productCat: string | null;
 //   productDesc: string | null;
 //   image: string | null;
 // };
-const Page = ({ params }: { params: { id: string } }) => {
-  const baseProductId = params.id;
- // console.log("addonprodut form  baseproductId============", baseProductId);
+const PageComp = () => {
+  //const searchParams = useSearchParams();
+  //const id = searchParams.get("id") || "";
+  //const id = params.editform as string;
 
-  const [categories, setCategory] = useState<categoryTypeArr>([]);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id") || "";
+  // console.log("this is product edit---------------",id)
 
-  useEffect(() => {
-    async function prefetch() {
-      const catData = await fetchCategories();
-      //   const brandData = await fetchbrands();
-      setCategory(catData);
-      // setBrand(brandData);
-    }
-    prefetch();
-  }, []);
-
+  //const [categories, setCategory] = useState<categoryTypeArr>([]);
+  //const [product, setProduct] = useState({});
+  const router = useRouter();
   const {
     register,
     formState: { errors },
     setValue,
-    // control,
-    // watch,
     handleSubmit,
     // setError,
-    formState: {}, //dirtyFields
-  } = useForm<flavorsProductGSchemaType>({
-    resolver: zodResolver(flavorsProductGSchema),
+  } = useForm<TeditProductSchema>({
+    resolver: zodResolver(editPorductSchema),
   });
+  useEffect(() => {
+    let productData;
+    async function prefetch() {
+      productData = await fetchProductById(id);
+      console.log("productData.id ----", id);
+      //setProduct(productData);
+     // const catData = await fetchCategories();
+      //  console.log("----------------- product data in edit", catData);
+     // setCategory(catData);
+      setValue("id", id);
+      setValue("name", productData.name);
+      setValue("productDesc", productData.productDesc);
+      setValue("oldImgageUrl", productData.image);
+      setValue("price", productData.price);
+      setValue("productCat", productData.productCat);
+      setValue("isFeatured", productData.isFeatured);
+    }
 
-  //const images = watch("images");
+    prefetch();
+  }, []);
 
-  async function onsubmit(data: flavorsProductGSchemaType) {
-    //typeof(data.featured)
+  async function onsubmit(data: TeditProductSchema) {
     const formData = new FormData();
-    console.log("flavor global---------",data)
+
     formData.append("name", data.name);
     formData.append("price", data.price);
-    // formData.append("isFeatured", data.isFeatured);
-    //formData.append("brand", data.brand);
-    // formData.append("weight", data.weight);
-    // formData.append("dimensions", data.dimensions);
     formData.append("productCat", data.productCat);
     formData.append("productDesc", data.productDesc);
-    //formData.append("image", data.image[0]);
-    formData.append("baseProductId", baseProductId);
-    const result = await addNewProduct(formData);
+    formData.append("image", data.image[0]);
+    formData.append("oldImgageUrl", data.oldImgageUrl!);
+    // formData.append("isFeatured",data.isFeatured)
+    formData.append("id", data.id!);
+
+    const result = await editProduct(formData);
 
     if (!result?.errors) {
-      // router.push('/admin/products')
-
-      setValue("name", "");
-      setValue("productDesc", "");
-      setValue("price", "");
-      setValue("productCat", "Select Category");
-      // setValue("brand", "Select Brand");
-      // setValue("weight", "");
-      // setValue("dimensions", "");
-      setValue("isFeatured", false);
+      router.push("/admin/productsbase");
     } else {
       alert("Some thing went wrong");
     }
 
     // if (result.errors) {
     //   // not network error but data validation error
-    //   const errors: Terror = result.errors;
+    //   const errors:Terror = result.errors;
 
     //   if (errors.name) {
     //     setError("name", {
@@ -115,24 +119,25 @@ const Page = ({ params }: { params: { id: string } }) => {
     //       message: errors.image,
     //     });
     //   }
-    //   if (errors.company) {
-    //     // setError("company", {
-    //     //   type: "server",
-    //     //   message: errors.company,
-    //     // });
-    //   } else {
-    //     //  alert("Something went wrong");
+
+    //    else {
+    //   //  alert("Something went wrong");
     //   }
     // }
 
-    console.log("response in create product form ", result);
+    // console.log(result);
   }
+  //   function setSelectedIndex(s, i){
+  // s.options[i-1].selected = true;
+  // return;
+  // }
+  //setSelectedIndex(document.getElementById("ddl_example3"),5);
 
   return (
     <>
       <form onSubmit={handleSubmit(onsubmit)}>
         <div className="flexflex flex-col gap-4 p-5">
-          <h1>Create Sauce</h1>
+          <h1>Edit Product</h1>
 
           <div className="flex flex-col lg:flex-row gap-5 ">
             {/* left box */}
@@ -140,29 +145,20 @@ const Page = ({ params }: { params: { id: string } }) => {
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Product</h1>
                 <div className="flex w-full flex-col gap-2  my-15 ">
+                  <input {...register("id")} hidden />
+                
                   <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
-                      Name<span className="text-red-500">*</span>{" "}
+                      Product Name<span className="text-red-500">*</span>{" "}
                     </label>
-                    <input
-                      {...register("baseProductId", { value: baseProductId })}
-                      type="hidden"
-                    />
-                    <input
-                      {...register("name")}
-                      className="input-style"
-                      placeholder="Enter Title"
-                    />
+                    <input {...register("name")} className="input-style" />
                     <span className="text-[0.8rem] font-medium text-destructive">
                       {errors.name?.message && (
                         <span>{errors.name?.message}</span>
                       )}
                     </span>
                   </div>
-                  <input
-                    {...register("productCat", { value: "all" })}
-                    type="hidden"
-                  />
+                  <input {...register("productCat", {value:"all"})}  hidden />
                   {/* <div className="flex flex-col gap-1 w-full">
                     <label className="label-style" htmlFor="product-title">
                       Category<span className="text-red-500">*</span>{" "}
@@ -211,12 +207,12 @@ const Page = ({ params }: { params: { id: string } }) => {
               </div>
             </div>
             {/* End of left box */}
-
+            <input {...register("oldImgageUrl")} hidden />
             <div className="flex-1 flex flex-col gap-5 h-full">
-              {/* <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
+              <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">Pictures</h1>
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Featured Image</label>
+                  <label className="label-style">Product Image</label>
                   <input
                     {...register("image", { required: true })}
                     type="file"
@@ -227,13 +223,13 @@ const Page = ({ params }: { params: { id: string } }) => {
                     {errors.image && <span>Select product image</span>}
                   </p>
                 </div>
-              </div> */}
+              </div>
 
               <div className="flex-1 flex flex-col gap-3 bg-white rounded-xl p-4 border">
                 <h1 className="font-semibold">General Detail</h1>
 
                 <div className="flex flex-col gap-1">
-                  <label className="label-style">Description</label>
+                  <label className="label-style">Product description</label>
 
                   <textarea
                     {...register("productDesc"
@@ -246,36 +242,35 @@ const Page = ({ params }: { params: { id: string } }) => {
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.productDesc && <span>Description is required</span>}
+                    {errors.productDesc && (
+                      <span>Product description is required</span>
+                    )}
                   </p>
                 </div>
 
                 {/* <div className="flex  items-center gap-4 ">
                   <label className="label-style">Normal Product</label>
-                  <input {...register("featured")} type="radio" value="false" />
+                  <input {...register("isFeatured")} type="radio" value="false" />
                   <p className="text-[0.8rem] font-medium text-destructive">
-                    {errors.featured?.message && (
-                      <p>{errors.featured?.message}</p>
+                    {errors.isFeatured?.message && (
+                      <p>{errors.isFeatured?.message}</p>
                     )}
                   </p>
                 </div> */}
 
-                <input
-                  {...register("isFeatured", { value: false })}
-                  type="hidden"
-                />
-
-                {/* <div className="flex    items-center gap-4">
+                <div className="flex    items-center gap-4">
                   <label className="label-style">Featured Product</label>
                   <input {...register("isFeatured")} type="checkbox" />
-                  <span className="text-[0.8rem] font-medium text-destructive">
+                  <p className="text-[0.8rem] font-medium text-destructive">
                     {errors.isFeatured?.message && (
                       <p>{errors.isFeatured?.message}</p>
                     )}
-                  </span>
-                </div> */}
+                  </p>
+                </div>
 
-                <Button type="submit">Add Sauce </Button>
+                <Button className="bg-red-500" type="submit">
+                  Edit Product{" "}
+                </Button>
               </div>
             </div>
           </div>
@@ -285,4 +280,4 @@ const Page = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default Page;
+export default PageComp;

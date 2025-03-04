@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,8 +8,8 @@ import { newPorductSchema, TnewProductSchema } from "@/lib/types/productType";
 //import { fetchbrands } from "@/app/action/brads/dbOperations";
 import { addNewProduct } from "@/app/action/productsauces/dbOperation";
 //import Images from "@/app/admin/products/form/componets/Images";
-import { fetchCategories } from "@/app/action/category/dbOperations";
-import { categoryTypeArr } from "@/lib/types/categoryType";
+// import { fetchCategories } from "@/app/action/category/dbOperations";
+// import { categoryTypeArr } from "@/lib/types/categoryType";
 //import Input from "./componets/input";
 
 // type Terror = {
@@ -25,13 +25,13 @@ const Page = ({ params }: { params: { id: string } }) => {
   const baseProductId = params.id;
  // console.log("addonprodut form  baseproductId============", baseProductId);
 
-  const [categories, setCategory] = useState<categoryTypeArr>([]);
+ // const [categories, setCategory] = useState<categoryTypeArr>([]);
 
   useEffect(() => {
     async function prefetch() {
-      const catData = await fetchCategories();
+  //    const catData = await fetchCategories();
       //   const brandData = await fetchbrands();
-      setCategory(catData);
+   //   setCategory(catData);
       // setBrand(brandData);
     }
     prefetch();
@@ -236,11 +236,13 @@ const Page = ({ params }: { params: { id: string } }) => {
                   <label className="label-style">Description</label>
 
                   <textarea
-                    {...register("productDesc", {
-                      validate: {
-                        pattern: (value: string) => !/[!]/.test(value),
-                      },
-                    })}
+                    {...register("productDesc"
+                    //   , {
+                    //   validate: {
+                    //     pattern: (value: string) => !/[!]/.test(value),
+                    //   },
+                    // }
+                  )}
                     className="textarea-style"
                   />
                   <p className="text-[0.8rem] font-medium text-destructive">

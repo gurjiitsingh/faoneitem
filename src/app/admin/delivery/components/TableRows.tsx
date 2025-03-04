@@ -27,13 +27,13 @@ function TableRows({ delivery }:{delivery:deliveryType}){
  async function handleDelete(delivery:deliveryType) {
    console.log(delivery.id);
  const result = await deletedelivery(delivery.id!)
-if(result.errors){
-  alert(result.errors)
-}else{
+// if(result.errors){
+//   alert(result.errors)
+// }else{
   // router.push('/admin/deliverys')
    //   router.refresh()
       location.reload()
-}
+//}
 
   }
 

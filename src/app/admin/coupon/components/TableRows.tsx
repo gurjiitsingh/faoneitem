@@ -26,13 +26,13 @@ function TableRows({ coupon }:{coupon:couponType}){
  async function handleDelete(coupon:couponType) {
    console.log(coupon.id);
   const result = await deletecoupon(coupon.id!)
-if(result.errors){
-  alert(result.errors)
-}else{
+// if(result.errors){
+//   alert(result.errors)
+// }else{
   // router.push('/admin/coupons')
    //   router.refresh()
       location.reload()
-}
+//}
 
   }
 

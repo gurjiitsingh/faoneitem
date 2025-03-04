@@ -298,9 +298,9 @@ const Page = () => {
 
                   <textarea
                     {...register("deliveryDesc", {
-                      validate: {
-                        pattern: (value: string) => !/[!]/.test(value),
-                      },
+                      // validate: {
+                      //   pattern: (value: string) => !/[!]/.test(value),
+                      // },
                     })}
                     className="textarea-style"
                   />
