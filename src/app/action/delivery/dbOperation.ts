@@ -227,6 +227,7 @@ export async function fetchdeliveryById(id: string): Promise<deliveryType> {
 export async function fetchdeliveryByZip(
   zipname: string
 ): Promise<deliveryType[]> {
+ // console.log("insider delivery action------", zipname)
   let data = [] as deliveryType[];
   const q = query(
     collection(db, "delivery"),
@@ -238,5 +239,6 @@ export async function fetchdeliveryByZip(
     const datas = doc.data() as deliveryType;
     data.push(datas);
   });
+  console.log("email -------- ", data)
   return data;
 }

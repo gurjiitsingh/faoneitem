@@ -1,6 +1,6 @@
 //import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
-import CartContext, { useCartContext } from "@/store/CartContext";
+import React, { useEffect, useState } from "react";
+import { useCartContext } from "@/store/CartContext";
 
 import { ProductType } from "@/lib/types/productType";
 //import { useSearchParams } from "next/navigation";
@@ -13,10 +13,11 @@ import CouponDisc from "./CouponDisc";
 //import { FaCheckCircle } from 'react-icons/fa';
 
 export default function CartLeft() {
-  const { couponDisc, deliveryDis, chageDeliveryType, deliveryType } = UseSiteContext();
+  const { couponDisc, deliveryDis, chageDeliveryType, deliveryType } =
+    UseSiteContext();
+    
   // const searchParams = useSearchParams();
   //const deliveryType = searchParams.get("deliverytype");
-  
 
   const [addCoupon, setAddCoupon] = useState<boolean>(false);
 
@@ -32,12 +33,12 @@ export default function CartLeft() {
 
   total = +total.toFixed(2);
   let endPrice = +total;
-  let TotalDiscount=0;
+  let TotalDiscount = 0;
   if (deliveryType === "pickup") {
-    let pickupDiscount = (+total * 0.1);
+    let pickupDiscount = +total * 0.1;
     pickupDiscount = +pickupDiscount.toFixed(2);
     endPrice = endPrice - pickupDiscount;
-    TotalDiscount=10;
+    TotalDiscount = 10;
   }
 
   if (deliveryType === "delivery") {
@@ -47,22 +48,23 @@ export default function CartLeft() {
   }
 
   if (couponDisc?.price) {
-    console.log("----coupon disc", (+total * +couponDisc?.price))
-    endPrice = (endPrice - ((+total * +couponDisc?.price) / 100));
-    endPrice = +endPrice.toFixed(2)
-    TotalDiscount = TotalDiscount + (+couponDisc?.price);
+    console.log("----coupon disc", +total * +couponDisc?.price);
+    endPrice = endPrice - (+total * +couponDisc?.price) / 100;
+    endPrice = +endPrice.toFixed(2);
+    TotalDiscount = TotalDiscount + +couponDisc?.price;
   }
-//  console.log("total discount ------",TotalDiscount)
-//  console.log("end price -------", total- total*(+TotalDiscount)/100)
- 
+  //  console.log("total discount ------",TotalDiscount)
+  //  console.log("end price -------", total- total*(+TotalDiscount)/100)
 
- const endPriceS = endPrice.toString()
+  const endPriceS = endPrice.toString();
   const endPriceComma = endPriceS.split(".").join(",");
- useEffect(()=>{ 
-  setEndTotalG(endPrice)
-},[endPrice])
+  useEffect(() => {
+    setEndTotalG(endPrice);
+  }, [endPrice]);
   useEffect(() => {}, [deliveryType]);
-useEffect(()=>{setTotalDiscountG(TotalDiscount)},[TotalDiscount])
+  useEffect(() => {
+    setTotalDiscountG(TotalDiscount);
+  }, [TotalDiscount]);
   return (
     <div className="flex flex-col gap-4 w-full ">
       <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">
@@ -96,29 +98,31 @@ useEffect(()=>{setTotalDiscountG(TotalDiscount)},[TotalDiscount])
               Subtotal
             </div>
             <div className="flex gap-1">
-              <span>&#8364;</span> <span>{(total.toString()).replace(/\./g, ',')}</span>
+              <span>&#8364;</span>{" "}
+              <span>{total.toString().replace(/\./g, ",")}</span>
             </div>
           </div>
 
           <div className="font-semibold border-b py-3 w-full flex  justify-start gap-4">
             <div className="w-fit">
               <button
-                onClick={() => chageDeliveryType("delivery")}
+                onClick={() => chageDeliveryType("pickup")}
                 className="flex gap-2 items-center text-sm text-slate-600 bg-slate-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
-                <span>Delivery </span>
+                <span>Pickup </span>
                 {/* <span>
                   <FaChevronDown />
                 </span> */}
               </button>
             </div>
-
+           
             <div className="w-fit">
               <button
-                onClick={() => chageDeliveryType("pickup")}
+                onClick={() => chageDeliveryType("delivery")}
                 className="flex gap-2 items-center text-sm text-slate-600 bg-slate-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
-                <span>Pickup </span>
+              
+                <span>Delivery </span>
                 {/* <span>
                   <FaChevronDown />
                 </span> */}

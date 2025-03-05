@@ -17,7 +17,9 @@ export default function DeliveryCost() {
               </div>}
               {deliveryDis?.price === undefined &&
               <div className="flex gap-1 justify-start">
-                <span className="text-sm font-extralight">Please enter full address for delivery estimation </span>
+
+                {/* <span className="text-sm font-extralight">Please enter full address for delivery estimation </span> */}
+                <span className="text-sm font-extralight">Bitte geben Sie die vollständige Adresse für die Lieferzeitschätzung ein </span>
               </div>}
             </div>}
          

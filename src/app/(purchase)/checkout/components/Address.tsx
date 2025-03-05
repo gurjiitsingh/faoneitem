@@ -32,12 +32,13 @@ const Address = () => {
   const { cartData, totalDiscountG } = useContext(CartContext);
   const { data: session } = useSession();
   const [paymentType, setPaymentType] = useState<string>();
+  const [isOrderOk, setIsOrderOk] = useState<boolean>(true);
   //const [addressFound, setAddressFound] = useState(false);
   // const [ addressChanged, setAddressChanged ] = useState(false);
   const router = useRouter();
   const emailQueryString = searchParams.get("email") as string;
 
-  const { setdeliveryDis } = UseSiteContext();
+  const { setdeliveryDis, deliveryDis, deliveryType } = UseSiteContext();
 
   useEffect(() => {
     if (emailQueryString !== undefined) {
@@ -92,6 +93,11 @@ const Address = () => {
     formData.append("state", data.state!);
     formData.append("zipCode", data.zipCode);
 
+    if(deliveryType==='delivery' && deliveryDis === undefined){
+      setIsOrderOk(false)
+alert("Wir können an diese Adresse nicht liefern. Bitte wählen Sie Abholung und erhalten Sie 10 % Rabatt")
+    }
+if(deliveryType==='pickup' || deliveryDis !== undefined){
     const customAddress = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -133,7 +139,7 @@ const Address = () => {
     //  router.push(`/checkout?email=${data.email}&deliverytype=${deliveryType}`)
     }
 
-    //
+  }// end of ok order condition
   }
 
   setValue("userId", session?.user?.id);
@@ -335,6 +341,8 @@ const Address = () => {
     const addressRes = await searchAddressEmail(inputEmail);
     if (addressRes?.email !== null) {
      setAddress(addressRes);
+     const zipInfo = await fetchdeliveryByZip(addressRes.zipCode);
+     setdeliveryDis(zipInfo[0]);
     }
     setValue("email", inputEmail);
   //  console.log("this is befor email set---------------1",inputEmail)
