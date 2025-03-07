@@ -142,29 +142,34 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
   }// end of ok order condition
   }
 
-  setValue("userId", session?.user?.id);
-  //setValue("email", "g@mail.com");
-  // setValue("firstName", "Gurjit");
-  // setValue("lastName", "Singh");
-  // setValue("mobNo", "9838883323");
-  // setValue("addressLine1", "345 street House 34");
-  // setValue("addressLine1", "Vill Tandi Aulakh");
-  // setValue("city", "Jal");
-  // setValue("state", "Punjab");
-  // setValue("zipCode", "144621");
-  //setValue("orderDetail", cartData);
+  useEffect(()=>{
+    setValue("userId", session?.user?.id); 
+    setValue("password", "123456");
+    //setValue("email", "g@mail.com");
+    // setValue("firstName", "Gurjit");
+    // setValue("lastName", "Singh");
+    // setValue("mobNo", "9838883323");
+    // setValue("addressLine1", "345 street House 34");
+    // setValue("addressLine1", "Vill Tandi Aulakh");
+     setValue("city", "Jal");
+    // setValue("state", "Punjab");
+    // setValue("zipCode", "144621");
+    //setValue("orderDetail", cartData);
+  },[])
+  
 
   return (
     <div className="w-full lg:w-[70%] md:border md:rounded-2xl md:p-5">
       <div className="flex flex-col">
         <div className="flex flex-col gap-2 mb-4">
-          <h2 className="text-5 text-slate-600 font-semibold py-3">
-            Shipping address
+          <h2 className="text-xl font-semibold text-slate-600  py-3 uppercase">
+            {/* Shipping address */}
+            Adresse
             {/* -- {session?.user?.id} --- {session?.user?.name} */}
           </h2>
-          <p className="text-sm">
+          {/* <p className="text-sm">
             Enter the address where you want your order delivered.
-          </p>
+          </p> */}
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input {...register("userId")} hidden />
@@ -189,8 +194,8 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
                 {errors.mobNo?.message && <span>{errors.mobNo?.message}</span>}
               </span>
             </div>
-
-            {!session && (
+            <input {...register("password")} hidden />
+            {/* {!session && (
               <div className="flex flex-col gap-1">
                 <label className="label-style">
                   Password.<span className="text-red-500">Optional</span>{" "}
@@ -202,7 +207,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
                   )}
                 </span>
               </div>
-            )}
+            )} */}
 
             <div className="w-full flex flex-row gap-2">
               <div className="flex flex-col gap-1">
@@ -232,7 +237,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
             <div className="flex flex-col gap-1 w-full">
               <label className="label-style">
-                Address line 1<span className="text-red-500">*</span>{" "}
+              Straße<span className="text-red-500">*</span>{" "}
               </label>
               <input {...register("addressLine1")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
@@ -244,7 +249,9 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
             <div className="flex flex-col gap-1 w-full">
               <label className="label-style">
-                Address line 2<span className="text-red-500">*</span>{" "}
+                {/* Address line 2 */}
+                Straße Hausnr
+                <span className="text-red-500">*</span>{" "}
               </label>
               <input {...register("addressLine2")} className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
@@ -253,8 +260,8 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
                 )}
               </span>
             </div>
-
-            <div className="flex flex-col gap-1">
+            <input {...register("city")}  hidden />
+            {/* <div className="flex flex-col gap-1">
               <label className="label-style">
                 City<span className="text-red-500">*</span>{" "}
               </label>
@@ -262,7 +269,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               <span className="text-[0.8rem] font-medium text-destructive">
                 {errors.city?.message && <span>{errors.city?.message}</span>}
               </span>
-            </div>
+            </div> */}
 
             {/* <div className="flex flex-col gap-1">
               <label className="label-style">
@@ -276,7 +283,7 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
 
             <div className="flex flex-col gap-1">
               <label className="label-style">
-                Zip<span className="text-red-500">*</span>{" "}
+              Postleitzahl<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 {...register("zipCode", {
@@ -310,7 +317,10 @@ if(deliveryType==='pickup' || deliveryDis !== undefined){
               </div>
               <div>Cash on delivery</div>
             </div> */}
-            <h3 className=" font-light mt-3">Select payment type</h3>
+            <h3 className=" text-xl font-semibold text-slate-600  pt-3 pb-1 uppercase">
+              {/* Select payment type */}
+              Zahlungsart auswählen
+              </h3>
             <Button
               className="w-[200px] py-1 text-center bg-yellow-500 text-blue-600 font-semibold rounded-2xl text-[1rem]"
               onClick={() => {

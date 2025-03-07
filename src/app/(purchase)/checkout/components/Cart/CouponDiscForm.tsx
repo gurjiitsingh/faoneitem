@@ -67,8 +67,10 @@ export default function CouponDiscount() {
            
 <div className="flex gap-2 items-end">
             <div className="flex flex-col gap-1">
-              <label className="label-style">
-              Fill coupon and click button<span className="text-red-500">*</span>{" "}
+              <label className="label-style text-[.5rem]">
+              Gutschein ausfüllen und Button klicken*
+              {/* Fill coupon and click button */}
+              <span className="text-red-500">*</span>{" "}
               </label>
               <input {...register("coupon")}  className="input-style" />
               <span className="text-[0.8rem] font-medium text-destructive">
@@ -82,7 +84,8 @@ export default function CouponDiscount() {
               onClick={() => {}}
               name="button_1"
             >
-              Apply
+              Anwenden
+              {/* Apply */}
             </button>
             </div>
             </div>

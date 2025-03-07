@@ -20,13 +20,14 @@ import { UseSiteContext } from "@/SiteContext/SiteContext";
 
 const ProccedWithEmail = () => {
   //const { cartData } = useContext(CartContext);
-  const {  emailFormToggle, deliveryType } = UseSiteContext();
+  const {  emailFormToggle, deliveryType, chageDeliveryType } = UseSiteContext();
  // const {  sideBarToggle } = UseSiteContext();
   const {data: session } = useSession();
  // const [addressFound, setAddressFound] = useState(false);
   const router = useRouter();
-
-console.log("session ----------", session)
+  
+  chageDeliveryType("pickup")
+// console.log("session ----------", session)
   async function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
     // const inputEmail: string = e.target.value;
     // let addressRes = null;

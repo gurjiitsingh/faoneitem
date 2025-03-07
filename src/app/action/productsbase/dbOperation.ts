@@ -19,12 +19,10 @@ import {
   doc,
   getDoc,
   getDocs,
-  query,
+  
   setDoc,
 } from "@firebase/firestore"; //doc, getDoc,
-//import { orderProductsTArr } from "@/lib/type/orderType";
-//import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
-//import { orderProductsTArr } from "@/lib/types/orderType";
+
 import {
  
   ProductType,

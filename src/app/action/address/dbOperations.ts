@@ -154,11 +154,11 @@ export async function searchAddressEmail(email: string): Promise<addressResT> {
 export async function searchAddressByAddressId(
   id: string
 ): Promise<addressResT> {
-  console.log("---- search address by addressid ---", id);
+ // console.log("---- search address by addressid ---", id);
   const docRef = doc(db, "address", id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
+ //   console.log("Document data:", docSnap.data());
   } else {
     // docSnap.data() will be undefined in this case
     console.log("No such document!");
@@ -166,6 +166,9 @@ export async function searchAddressByAddressId(
 
   return docSnap.data() as addressResT;
 }
+
+
+
 
 export const searchAddressByUserId = async (
   id: string | undefined

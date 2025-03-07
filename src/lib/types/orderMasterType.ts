@@ -6,6 +6,9 @@ export type orderMasterDataT = {
       time: string;
       total:number;
       totalDiscountG:number;
+      status:string;
+      srno:number;
+      timeId:string;
   }
 
 
@@ -15,4 +18,6 @@ export type orderMasterDataT = {
     customerName:string;
     time:string;
     userId:string;
+    status:string;
+    srno:number;
    }

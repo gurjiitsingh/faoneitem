@@ -10,7 +10,7 @@ export default function Pickup({total}:{total:number}) {
        
                 <div className="font-semibold border-b py-3 w-full flex justify-between">
                   <button className="text-sm font-semibold py-3 w-full text-left">
-                    Pickup Discunt 10%
+                  Abholrabatt 10%
                   </button>
                   <div className="flex gap-1">
                     - <span>&#8364;</span> <span> 

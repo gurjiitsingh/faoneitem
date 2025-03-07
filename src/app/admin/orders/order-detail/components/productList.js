@@ -13,7 +13,14 @@ const ProductList = ({ item }) => {
   //   addProductToCart(item);
   // }
 
-  const total = parseInt(item.quantity) * parseFloat(item.price);
+  const total = (parseInt(item.quantity) * parseFloat(item.price)).toFixed(2);
+
+  
+  const itemPrice = (parseInt(item.price)).toFixed(2).replace(/\./g, ',');
+  console.log(typeof(itemPrice))
+//   const itemPriceS = itemPrice?.toFixed(2).toString().replace(/\./g, ',');;
+
+  const ToatlPrice = (total.toString()).replace(/\./g, ',')
   return (
     <div className="flex flex-row gap-2  justify-between border-b mt-2 rounded-xl">
       <div className="w-[20%]">
@@ -37,13 +44,13 @@ const ProductList = ({ item }) => {
 
           <div className="flex gap-2 w-[60%]">
             <div className="text-[1rem] w-[33%] flex items-start justify-end ">
-              &euro;{item.price}
+              &euro;{itemPrice}
             </div>
             <div className="text-[1rem] w-[33%] flex items-start justify-end ">
-              X {item.quantity}
+               {item.quantity}
             </div>
             <div className="text-[1rem] w-[33%] flex items-start justify-end">
-              &euro;{total.toFixed(2)}
+              &euro;{ToatlPrice}
             </div>
           </div>
         </div>

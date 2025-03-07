@@ -2,8 +2,8 @@
 import {
   newPorductSchema,
   editPorductSchema,
-  TnewProductSchema,
-  ShowPorductT,
+  // TnewProductSchema,
+  // ShowPorductT,
 } from "@/lib/types";
 
 //import { z } from "zod";
@@ -24,9 +24,7 @@ import {
   updateDoc,
   where,
 } from "@firebase/firestore"; //doc, getDoc,
-//import { orderProductsTArr } from "@/lib/type/orderType";
-//import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
-//import { orderProductsTArr } from "@/lib/types/orderType";
+
 import {
   
   ProductType,

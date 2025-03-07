@@ -239,6 +239,6 @@ export async function fetchdeliveryByZip(
     const datas = doc.data() as deliveryType;
     data.push(datas);
   });
-  console.log("email -------- ", data)
+  //console.log("email -------- ", data)
   return data;
 }

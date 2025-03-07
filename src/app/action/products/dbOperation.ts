@@ -23,8 +23,7 @@ import {
  // query,
   setDoc,
 } from "@firebase/firestore"; //doc, getDoc,
-//import { orderProductsTArr } from "@/lib/type/orderType";
-//import {  productTArr,  TnewProductSchemaArr } from "@/lib/type/productType";
+
 
 import {
  

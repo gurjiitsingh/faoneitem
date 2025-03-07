@@ -72,7 +72,7 @@ const ChooseProduct = () => {
     const priceVariant = VariantType?.price as string;
   
    
-    const finalPrice = (parseFloat(priceBase) + parseFloat(priceVariant)).toString();
+    const finalPrice = (parseFloat(priceBase).toFixed(2) + parseFloat(priceVariant).toFixed(2)).toString();
    
     const id = baseProductId + "-" + VariantType?.name;
     const pdesc = productBase?.productCat as string;

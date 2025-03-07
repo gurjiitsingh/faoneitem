@@ -1,3 +1,4 @@
+'use client'
 //import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useCartContext } from "@/store/CartContext";
@@ -56,7 +57,7 @@ export default function CartLeft() {
   //  console.log("total discount ------",TotalDiscount)
   //  console.log("end price -------", total- total*(+TotalDiscount)/100)
 
-  const endPriceS = endPrice.toString();
+  const endPriceS = (endPrice.toFixed(2)).toString();
   const endPriceComma = endPriceS.split(".").join(",");
   useEffect(() => {
     setEndTotalG(endPrice);
@@ -70,7 +71,9 @@ export default function CartLeft() {
       <div className="flex flex-col bg-white p-5 h-full w-full gap-7 rounded-2xl">
         <div className="flex flex-col gap-2 items-center">
           <h2 className="text-xl font-semibold border-b py-3 w-full uppercase">
-            Shopping cart total
+            {/* Shopping cart total */}
+            {/* Gesamtsumme im Warenkorb */}
+            Warenkorb-Summe
           </h2>
 
           <div className="font-semibold border-b py-3 w-full flex flex-col justify-between gap-4">
@@ -79,7 +82,8 @@ export default function CartLeft() {
                 onClick={() => setAddCoupon(!addCoupon)}
                 className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
-                <span>Add a coupon </span>
+                <span>
+                Fügen Sie einen Gutschein hinzu </span>
                 <span>
                   <FaChevronDown />
                 </span>
@@ -95,7 +99,7 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b py-3 w-full flex justify-between">
             <div className="text-sm font-semibold py-3 w-full text-left">
-              Subtotal
+            Zwischensumme
             </div>
             <div className="flex gap-1">
               <span>&#8364;</span>{" "}
@@ -105,28 +109,52 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b py-3 w-full flex  justify-start gap-4">
             <div className="w-fit">
+            
+            
+           { deliveryType === 'pickup'?   <button
+                onClick={() => chageDeliveryType("pickup")}
+                className="flex gap-2  items-center text-sm text-slate-600 bg-green-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+              >
+                <span>Abholen </span>
+                {/* <span>
+                  <FaChevronDown />
+                </span> */}
+              </button>:
               <button
                 onClick={() => chageDeliveryType("pickup")}
-                className="flex gap-2 items-center text-sm text-slate-600 bg-slate-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
-                <span>Pickup </span>
+                <span>Abholen </span>
                 {/* <span>
                   <FaChevronDown />
                 </span> */}
               </button>
+
+                }
             </div>
            
             <div className="w-fit">
-              <button
+            { deliveryType === 'delivery'?     <button
                 onClick={() => chageDeliveryType("delivery")}
-                className="flex gap-2 items-center text-sm text-slate-600 bg-slate-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+                className="flex gap-2 items-center text-sm text-slate-600 bg-green-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
               >
               
-                <span>Delivery </span>
+                <span>Lieferung </span>
                 {/* <span>
                   <FaChevronDown />
                 </span> */}
-              </button>
+              </button>:
+              <button
+                onClick={() => chageDeliveryType("delivery")}
+                className="shadow-lg flex gap-2 items-center text-sm text-slate-600 bg-red-200 border rounded-2xl px-3 font-semibold py-1 w-full text-left "
+              >
+              
+                <span>Lieferung </span>
+                {/* <span>
+                  <FaChevronDown />
+                </span> */}
+              </button>}
+
             </div>
           </div>
 
@@ -153,7 +181,7 @@ export default function CartLeft() {
 
           <div className="font-semibold border-b py-3 w-full flex justify-between">
             <div className="text-md font-semibold py-3 w-full text-left">
-              Total
+            Gesamt
             </div>
             <div className="flex gap-1">
               <span>&#8364;</span> <span> {endPriceComma} </span>

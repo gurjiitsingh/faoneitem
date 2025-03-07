@@ -9,7 +9,8 @@ export default function DeliveryCost() {
      
             <div className="font-semibold border-b py-3 w-full flex justify-between">
               <button className="text-sm font-semibold py-3 w-full text-left">
-                Delivery cost
+                
+Versandkosten
               </button>
               {deliveryDis?.price !== undefined &&
               <div className="flex gap-1">

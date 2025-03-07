@@ -2,11 +2,11 @@
 
 
 import { db } from "@/lib/firebaseConfig";
-import {  addDoc, collection, doc, getDoc, getDocs, query, where } from "@firebase/firestore";
+import {  addDoc, collection, doc, getDoc, getDocs, limit, orderBy, query, where } from "@firebase/firestore";
 import { addUserDirect } from "../user/dbOperation";
 import { addCustomerAddressDirect } from "../address/dbOperations";
 import {  TOrderMaster, orderMasterDataT } from "@/lib/types/orderMasterType";
-import { orderProductsTArr } from "@/lib/types/orderType";
+import { orderProductsT } from "@/lib/types/orderType";
 import {   purchaseDataT } from "@/lib/types/cartDataType";
 import { ProductType } from "@/lib/types/productType";
 
@@ -56,24 +56,60 @@ export async function createNewOrder(purchaseData:purchaseDataT) {
   // enter data in order master
 
   const customerName = firstName + " " + lastName;
-  //const now = new Date();
-  // const now_india = now.toLocaleString("en-IN", {
+  const now = new Date();
+  const now_india = now.toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: "Asia/Kolkata",
+  });
+
+//"de-DE"
+  // const now_german = new Date().toLocaleString("en-DE", {
   //   dateStyle: "medium",
   //   timeStyle: "medium",
-  //   timeZone: "Asia/Kolkata",
+  //   timeZone: "Europe/Berlin",
   // });
 
+ // const order = await fetchOrdersMaster()
+
+ const collectionRef = collection(db, 'orderMaster')
+    
+ const targetQuery = query(collectionRef, orderBy("srno", "desc"), limit(1));
+ const querySnapshot = await getDocs(targetQuery)
+
+//  const q = query(collectionRef);
+//  const querySnapshot = await getDocs(q);
+let new_srno =1;
+let orderData = [] as orderMasterDataT[];
+  querySnapshot.forEach((doc) => {
+     const  data = doc.data() as orderMasterDataT;
+       console.log("last order ----------", data)
+       orderData.push(data)
+     });
+ 
+   
+   if(orderData[0]?.srno !== undefined){
+     new_srno =orderData[0].srno + 1;
+   }
+   console.log("sr No ----------", new_srno)
+
+ // const timeId = new Date().toISOString();
   const orderMasterData = {
     // also add auto increment to order,
     customerName,
     userId: UserAddedId,
     addressId: addressAddedId,
     total:total,
+    status:"pending",
     totalDiscountG,
-    //time: now_india,
+    time: now_india,
+    srno:new_srno,
+   
   } as orderMasterDataT; 
 
   //console.log("----------addOrderToMaster --", orderMasterData)
+
+   
 
 const orderMasterId = await addOrderToMaster(orderMasterData) as string;
 
@@ -143,9 +179,16 @@ export async function addOrderToMaster(element:orderMasterDataT) {
   export async function fetchOrdersMaster():Promise<orderMasterDataT[]>{
 
 
-let data = [] as orderMasterDataT[];
-    const q = query(collection(db, "orderMaster"));
-    const querySnapshot = await getDocs(q);
+const data = [] as orderMasterDataT[];
+  //  const q = query(collection(db, "orderMaster"));
+  //  const querySnapshot = await getDocs(q);
+
+    const collectionRef = collection(db, 'orderMaster')
+    
+    const targetQuery = query(collectionRef, orderBy("srno", "desc"), limit(10));
+    const querySnapshot = await getDocs(targetQuery)
+
+
     querySnapshot.forEach((doc) => {
 
       const pData = { id: doc.id, ...doc.data() } as orderMasterDataT;
@@ -208,21 +251,19 @@ let data = [] as orderMasterDataT[];
 //   return data;
 // }
 
-export async function fetchOrderById(id:string){
-
-  const docRef = doc(db, "product", id);
-  const docSnap = await getDoc(docRef);
-  
-  if (docSnap.exists()) {
- //   console.log("Document data:", docSnap.data());
-  } else {
-    // docSnap.data() will be undefined in this case
-//    console.log("No such document!");
-  }
-
-  return docSnap.data();
-  // const result = await db.select().from(product).where(eq(product.id,id));
-  // return result[0];
+export async function fetchOrderMasterById(id:string){
+  console.log("Document data:--------");
+    const docRef = doc(db, "orderMaster", id);
+    const docSnap = await getDoc(docRef);
+    let productData = {} as orderMasterDataT;
+    if (docSnap.exists()) {
+     console.log("Document data:", docSnap.data());
+    } else {
+      //   docSnap.data() //will be undefined in this case
+      console.log("No such document!");
+    }
+    productData = docSnap.data() as orderMasterDataT;
+    return productData;
   
 }
 
@@ -232,20 +273,16 @@ export async function fetchOrderById(id:string){
 
 
 export async function fetchOrderProductsByOrderMasterId(OrderMasterId:string){
-  // const q = query(collection(db, "orderProducts"), where("orderMasterId", "==", OrderMasterId));
-  // const querySnapshot = await getDocs(q);
-  // let data = [];;
-  // querySnapshot.forEach((doc) => {
-  //   data.push({id:doc.id, ...doc.data()});
-  // });
-  // return data;
-
-  let data = [] as orderProductsTArr;
+ 
+  //console.log("---------- inside order -----------", OrderMasterId)
+  const data = [] as orderProductsT[];
   const q = query(collection(db, "orderProducts"), where("orderMasterId", "==", OrderMasterId));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
-    data = doc.data() as orderProductsTArr;
+   const orderData = doc.data() as orderProductsT;
+   data.push(orderData)
   });
+ // console.log(data)
   return data;
 
 }   
